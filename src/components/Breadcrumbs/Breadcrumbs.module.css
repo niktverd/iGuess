@@ -1,0 +1,12 @@
+.container {
+    width: 100%;
+
+    display: flex;
+    flex-flow: wrap;
+    flex-direction: row;
+    padding: 8px 0;
+}
+
+.breadcrumb {
+    padding: 0 8px;
+}
