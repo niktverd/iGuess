@@ -23,10 +23,12 @@
         "jsonwebtoken": "^9.0.1",
         "next": "13.4.10",
         "react": "18.2.0",
-        "react-dom": "18.2.0"
+        "react-dom": "18.2.0",
+        "uuidv4": "^6.2.13"
     },
     "devDependencies": {
         "@gravity-ui/eslint-config": "^2.1.1",
+        "@gravity-ui/icons": "^2.6.0",
         "@gravity-ui/prettier-config": "^1.0.1",
         "@gravity-ui/stylelint-config": "^2.0.0",
         "@gravity-ui/tsconfig": "^1.0.0",

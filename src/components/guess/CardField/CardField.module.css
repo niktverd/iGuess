@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 15px;
+}
+
+.container:hover {
+    background-color: rgb(222 222 222 / 0.2);
+}
+
+.label-text {
+    font-size: 150%;
+    color: rgb(222 222 222 / 0.9);
+}
+
+.label {
+    position: absolute;
+    font-size: 60%;
+    color: rgb(222 222 222 / 0.5);
+}
+
+.input {
+    text-align: right;
+}
