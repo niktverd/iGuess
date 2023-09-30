@@ -1,8 +1,10 @@
-import {PlanName} from './plan';
 import {Report} from './report';
+import { SourceData } from './types';
+import {PlanName} from './types/plans';
 import {wrapper} from './utils';
 
 type CalculateTeamArgs = {
+    source: SourceData;
     report: Report;
     month?: number;
 };
@@ -14,7 +16,7 @@ const WHITE_COLORS_SALARY = 2000;
 
 export const calculateTeam = ({report}: CalculateTeamArgs) => {
     wrapper(report, (key: PlanName) => {
-        if (key !== PlanName.Total) {
+        if (key !== 'total') {
             return;
         }
 

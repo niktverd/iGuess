@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import {CircleXmark, Magnifier, TrashBin} from '@gravity-ui/icons';
+import { uniq } from 'lodash';
 
-import { Plan } from '../../../business/plan';
-import { Product } from '../../../business/product';
+import { Product } from '../../../business/types';
+import { Plan } from '../../../business/types/plans';
 import { useSourceData } from '../../../hooks/useSourceData';
 
 import s from './CardSelector.module.css';
@@ -33,11 +34,6 @@ export const CardSelector = ({
     const { sourceData } = useSourceData();
     const [query, setQuery] = useState('');
     const [showList, setShowList] = useState(false);
-    const [selected, setSelected] = useState<Array<string>>(value);
-
-    useEffect(() => {
-        onChange?.(selected);
-    }, [onChange, selected]);
 
     const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
@@ -57,12 +53,12 @@ export const CardSelector = ({
 
     const handleSelect = (selectedId: string) => () => {
         if (type === "single") {
-            setSelected([selectedId]);
+            onChange?.([selectedId]);
             setShowList(false);
         }
 
         if (type === "array") {
-            setSelected([...selected, selectedId]);
+            onChange?.(uniq([...value, selectedId]));
         }
     };
 
@@ -124,7 +120,7 @@ export const CardSelector = ({
                     }
 
                     const handleRemoveItem = (id: string) => () => {
-                        setSelected(items.filter((item) => item !== id));
+                        onChange?.(items.filter((item) => item !== id));
                     };
 
                     return <div key={selectedId} className={s['selected-list-item']}>

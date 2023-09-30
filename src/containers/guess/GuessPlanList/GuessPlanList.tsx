@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { initialPlan } from '../../../business/plan';
 import { AddCard } from '../../../components/guess/AddCard/AddCard';
 import { PlanCard } from '../../../components/guess/PlanCard/PlanCard';
+import { initialPlan } from '../../../contexts/SourceDataContext';
 import { useSourceData } from '../../../hooks/useSourceData';
 
 import styles from './GuessPlanList.module.css';

@@ -4,8 +4,8 @@ import {CirclePlus} from '@gravity-ui/icons';
 import { uuid } from 'uuidv4';
 
 
-import { Plan } from '../../../business/plan';
-import { Product } from '../../../business/product';
+import { Product } from '../../../business/types';
+import { Plan } from '../../../business/types/plans';
 import { useSourceData } from '../../../hooks/useSourceData';
 
 import styles from './AddCard.module.css';

@@ -2,14 +2,7 @@ import React from 'react';
 
 import { uuid } from 'uuidv4';
 
-import { Plan } from '../business/plan';
-import { Product } from '../business/product';
-
-export type SourceData = {
-    period: number;
-    plans: Array<Plan>;
-    products: Array<Product>;
-};
+import { Plan, Product, SourceData } from '../business/types';
 
 export const initialProduct: Product = {
     id: uuid(),
@@ -20,18 +13,20 @@ export const initialProduct: Product = {
     frequency: 1,
 };
 
+export const initialPlan: Plan = {
+    id: uuid(),
+    name: 'Plan',
+    cac: 1,
+    minimalGrowthCount: 1,
+    growthRate: 1,
+    churnRate: 1,
+    sourceOfUserAqcusition: null,
+    availableProducts: [],
+};
+
 export const initialSourceData: SourceData = {
     period: 36,
-    plans: [{
-        id: uuid(),
-        name: 'Plan',
-        cac: 1,
-        minimalGrowthCount: 1,
-        growthRate: 1,
-        churnRate: 1,
-        sourceOfUserAqcusition: null,
-        availableProducts: [],
-    }],
+    plans: [{...initialPlan}],
     products: [
         {
            ...initialProduct

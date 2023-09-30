@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { getReport } from '../../business/report';
 import { NavButton } from '../../components/NavButton/NavButton';
 import { useSourceData } from '../../hooks/useSourceData';
 import { GuessPeriodForm } from '../guess/GuessPeriodForm/GuessPeriodForm';
@@ -19,7 +20,16 @@ enum Section {
 
 export const GuessLayout = (_props: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
-    const [section, setSection] = useState('null');
+    const [section, setSection] = useState<Section>(Section.Overview);
+
+    useEffect(() => {
+        if (section !== Section.Overview) {
+            return;
+        }
+
+        // eslint-disable-next-line no-console
+        console.log(getReport(sourceData));
+    }, [section, sourceData]);
 
     return (
         <div className={styles.container}>

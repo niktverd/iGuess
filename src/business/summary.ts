@@ -1,15 +1,17 @@
-import {PlanName} from './plan';
 import {Report} from './report';
+import { SourceData } from './types';
+import {PlanName} from './types/plans';
 import {wrapper} from './utils';
 
 type SummaryArgs = {
+    source: SourceData;
     report: Report;
     month?: number;
 };
 
 export const summary = ({report}: SummaryArgs) => {
     wrapper(report, (key: PlanName) => {
-        if (key !== PlanName.Total) {
+        if (key !== 'total') {
             return;
         }
 

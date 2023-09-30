@@ -1,9 +1,12 @@
-import {calculateTeam} from './capex';
-import {PERIODS} from './constants';
-import {PlanName} from './plan';
-import {ProductName, updateProductSales} from './product';
-import {summary} from './summary';
-import {calculateTotal} from './total';
+// import {calculateTeam} from './capex';
+import {updateProductSales} from './product';
+// import {summary} from './summary';
+// import {calculateTotal} from './total';
+import { 
+    // ProductName, 
+    SourceData } from './types';
+// import { ProductName } from './types';
+import {PlanName} from './types/plans';
 import {calculateCosts, correctUsers, updateUsers} from './user';
 import {flattenObject} from './utils';
 
@@ -15,29 +18,29 @@ export type PlanReport = {
     marketingCosts: number;
     salesCount: number;
     balance: number;
-    salesCountByProduct: Record<ProductName, number>;
-    profitByProduct: Record<ProductName, number>;
-    revenueByProduct: Record<ProductName, number>;
+    // salesCountByProduct: Record<ProductName, number>;
+    // profitByProduct: Record<ProductName, number>;
+    // revenueByProduct: Record<ProductName, number>;
 };
 
 export type TeamReport = Record<string, number>;
 
 export type Report = Record<PlanName, PlanReport> & {
     total: Omit<PlanReport, 'salesCountByProduct' | 'profitByProduct' | 'revenueByProduct'>;
-    team: TeamReport;
+    // team: TeamReport;
 };
 
-export const initializeParameterByProduct: (initialValue: number) => Record<ProductName, number> = (
-    // initialValue = 0,
-) => {
-    // const values = Object.values(ProductName);
+// export const initializeParameterByProduct: (initialValue: number) => Record<ProductName, number> = (
+//     initialValue = 0,
+// ) => {
+//     const values = Object.values(ProductName);
 
-    // return values.reduce((acc, value) => {
-    //     // eslint-disable-next-line no-param-reassign
-    //     acc[value] = initialValue;
-    //     return acc;
-    // }, {} as Record<ProductName, number>);
-};
+//     return values.reduce((acc, value) => {
+//         // eslint-disable-next-line no-param-reassign
+//         acc[value] = initialValue;
+//         return acc;
+//     }, {} as Record<ProductName, number>);
+// };
 
 export const initialPlanReport: PlanReport = {
     users: 0,
@@ -47,13 +50,13 @@ export const initialPlanReport: PlanReport = {
     salesCount: 0,
     marketingCosts: 0,
     balance: 0,
-    salesCountByProduct: initializeParameterByProduct(0),
-    profitByProduct: initializeParameterByProduct(0),
-    revenueByProduct: initializeParameterByProduct(0),
+    // salesCountByProduct: initializeParameterByProduct(0),
+    // profitByProduct: initializeParameterByProduct(0),
+    // revenueByProduct: initializeParameterByProduct(0),
 };
 
-export const getInitialReport = (): Report => {
-    const values = Object.values(PlanName) as PlanName[];
+export const getInitialReport = (source: SourceData): Report => {
+    const values = source.plans.map((p) => p.id);
 
     const initReport: Report = values.reduce((acc, value) => {
         // eslint-disable-next-line no-param-reassign
@@ -70,17 +73,17 @@ export const getInitialReport = (): Report => {
     };
 };
 
-export const getReport = (): Record<string, number>[] => {
-    const report = getInitialReport();
+export const getReport = (source: SourceData): Record<string, number>[] => {
+    const report = getInitialReport(source);
     const periods = [];
-    for (let month = 0; month < PERIODS; month++) {
-        updateUsers({report, month});
-        correctUsers({report, month});
-        calculateCosts({report, month});
-        updateProductSales({report, month});
-        calculateTotal({report});
-        calculateTeam({report});
-        summary({report});
+    for (let month = 0; month < source.period; month++) {
+        updateUsers({report, month, source});
+        correctUsers({report, month, source});
+        calculateCosts({report, month, source});
+        updateProductSales({report, month, source});
+        // calculateTotal({report, source});
+        // calculateTeam({report, source});
+        // summary({report, source});
         periods.push({month, ...flattenObject(report)});
     }
 

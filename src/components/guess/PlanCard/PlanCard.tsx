@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import {Check, Pencil, Shapes3} from '@gravity-ui/icons';
 
-import { Plan } from '../../../business/plan';
+import { Plan } from '../../../business/types/plans';
 import { useSourceData } from '../../../hooks/useSourceData';
 import { CardField } from '../CardField/CardField';
 import { CardSelector } from '../CardSelector/CardSelector';

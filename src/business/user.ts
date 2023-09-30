@@ -1,24 +1,25 @@
-import {PlanName, plans} from './plan';
 import {Report} from './report';
+import {PlanName, SourceData} from './types';
 import {wrapper} from './utils';
 
 type UpdateUsersArgs = {
+    source: SourceData;
     report: Report;
     month: number;
 };
 
-export const updateUsers = ({report}: UpdateUsersArgs) => {
+export const updateUsers = ({report, source}: UpdateUsersArgs) => {
     wrapper(report, (key: PlanName) => {
-        const plan = plans.find((p) => p.name === key);
+        const plan = source.plans.find((p) => p.id === key);
         if (!plan) {
             return;
         }
 
-        const source = plan.sourceOfUserAqcusition
+        const sourceData = plan.sourceOfUserAqcusition
             ? report[plan.sourceOfUserAqcusition].users
             : report[key].users;
 
-        let usersDiff = Math.ceil(source * plan.growthRate || plan.minimalGrowthCount);
+        let usersDiff = Math.ceil(sourceData * plan.growthRate || plan.minimalGrowthCount);
         if (usersDiff < plan.minimalGrowthCount) {
             usersDiff = plan.minimalGrowthCount;
         }
@@ -30,9 +31,9 @@ export const updateUsers = ({report}: UpdateUsersArgs) => {
     });
 };
 
-export const correctUsers = ({report}: UpdateUsersArgs) => {
+export const correctUsers = ({report, source}: UpdateUsersArgs) => {
     wrapper(report, (key: PlanName) => {
-        const plan = plans.find((p) => p.name === key);
+        const plan = source.plans.find((p) => p.id === key);
         if (!plan) {
             return;
         }
@@ -49,9 +50,9 @@ export const correctUsers = ({report}: UpdateUsersArgs) => {
     });
 };
 
-export const calculateCosts = ({report}: UpdateUsersArgs) => {
+export const calculateCosts = ({report, source}: UpdateUsersArgs) => {
     wrapper(report, (key: PlanName) => {
-        const plan = plans.find((p) => p.name === key);
+        const plan = source.plans.find((p) => p.id === key);
         if (!plan) {
             return;
         }

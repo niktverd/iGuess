@@ -1,5 +1,5 @@
-import {PlanName} from './plan';
 import {Report} from './report';
+import {PlanName} from './types/plans';
 
 export const wrapper = (report: Report, callback: (key: PlanName) => void) => {
     const keys = Object.keys(report) as PlanName[];

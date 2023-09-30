@@ -1,16 +1,18 @@
 import {omit} from 'lodash';
 
-import {PlanName} from './plan';
 import {PlanReport, Report} from './report';
+import { SourceData } from './types';
+import {PlanName} from './types/plans';
 import {wrapper} from './utils';
 
 type CalculateTotalArgs = {
+    source: SourceData;
     report: Report;
 };
 
-export const calculateTotal = ({report}: CalculateTotalArgs) => {
+export const calculateTotal = ({report, source: _}: CalculateTotalArgs) => {
     wrapper(report, (key: PlanName) => {
-        const reports = omit(report, 'team', PlanName.Total);
+        const reports = omit(report, 'team', 'total');
         const planReport = reports[key];
         if (!planReport) {
             return;
