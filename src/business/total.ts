@@ -23,10 +23,12 @@ export const calculateTotal = ({report}: CalculateTotalArgs) => {
                 typeof report.total[reportKey] === 'number' &&
                 typeof report[key][reportKey] === 'number'
             ) {
+                // eslint-disable-next-line no-param-reassign
                 report.total[reportKey] += report[key][reportKey];
             }
         });
 
+        // eslint-disable-next-line no-param-reassign
         report.total = omit(
             report.total,
             'salesCountByProduct',

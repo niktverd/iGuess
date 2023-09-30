@@ -28,7 +28,7 @@ export type Report = Record<PlanName, PlanReport> & {
 };
 
 export const initializeParameterByProduct: (initialValue: number) => Record<ProductName, number> = (
-    initialValue = 0,
+    // initialValue = 0,
 ) => {
     // const values = Object.values(ProductName);
 
