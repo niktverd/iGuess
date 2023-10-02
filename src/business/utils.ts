@@ -2,7 +2,7 @@ import {Report} from './report';
 import {PlanName} from './types/plans';
 
 export const wrapper = (report: Report, callback: (key: PlanName) => void) => {
-    const keys = Object.keys(report) as PlanName[];
+    const keys = Object.keys(report.byPlan) as PlanName[];
 
     keys.forEach(callback);
 };

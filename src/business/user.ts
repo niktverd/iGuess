@@ -14,19 +14,19 @@ export const updateUsers = ({report, source}: UpdateUsersArgs) => {
         if (!plan) {
             return;
         }
-
+        
         const sourceData = plan.sourceOfUserAqcusition
-            ? report[plan.sourceOfUserAqcusition].users
-            : report[key].users;
-
+            ? report.byPlan[plan.sourceOfUserAqcusition].users
+            : report.byPlan[key].users;
+        
         let usersDiff = Math.ceil(sourceData * plan.growthRate || plan.minimalGrowthCount);
         if (usersDiff < plan.minimalGrowthCount) {
             usersDiff = plan.minimalGrowthCount;
         }
 
         /* eslint-disable no-param-reassign */
-        report[key].usersDiff = usersDiff;
-        report[key].users += usersDiff;
+        report.byPlan[key].usersDiff = usersDiff;
+        report.byPlan[key].users += usersDiff;
         /* eslint-enable no-param-reassign */
     });
 };
@@ -38,15 +38,16 @@ export const correctUsers = ({report, source}: UpdateUsersArgs) => {
             return;
         }
 
-        const churn = Math.floor(report[key].users * plan.churnRate);
+        const churn = Math.floor(report.byPlan[key].users * plan.churnRate);
         // eslint-disable-next-line no-param-reassign
-        report[key].users -= churn;
+        report.byPlan[key].users -= churn;
 
         if (!plan.sourceOfUserAqcusition) {
             return;
         }
+
         // eslint-disable-next-line no-param-reassign
-        report[plan.sourceOfUserAqcusition].users -= report[key].usersDiff;
+        report.byPlan[plan.sourceOfUserAqcusition].users -= report.byPlan[key].usersDiff;
     });
 };
 
@@ -58,6 +59,6 @@ export const calculateCosts = ({report, source}: UpdateUsersArgs) => {
         }
 
         // eslint-disable-next-line no-param-reassign
-        report[key].marketingCosts = report[key].usersDiff * plan.cac;
+        report.byPlan[key].marketingCosts = report.byPlan[key].usersDiff * plan.cac;
     });
 };

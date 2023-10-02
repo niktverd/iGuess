@@ -1,12 +1,14 @@
+import { ProductName } from "./products";
+
 export type PlanName = string;
 
 export type Plan = {
     id: string;
-    name: string;
+    name: PlanName;
     cac: number;
     minimalGrowthCount: number;
     growthRate: number;
     churnRate: number;
-    sourceOfUserAqcusition: string | null;
-    availableProducts: string[];
+    sourceOfUserAqcusition: PlanName | null;
+    availableProducts: ProductName[];
 };

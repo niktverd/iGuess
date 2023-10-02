@@ -17,9 +17,9 @@ export const initialPlan: Plan = {
     id: uuid(),
     name: 'Plan',
     cac: 1,
-    minimalGrowthCount: 1,
-    growthRate: 1,
-    churnRate: 1,
+    minimalGrowthCount: 100,
+    growthRate: 0.1,
+    churnRate: 0,
     sourceOfUserAqcusition: null,
     availableProducts: [],
 };

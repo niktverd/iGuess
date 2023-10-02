@@ -12,7 +12,7 @@ type UpdateEarningsArgs = {
 export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
     wrapper(report, (key: PlanName) => {
         const plan = source.plans.find((p) => p.id === key);
-        if (!plan || !plan.availableProducts) {
+        if (!plan) {
             return;
         }
         
@@ -25,13 +25,15 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
         let profit = 0;
         let salesCount = 0;
         let revenue = 0;
+        let cost = 0;
         for (const productName of plan.availableProducts) {
             const product = source.products.find((p) => p.id === productName);
             if (!product) {
                 continue;
             }
-            const salesCountByProduct = Math.ceil(product.frequency * report[key].users);
+            const salesCountByProduct = Math.ceil(product.frequency * report.byPlan[key].users);
             const profitByProduct = product.profit * salesCountByProduct;
+            const costByProduct = product.cost * salesCountByProduct;
             const revenueByProduct = (product.cost + product.profit) * salesCountByProduct;
             /* eslint-disable no-param-reassign */
             // report[key].profitByProduct[productName] = profitByProduct;
@@ -41,12 +43,14 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
             profit += profitByProduct;
             salesCount += salesCountByProduct;
             revenue += revenueByProduct;
+            cost += costByProduct;
         }
 
         /* eslint-disable no-param-reassign */
-        report[key].salesCount = salesCount;
-        report[key].profit = profit;
-        report[key].revenue = revenue;
+        report.byPlan[key].salesCount = salesCount;
+        report.byPlan[key].profit = profit;
+        report.byPlan[key].revenue = revenue;
+        report.byPlan[key].cost = cost;
         /* eslint-enable no-param-reassign */
 
     });
