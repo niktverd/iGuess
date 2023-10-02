@@ -86,7 +86,7 @@ export const getInitialReport = (source: SourceData): Report => {
         return acc;
     }, {} as Record<string, ProductReport>);
 
-    console.log('byPlan', byPlan);
+    // console.log('byPlan', byPlan);
 
     return {
         byPlan,
@@ -106,7 +106,7 @@ export type GetReportResponse = {
 
 export const getReport = (source: SourceData): GetReportResponse[] => {
     const report = getInitialReport(source);
-    console.log('reportreport', JSON.stringify(report.byPlan, null, 3));
+    // console.log('reportreport', JSON.stringify(report.byPlan, null, 3));
     const periods = [];
     for (let month = 0; month < source.period; month++) {
         updateUsers({report, month, source});
