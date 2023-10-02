@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import s from './CardField.module.css';
 
@@ -19,7 +19,7 @@ export const CardField = ({
     inputClassName,
     editable,
     type = 'text',
-    inputContainerClassName
+    inputContainerClassName,
 }: CardFieldProps) => {
     return (
         <div className={`${s.container} ${inputContainerClassName}`}>
@@ -35,5 +35,5 @@ export const CardField = ({
                 disabled={!editable}
             />
         </div>
-    )
-}
+    );
+};

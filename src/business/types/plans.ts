@@ -1,4 +1,4 @@
-import { ProductName } from "./products";
+import {ProductName} from './products';
 
 export type PlanName = string;
 

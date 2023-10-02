@@ -1,4 +1,3 @@
-
 export type ProductName = string;
 
 export type Product = {

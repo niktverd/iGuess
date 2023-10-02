@@ -10,9 +10,13 @@ export const wrapper = (report: Report, callback: (key: PlanName) => void) => {
 export function flattenObject(obj: Object, prefix = '', result: Partial<Record<string, any>> = {}) {
     Object.entries(obj).forEach(([key, val]: string[]) => {
         const newKey = prefix ? `${prefix}.${key}` : key;
-        if (val && typeof val === 'object') {return flattenObject(val, newKey, result);}
+        if (val && typeof val === 'object') {
+            return flattenObject(val, newKey, result);
+        }
         // eslint-disable-next-line no-param-reassign
-        else {result[newKey] = val;}
+        else {
+            result[newKey] = val;
+        }
     });
 
     return result;

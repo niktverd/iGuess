@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useSourceData } from '../../../hooks/useSourceData';
+import {useSourceData} from '../../../hooks/useSourceData';
 
 import styles from './GuessPeriodForm.module.css';
 
@@ -12,9 +12,7 @@ export const GuessPeriodForm = (_props: GuessPeriodFormProps) => {
     return (
         <div className={styles.container}>
             <div>
-                <span>
-                    Period: 
-                </span>
+                <span>Period:</span>
                 <input
                     type="number"
                     min={1}

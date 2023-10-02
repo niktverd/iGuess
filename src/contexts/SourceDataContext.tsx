@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { uuid } from 'uuidv4';
+import {uuid} from 'uuidv4';
 
-import { Plan, Product, SourceData } from '../business/types';
+import {Plan, Product, SourceData} from '../business/types';
 
 export const initialProduct: Product = {
     id: uuid(),
@@ -29,7 +29,7 @@ export const initialSourceData: SourceData = {
     plans: [{...initialPlan}],
     products: [
         {
-           ...initialProduct
+            ...initialProduct,
         },
         {
             ...initialProduct,

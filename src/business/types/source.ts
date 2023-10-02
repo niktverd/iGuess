@@ -1,4 +1,4 @@
-import { Plan, Product } from ".";
+import {Plan, Product} from '.';
 
 export type SourceData = {
     period: number;

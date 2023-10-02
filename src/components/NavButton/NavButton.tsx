@@ -9,10 +9,7 @@ type NavButtonProps = {
 
 export const NavButton = ({text, onClick}: NavButtonProps) => {
     return (
-        <button
-            className={styles.container}
-            onClick={onClick}
-        >
+        <button className={styles.container} onClick={onClick}>
             {text}
         </button>
     );

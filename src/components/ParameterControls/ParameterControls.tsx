@@ -10,26 +10,20 @@ type ParameterControlsProps = {
     onSelectAxis: (key: string, step: number) => () => void;
 };
 
-export const ParameterControls = ({axis = 0, text, paramKey, onSelect, onSelectAxis}: ParameterControlsProps) => {
+export const ParameterControls = ({
+    axis = 0,
+    text,
+    paramKey,
+    onSelect,
+    onSelectAxis,
+}: ParameterControlsProps) => {
     return (
         <div className={styles.container}>
-            <button
-                onClick={onSelect(paramKey)}
-            >
-                {text}
-            </button>
+            <button onClick={onSelect(paramKey)}>{text}</button>
             <div className={styles.axis}>
-                <button
-                    onClick={onSelectAxis(paramKey, 1)}
-                >
-                    +
-                </button>
+                <button onClick={onSelectAxis(paramKey, 1)}>+</button>
                 {axis}
-                <button
-                    onClick={onSelectAxis(paramKey, -1)}
-                >
-                    -
-                </button>
+                <button onClick={onSelectAxis(paramKey, -1)}>-</button>
             </div>
         </div>
     );

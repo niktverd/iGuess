@@ -14,11 +14,11 @@ export const updateUsers = ({report, source}: UpdateUsersArgs) => {
         if (!plan) {
             return;
         }
-        
+
         const sourceData = plan.sourceOfUserAqcusition
             ? report.byPlan[plan.sourceOfUserAqcusition].users
             : report.byPlan[key].users;
-        
+
         let usersDiff = Math.ceil(sourceData * plan.growthRate || plan.minimalGrowthCount);
         if (usersDiff < plan.minimalGrowthCount) {
             usersDiff = plan.minimalGrowthCount;

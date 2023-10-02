@@ -9,7 +9,7 @@
         "prepare": "husky install",
         "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
         "lint:styles": "stylelint \"**/*.css\" --fix",
-        "lint:prettier": "prettier --write '**/*.md'",
+        "lint:prettier": "prettier --write '**/*.{md,tsx,ts,js,jsx}'",
         "lint": "run-p lint:*",
         "typecheck": "tsc --noEmit",
         "test-all": "npm run stylelint && npm run check-format && npm run check-lint && npm run check-types",

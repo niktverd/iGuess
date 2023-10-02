@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, {useMemo, useState} from 'react';
 
 import {CircleXmark, Magnifier, TrashBin} from '@gravity-ui/icons';
-import { uniq } from 'lodash';
+import {uniq} from 'lodash';
 
-import { Product } from '../../../business/types';
-import { Plan } from '../../../business/types/plans';
-import { useSourceData } from '../../../hooks/useSourceData';
+import {Product} from '../../../business/types';
+import {Plan} from '../../../business/types/plans';
+import {useSourceData} from '../../../hooks/useSourceData';
 
 import s from './CardSelector.module.css';
 type CardSelectorProps = {
@@ -31,41 +31,47 @@ export const CardSelector = ({
     containerClassName,
     currentCard,
 }: CardSelectorProps) => {
-    const { sourceData } = useSourceData();
+    const {sourceData} = useSourceData();
     const [query, setQuery] = useState('');
     const [showList, setShowList] = useState(false);
 
     const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
-    }
+    };
 
-    const list = useMemo(() => sourceData[source].filter((p) => {
-        if (p.id === currentCard.id) {
-            return false;
-        }
+    const list = useMemo(
+        () =>
+            sourceData[source].filter((p) => {
+                if (p.id === currentCard.id) {
+                    return false;
+                }
 
-        if (!query) {
-            return true;
-        }
+                if (!query) {
+                    return true;
+                }
 
-        return p.id.includes(query) || p.name.includes(query);
-    }), [currentCard.id, query, source, sourceData]);
+                return p.id.includes(query) || p.name.includes(query);
+            }),
+        [currentCard.id, query, source, sourceData],
+    );
 
     const handleSelect = (selectedId: string) => () => {
-        if (type === "single") {
+        if (type === 'single') {
             onChange?.([selectedId]);
             setShowList(false);
         }
 
-        if (type === "array") {
+        if (type === 'array') {
             onChange?.(uniq([...value, selectedId]));
         }
     };
 
     const items = useMemo(() => {
-        return sourceData[source].filter((item) => {
-            return value?.includes(item.id);
-        }).map((item) => item.id);
+        return sourceData[source]
+            .filter((item) => {
+                return value?.includes(item.id);
+            })
+            .map((item) => item.id);
     }, [source, sourceData, value]);
 
     return (
@@ -74,65 +80,80 @@ export const CardSelector = ({
                 <div className={s['label-text']}>{label}</div>
                 <div>{type}</div>
             </label>
-            {editable && <div className={s['search-container']}>
-                <input
-                    type={type}
-                    value={query}
-                    className={`${s.input} ${inputClassName}`}
-                    onChange={handleQueryChange}
-                    placeholder='Search'
-                    onFocus={() => setShowList(true)}
-                    // disabled={!editable}
-                />
-                <div><Magnifier /></div>
-            </div>}
-            {(editable && showList) && <div className={s['search-list-container']}>
-                <div className={s['search-list']}>
-                    <div className={s['search-list-header-container']}>
-                        <div>
-                            {list.length ? `Found ${list.length} items` : 'No items were found'}
-                        </div>
-                        <button
-                            onClick={() => setShowList(false)}
-                            className={s['search-list-header-close']}
-                        >
-                            <CircleXmark />
-                        </button>
-                    </div>
+            {editable && (
+                <div className={s['search-container']}>
+                    <input
+                        type={type}
+                        value={query}
+                        className={`${s.input} ${inputClassName}`}
+                        onChange={handleQueryChange}
+                        placeholder="Search"
+                        onFocus={() => setShowList(true)}
+                        // disabled={!editable}
+                    />
                     <div>
-                        {list.map((item) => {
-                            return <div
-                                key={item.id}
-                                onClick={handleSelect(item.id)}
-                                className={s['search-list-item']}
-                            >
-                                {item.name}
-                            </div>
-                        })}
+                        <Magnifier />
                     </div>
                 </div>
-            </div>}
-            {items.length ? <div className={s['selected-list-container']}>
-                {items.map((selectedId) => {
-                    const foundItem = sourceData[source].find((item) => item.id === selectedId);
-                    if (!foundItem) {
-                        return null;
-                    }
+            )}
+            {editable && showList && (
+                <div className={s['search-list-container']}>
+                    <div className={s['search-list']}>
+                        <div className={s['search-list-header-container']}>
+                            <div>
+                                {list.length ? `Found ${list.length} items` : 'No items were found'}
+                            </div>
+                            <button
+                                onClick={() => setShowList(false)}
+                                className={s['search-list-header-close']}
+                            >
+                                <CircleXmark />
+                            </button>
+                        </div>
+                        <div>
+                            {list.map((item) => {
+                                return (
+                                    <div
+                                        key={item.id}
+                                        onClick={handleSelect(item.id)}
+                                        className={s['search-list-item']}
+                                    >
+                                        {item.name}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
+            {items.length ? (
+                <div className={s['selected-list-container']}>
+                    {items.map((selectedId) => {
+                        const foundItem = sourceData[source].find((item) => item.id === selectedId);
+                        if (!foundItem) {
+                            return null;
+                        }
 
-                    const handleRemoveItem = (id: string) => () => {
-                        onChange?.(items.filter((item) => item !== id));
-                    };
+                        const handleRemoveItem = (id: string) => () => {
+                            onChange?.(items.filter((item) => item !== id));
+                        };
 
-                    return <div key={selectedId} className={s['selected-list-item']}>
-                        <div>{foundItem.name}</div>
-                        {editable &&<button
-                            onClick={handleRemoveItem(selectedId)}
-                            className={s['selected-list-item-delete']}
-                        >
-                            <TrashBin />
-                        </button>}
-                    </div>})}
-            </div> : null}
+                        return (
+                            <div key={selectedId} className={s['selected-list-item']}>
+                                <div>{foundItem.name}</div>
+                                {editable && (
+                                    <button
+                                        onClick={handleRemoveItem(selectedId)}
+                                        className={s['selected-list-item-delete']}
+                                    >
+                                        <TrashBin />
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            ) : null}
         </div>
-    )
-}
+    );
+};

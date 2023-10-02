@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 import {Box, Check, Pencil} from '@gravity-ui/icons';
 
-import { Product } from '../../../business/types';
-import { useSourceData } from '../../../hooks/useSourceData';
-import { CardField } from '../CardField/CardField';
+import {Product} from '../../../business/types';
+import {useSourceData} from '../../../hooks/useSourceData';
+import {CardField} from '../CardField/CardField';
 
 import styles from './ProductCard.module.css';
 
@@ -12,56 +12,64 @@ type ProductCardProps = Product;
 
 export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductCardProps) => {
     const [editable, setEditable] = useState(false);
-    const { sourceData, setSourceData } = useSourceData();
+    const {sourceData, setSourceData} = useSourceData();
 
-    const handleNameChange = editable ? (event: React.ChangeEvent<HTMLInputElement>) => {
-        const editableProduct = sourceData.products.find((p) => p.id === id);
-        if (!editableProduct) {
-            return;
-        }
+    const handleNameChange = editable
+        ? (event: React.ChangeEvent<HTMLInputElement>) => {
+              const editableProduct = sourceData.products.find((p) => p.id === id);
+              if (!editableProduct) {
+                  return;
+              }
 
-        editableProduct.name = event.target.value;
-        setSourceData({...sourceData});
-    } : undefined;
+              editableProduct.name = event.target.value;
+              setSourceData({...sourceData});
+          }
+        : undefined;
 
-    const handleCostChange = editable ? (event: React.ChangeEvent<HTMLInputElement>) => {
-        const editableProduct = sourceData.products.find((p) => p.id === id);
-        if (!editableProduct) {
-            return;
-        }
+    const handleCostChange = editable
+        ? (event: React.ChangeEvent<HTMLInputElement>) => {
+              const editableProduct = sourceData.products.find((p) => p.id === id);
+              if (!editableProduct) {
+                  return;
+              }
 
-        editableProduct.cost = Number(event.target.value || 0);
-        editableProduct.price = editableProduct.cost + editableProduct.profit;
-        setSourceData({...sourceData});
-    } : undefined;
+              editableProduct.cost = Number(event.target.value || 0);
+              editableProduct.price = editableProduct.cost + editableProduct.profit;
+              setSourceData({...sourceData});
+          }
+        : undefined;
 
-    const handleProfitChange = editable ? (event: React.ChangeEvent<HTMLInputElement>) => {
-        const editableProduct = sourceData.products.find((p) => p.id === id);
-        if (!editableProduct) {
-            return;
-        }
+    const handleProfitChange = editable
+        ? (event: React.ChangeEvent<HTMLInputElement>) => {
+              const editableProduct = sourceData.products.find((p) => p.id === id);
+              if (!editableProduct) {
+                  return;
+              }
 
-        editableProduct.profit = Number(event.target.value || 0);
-        editableProduct.price = editableProduct.cost + editableProduct.profit;
-        setSourceData({...sourceData});
-    } : undefined;
+              editableProduct.profit = Number(event.target.value || 0);
+              editableProduct.price = editableProduct.cost + editableProduct.profit;
+              setSourceData({...sourceData});
+          }
+        : undefined;
 
-    const handleFrequencyChange = editable ? (event: React.ChangeEvent<HTMLInputElement>) => {
-        const editableProduct = sourceData.products.find((p) => p.id === id);
-        if (!editableProduct) {
-            return;
-        }
+    const handleFrequencyChange = editable
+        ? (event: React.ChangeEvent<HTMLInputElement>) => {
+              const editableProduct = sourceData.products.find((p) => p.id === id);
+              if (!editableProduct) {
+                  return;
+              }
 
-        editableProduct.frequency = Number(event.target.value || 0);
-        setSourceData({...sourceData});
-    } : undefined;
+              editableProduct.frequency = Number(event.target.value || 0);
+              setSourceData({...sourceData});
+          }
+        : undefined;
 
     return (
-        <div
-            className={styles.container}
-        >
+        <div className={styles.container}>
             <div className={styles['header-container']}>
-                <div className={styles['icon-container']}><Box /></div>
+                <div className={styles['icon-container']}>
+                    <Box />
+                </div>
                 <div className={styles['input-container']}>
                     <input
                         type="text"
@@ -73,13 +81,13 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                 </div>
                 <button
                     className={styles['button-container']}
-                        onClick={() => setEditable(!editable)}
+                    onClick={() => setEditable(!editable)}
                 >
                     {editable ? <Check /> : <Pencil />}
                 </button>
             </div>
             <div>
-                 <input
+                <input
                     type="text"
                     value={id}
                     className={styles.input}

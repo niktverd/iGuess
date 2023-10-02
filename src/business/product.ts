@@ -1,5 +1,5 @@
 import {Report} from './report';
-import { SourceData } from './types';
+import {SourceData} from './types';
 import {PlanName} from './types/plans';
 import {wrapper} from './utils';
 
@@ -15,7 +15,7 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
         if (!plan) {
             return;
         }
-        
+
         /* eslint-disable no-param-reassign */
         // report[key].profitByProduct = initializeParameterByProduct(0);
         // report[key].salesCountByProduct = initializeParameterByProduct(0);
@@ -52,6 +52,5 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
         report.byPlan[key].revenue = revenue;
         report.byPlan[key].cost = cost;
         /* eslint-enable no-param-reassign */
-
     });
 };

@@ -1,5 +1,5 @@
 import {Report} from './report';
-import { SourceData } from './types';
+import {SourceData} from './types';
 import {PlanName} from './types/plans';
 import {wrapper} from './utils';
 

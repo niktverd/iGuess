@@ -2,10 +2,11 @@
 import {updateProductSales} from './product';
 // import {summary} from './summary';
 // import {calculateTotal} from './total';
-import { 
+import {
     ProductName,
-    // ProductName, 
-    SourceData } from './types';
+    // ProductName,
+    SourceData,
+} from './types';
 // import { ProductName } from './types';
 import {PlanName} from './types/plans';
 import {calculateCosts, correctUsers, updateUsers} from './user';
@@ -17,13 +18,13 @@ export type ProductReport = {
     cost: number;
     salesCount: number;
     balance: number;
-}
+};
 
 export type PlanReport = ProductReport & {
     users: number;
     usersDiff: number;
     marketingCosts: number;
-    
+
     // salesCountByProduct: Record<ProductName, number>;
     // profitByProduct: Record<ProductName, number>;
     // revenueByProduct: Record<ProductName, number>;
@@ -49,7 +50,6 @@ export type Report = {
 //         return acc;
 //     }, {} as Record<ProductName, number>);
 // };
-
 
 export const initialProductReport: ProductReport = {
     profit: 0,
@@ -102,7 +102,7 @@ export type GetReportResponse = {
     month: number;
     report: Report;
     flat: Record<string, string | number>;
-}
+};
 
 export const getReport = (source: SourceData): GetReportResponse[] => {
     const report = getInitialReport(source);
