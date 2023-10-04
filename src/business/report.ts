@@ -1,7 +1,7 @@
 // import {calculateTeam} from './capex';
 import {updateProductSales} from './product';
-// import {summary} from './summary';
-// import {calculateTotal} from './total';
+import {summary} from './summary';
+import {calculateTotal} from './total';
 import {
     ProductName,
     // ProductName,
@@ -113,9 +113,9 @@ export const getReport = (source: SourceData): GetReportResponse[] => {
         correctUsers({report, month, source});
         calculateCosts({report, month, source});
         updateProductSales({report, month, source});
-        // calculateTotal({report, source});
+        calculateTotal({report, source});
         // calculateTeam({report, source});
-        // summary({report, source});
+        summary({report, source});
         periods.push(JSON.parse(JSON.stringify({month, report, flat: flattenObject(report)})));
     }
 

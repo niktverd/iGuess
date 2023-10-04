@@ -156,6 +156,7 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                         <div className={styles.kind}>
                             <button>By Plan</button>
                             <button>By Product</button>
+                            <button>Total</button>
                         </div>
                         <div className={styles['chars-layout']}>
                             <div>
@@ -249,20 +250,22 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                             </div>
                         </div>
 
-                        {/* <LineChart
-                        width={800}
-                        height={400}
-                        data={flatData}
-                        margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                        >
-                        <XAxis dataKey="month" />
-                        <Tooltip />
-                        <CartesianGrid stroke="#f5f5f5" />
-                        <Line type="monotone" dataKey="byPlan.f869c214-4d56-44b3-ae0b-b81e3110758a.cost" stroke="#ff7300" yAxisId={0} />
-                        <Line type="monotone" dataKey="byPlan.f869c214-4d56-44b3-ae0b-b81e3110758a.profit" stroke="#387908" yAxisId={0} />
-                        <Line type="monotone" dataKey="byPlan.f869c214-4d56-44b3-ae0b-b81e3110758a.revenue" stroke="#837908" yAxisId={0} />
-                        <Line type="monotone" dataKey="byPlan.f869c214-4d56-44b3-ae0b-b81e3110758a.salesCount" stroke="#837908" yAxisId={1} />
-                    </LineChart> */}
+                        <LineChart
+                            width={800}
+                            height={400}
+                            data={flatData}
+                            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                            >
+                            <XAxis dataKey="month" />
+                            <Tooltip />
+                            <CartesianGrid stroke="#f5f5f5" />
+                            <Line type="monotone" dataKey="total.cost" stroke="#ff7300" yAxisId={0} />
+                            <Line type="monotone" dataKey="total.profit" stroke="#387908" yAxisId={0} />
+                            <Line type="monotone" dataKey="total.revenue" stroke="#837908" yAxisId={0} />
+                            <Line type="monotone" dataKey="total.salesCount" stroke="#837908" yAxisId={1} />
+                            <Line type="monotone" dataKey="total.marketingCosts" stroke="#837908" yAxisId={0} />
+                            <Line type="monotone" dataKey="total.balance" stroke="#ff0000" yAxisId={2} />
+                        </LineChart>
                     </div>
                 ) : null}
                 {section === Section.Period ? <GuessPeriodForm /> : null}

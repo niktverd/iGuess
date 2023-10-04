@@ -13,7 +13,7 @@ type CalculateTotalArgs = {
 export const calculateTotal = ({report, source: _}: CalculateTotalArgs) => {
     wrapper(report, (key: PlanName) => {
         const reports = omit(report, 'team', 'total');
-        const planReport = reports[key];
+        const planReport = reports.byPlan[key];
         if (!planReport) {
             return;
         }
@@ -23,10 +23,10 @@ export const calculateTotal = ({report, source: _}: CalculateTotalArgs) => {
         reportKeys.forEach((reportKey) => {
             if (
                 typeof report.total[reportKey] === 'number' &&
-                typeof report[key][reportKey] === 'number'
+                typeof report.byPlan[key][reportKey] === 'number'
             ) {
                 // eslint-disable-next-line no-param-reassign
-                report.total[reportKey] += report[key][reportKey];
+                report.total[reportKey] += report.byPlan[key][reportKey];
             }
         });
 
