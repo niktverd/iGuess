@@ -34,20 +34,20 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
               }
 
               editableProduct.cost = Number(event.target.value || 0);
-              editableProduct.price = editableProduct.cost + editableProduct.profit;
+              editableProduct.profit = editableProduct.price - editableProduct.cost;
               setSourceData({...sourceData});
           }
         : undefined;
 
-    const handleProfitChange = editable
+    const handleRevenueChange = editable
         ? (event: React.ChangeEvent<HTMLInputElement>) => {
               const editableProduct = sourceData.products.find((p) => p.id === id);
               if (!editableProduct) {
                   return;
               }
 
-              editableProduct.profit = Number(event.target.value || 0);
-              editableProduct.price = editableProduct.cost + editableProduct.profit;
+              editableProduct.price = Number(event.target.value || 0);
+              editableProduct.profit = editableProduct.price - editableProduct.cost;
               setSourceData({...sourceData});
           }
         : undefined;
@@ -112,8 +112,8 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                     value={profit}
                     type="number"
                     inputClassName={styles.input}
-                    editable={editable}
-                    onChange={handleProfitChange}
+                    editable={false}
+                    // onChange={handleProfitChange}
                 />
             </div>
             <div>
@@ -122,7 +122,8 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                     value={price}
                     type="number"
                     inputClassName={styles.input}
-                    editable={false}
+                    editable={editable}
+                    onChange={handleRevenueChange}
                 />
             </div>
             <div>
