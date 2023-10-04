@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
-import { uniq } from 'lodash';
+import {uniq} from 'lodash';
 import {CartesianGrid, Line, LineChart, Tooltip, XAxis} from 'recharts';
 
-import { useSourceData } from '../../../hooks/useSourceData';
-import { ParameterControls } from '../../ParameterControls/ParameterControls';
-import { randomHex } from '../../utils/common';
-import { CustomTooltip } from '../CustomTooltip/CustomTooltip';
+import {useSourceData} from '../../../hooks/useSourceData';
+import {ParameterControls} from '../../ParameterControls/ParameterControls';
+import {randomHex} from '../../utils/common';
+import {CustomTooltip} from '../CustomTooltip/CustomTooltip';
 
 import s from './Chart.module.css';
 
@@ -15,10 +15,7 @@ type ChartProps = {
     flatData: Record<string, number>[];
 };
 
-export const Chart = ({
-    kind,
-    flatData,
-}: ChartProps) => {
+export const Chart = ({kind, flatData}: ChartProps) => {
     const {sourceData} = useSourceData();
 
     const [items, setItems] = useState<string[]>([]);
@@ -51,7 +48,6 @@ export const Chart = ({
         setAxisByParameter({...axisByParameter, [paramName]: value});
     };
 
-
     const dataKeys = [];
     for (const param of parameters) {
         for (const item of items) {
@@ -75,11 +71,11 @@ export const Chart = ({
                     width={800}
                     height={600}
                     data={flatData}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                    margin={{top: 5, right: 20, left: 10, bottom: 5}}
                 >
                     <XAxis dataKey="month" />
                     <Tooltip
-                        contentStyle={{ backgroundColor: 'black' }}
+                        contentStyle={{backgroundColor: 'black'}}
                         content={<CustomTooltip />}
                     />
                     <CartesianGrid stroke="#050505aa" />
@@ -92,7 +88,7 @@ export const Chart = ({
                                 key={dk}
                                 type="monotone"
                                 dataKey={dk}
-                                stroke={randomHex({ min: 150 })}
+                                stroke={randomHex({min: 150})}
                                 yAxisId={axisId || 0}
                             />
                         );

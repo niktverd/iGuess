@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Plan, Product } from '../../../business/types';
-import { useSourceData } from '../../../hooks/useSourceData';
+import {Plan, Product} from '../../../business/types';
+import {useSourceData} from '../../../hooks/useSourceData';
 
 // import s from './CustomTooltip.module.css';
 

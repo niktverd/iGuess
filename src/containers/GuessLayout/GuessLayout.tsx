@@ -5,7 +5,7 @@ import {CartesianGrid, Line, LineChart, Tooltip, XAxis} from 'recharts';
 import {GetReportResponse, getReport} from '../../business/report';
 // import {Plan, Product} from '../../business/types';
 import {NavButton} from '../../components/NavButton/NavButton';
-import { Chart } from '../../components/guess/Chart/Chart';
+import {Chart} from '../../components/guess/Chart/Chart';
 import {useSourceData} from '../../hooks/useSourceData';
 import {GuessPeriodForm} from '../guess/GuessPeriodForm/GuessPeriodForm';
 import {GuessPlanList} from '../guess/GuessPlanList/GuessPlanList';
@@ -25,7 +25,7 @@ enum Section {
 export const GuessLayout = (_props: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
     const [kind] = useState<string>('byPlan');
-    
+
     const [data, setData] = useState<GetReportResponse[] | null>(null);
     const [section, setSection] = useState<Section>(Section.Overview);
 
@@ -61,7 +61,7 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                             <button>By Product</button>
                             <button>Total</button>
                         </div>
-                        <Chart 
+                        <Chart
                             kind={kind}
                             flatData={flatData}
                             // reports={da}
