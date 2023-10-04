@@ -68,7 +68,7 @@ export const Chart = ({kind, flatData}: ChartProps) => {
             </div>
             <div>
                 <LineChart
-                    width={800}
+                    width={1000}
                     height={600}
                     data={flatData}
                     margin={{top: 5, right: 20, left: 10, bottom: 5}}

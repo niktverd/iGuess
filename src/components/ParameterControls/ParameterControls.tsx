@@ -19,7 +19,7 @@ export const ParameterControls = ({
 }: ParameterControlsProps) => {
     return (
         <div className={styles.container}>
-            <button onClick={onSelect(paramKey)}>{text}</button>
+            <button className={styles.button} onClick={onSelect(paramKey)}>{text}</button>
             <div className={styles.axis}>
                 <button onClick={onSelectAxis(paramKey, 1)}>+</button>
                 {axis}
