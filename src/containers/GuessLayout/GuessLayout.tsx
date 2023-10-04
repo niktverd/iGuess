@@ -254,17 +254,47 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                             width={800}
                             height={400}
                             data={flatData}
-                            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                            >
+                            margin={{top: 5, right: 20, left: 10, bottom: 5}}
+                        >
                             <XAxis dataKey="month" />
                             <Tooltip />
                             <CartesianGrid stroke="#f5f5f5" />
-                            <Line type="monotone" dataKey="total.cost" stroke="#ff7300" yAxisId={0} />
-                            <Line type="monotone" dataKey="total.profit" stroke="#387908" yAxisId={0} />
-                            <Line type="monotone" dataKey="total.revenue" stroke="#837908" yAxisId={0} />
-                            <Line type="monotone" dataKey="total.salesCount" stroke="#837908" yAxisId={1} />
-                            <Line type="monotone" dataKey="total.marketingCosts" stroke="#837908" yAxisId={0} />
-                            <Line type="monotone" dataKey="total.balance" stroke="#ff0000" yAxisId={2} />
+                            <Line
+                                type="monotone"
+                                dataKey="total.cost"
+                                stroke="#ff7300"
+                                yAxisId={0}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total.profit"
+                                stroke="#387908"
+                                yAxisId={0}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total.revenue"
+                                stroke="#837908"
+                                yAxisId={0}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total.salesCount"
+                                stroke="#837908"
+                                yAxisId={1}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total.marketingCosts"
+                                stroke="#837908"
+                                yAxisId={0}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total.balance"
+                                stroke="#ff0000"
+                                yAxisId={2}
+                            />
                         </LineChart>
                     </div>
                 ) : null}
