@@ -1,40 +1,47 @@
 import React, {useState} from 'react';
 
-import {uniq} from 'lodash';
+import {ChartMixed, Check, Pencil} from '@gravity-ui/icons';
+import _, {flatten, omit, reverse, uniq, zip} from 'lodash';
 import {CartesianGrid, Line, LineChart, Tooltip, XAxis} from 'recharts';
 
-import {useSourceData} from '../../../hooks/useSourceData';
+import {flattenObject} from '../../../business/utils';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
 import {randomHex} from '../../utils/common';
 import {CustomTooltip} from '../CustomTooltip/CustomTooltip';
 
 import s from './Chart.module.css';
 
+type ReportType = {[key: string]: number | ReportType};
+
 type ChartProps = {
-    kind: string;
-    flatData: Record<string, number>[];
+    reportData: ReportType[];
 };
 
-export const Chart = ({kind, flatData}: ChartProps) => {
-    const {sourceData} = useSourceData();
-
-    const [items, setItems] = useState<string[]>([]);
-    const [parameters, setParameters] = useState<string[]>([]);
+export const Chart = ({reportData}: ChartProps) => {
+    const [title, setTitle] = useState('Chart #1');
+    const [editable, setEditable] = useState(false);
     const [axisByParameter, setAxisByParameter] = useState<Record<string, number>>({});
+    const [options, setOptions] = useState<Record<string, string[]>>({});
 
-    const handleReportSelection = (planName: string) => () => {
-        if (items.includes(planName)) {
-            setItems(items.filter((item) => item !== planName));
-        } else {
-            setItems([...items, planName]);
+    const handleTitleChange = editable
+        ? (event: React.ChangeEvent<HTMLInputElement>) => {
+              setTitle(event.target.value);
+          }
+        : undefined;
+
+    const handleSelectorSelection = (planName: string, index?: number) => () => {
+        if (!index && index !== 0) {
+            return;
         }
-    };
 
-    const handleParameterSelection = (paramName: string) => () => {
-        if (parameters.includes(paramName)) {
-            setParameters(parameters.filter((param) => param !== paramName));
+        if (Array.isArray(options[index])) {
+            if (options[index].includes(planName)) {
+                setOptions({...options, [index]: options[index].filter((opt) => opt !== planName)});
+            } else {
+                setOptions({...options, [index]: uniq([...options[index], planName])});
+            }
         } else {
-            setParameters([...parameters, paramName]);
+            setOptions({...options, [index]: [planName]});
         }
     };
 
@@ -49,22 +56,58 @@ export const Chart = ({kind, flatData}: ChartProps) => {
     };
 
     const dataKeys = [];
-    for (const param of parameters) {
-        for (const item of items) {
-            dataKeys.push(`${kind}.${item}.${param}`);
+    const optionsEntries = (Object.entries(options) as unknown) as [string, string[]];
+    for (const [__, optionArray] of optionsEntries) {
+        const _dataKeys: string[] = [...dataKeys];
+        for (const opt of optionArray) {
+            for (const dk of _dataKeys) {
+                dataKeys.push(`${dk}.${opt}`);
+            }
+
+            dataKeys.push(opt);
         }
     }
 
+    const flatData = reportData.map((item) => flattenObject(omit(item, 'month')));
+    const aok = flatData.map((item) => Object.keys(item));
+    const ufaok = uniq(flatten(aok));
+    const aor = ufaok.map((item) => item.split('.'));
+    let maxLength = 3;
+    aor.forEach((item) => {
+        if (maxLength < item.length) {
+            maxLength = item.length;
+        }
+    });
+    const even = aor.map((item) => {
+        while (item.length < maxLength) {
+            item.unshift('');
+        }
+
+        return item;
+    });
+    const transposedFull = zip.apply(_, even) as string[][];
+    const transposed = transposedFull.map((item) => uniq(item));
+    const [params, ...restReversed] = reverse(transposed);
+    const selectors = reverse(restReversed);
+
     return (
         <div className={s['chars-layout']}>
-            <div>
-                {sourceData.plans.map((p) => {
-                    return (
-                        <button key={p.id} onClick={handleReportSelection(p.id)}>
-                            {p.name}
-                        </button>
-                    );
-                })}
+            <div className={s.header}>
+                <div className={s['icon-container']}>
+                    <ChartMixed width={36} height={36} />
+                </div>
+                <div className={s['input-container']}>
+                    <input
+                        type="text"
+                        value={title}
+                        className={s.input}
+                        onChange={handleTitleChange}
+                        disabled={!editable}
+                    />
+                </div>
+                <button className={s['button-container']} onClick={() => setEditable(!editable)}>
+                    {editable ? <Check /> : <Pencil />}
+                </button>
             </div>
             <div>
                 <LineChart
@@ -96,55 +139,47 @@ export const Chart = ({kind, flatData}: ChartProps) => {
                 </LineChart>
             </div>
             <div>
-                <ParameterControls
-                    paramKey="profit"
-                    axis={axisByParameter.profit}
-                    text="Profit"
-                    onSelect={handleParameterSelection}
-                    onSelectAxis={handleParameterAxisSelection}
-                />
-                <ParameterControls
-                    paramKey="cost"
-                    axis={axisByParameter.cost}
-                    text="Cost"
-                    onSelect={handleParameterSelection}
-                    onSelectAxis={handleParameterAxisSelection}
-                />
-                <ParameterControls
-                    paramKey="revenue"
-                    axis={axisByParameter.revenue}
-                    text="Revenue"
-                    onSelect={handleParameterSelection}
-                    onSelectAxis={handleParameterAxisSelection}
-                />
-                <ParameterControls
-                    paramKey="marketingCosts"
-                    axis={axisByParameter.marketingCosts}
-                    text="marketingCosts"
-                    onSelect={handleParameterSelection}
-                    onSelectAxis={handleParameterAxisSelection}
-                />
-                <ParameterControls
-                    paramKey="users"
-                    axis={axisByParameter.users}
-                    text="users"
-                    onSelect={handleParameterSelection}
-                    onSelectAxis={handleParameterAxisSelection}
-                />
-                <ParameterControls
-                    paramKey="usersDiff"
-                    axis={axisByParameter.usersDiff}
-                    text="usersDiff"
-                    onSelect={handleParameterSelection}
-                    onSelectAxis={handleParameterAxisSelection}
-                />
-                <ParameterControls
-                    paramKey="salesCount"
-                    axis={axisByParameter.salesCount}
-                    text="salesCount"
-                    onSelect={handleParameterSelection}
-                    onSelectAxis={handleParameterAxisSelection}
-                />
+                {editable
+                    ? selectors.map((group, index) => {
+                          return (
+                              <div key={index} className={s['controls-group']}>
+                                  {group.map((pc) => {
+                                      if (!pc) {
+                                          return null;
+                                      }
+
+                                      return (
+                                          <ParameterControls
+                                              key={pc}
+                                              paramKey={pc}
+                                              axis={axisByParameter[pc]}
+                                              text={pc}
+                                              onSelect={handleSelectorSelection}
+                                              index={index}
+                                              selected={options[index]?.includes(pc)}
+                                          />
+                                      );
+                                  })}
+                              </div>
+                          );
+                      })
+                    : null}
+            </div>
+            <div className={s['controls-group']}>
+                {editable
+                    ? params.map((pc) => (
+                          <ParameterControls
+                              key={pc}
+                              paramKey={pc}
+                              axis={axisByParameter[pc]}
+                              text={pc}
+                              index={selectors.length}
+                              onSelect={handleSelectorSelection}
+                              onSelectAxis={handleParameterAxisSelection}
+                              selected={options[selectors.length]?.includes(pc)}
+                          />
+                      ))
+                    : null}
             </div>
         </div>
     );

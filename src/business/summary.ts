@@ -10,8 +10,6 @@ type SummaryArgs = {
 export const summary = ({report}: SummaryArgs) => {
     const costs = report.total.marketingCosts + report.total.cost;
 
-    console.log(costs);
-
     // eslint-disable-next-line no-param-reassign
     report.total.balance = report.total.profit - costs;
 };

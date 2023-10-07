@@ -6,8 +6,10 @@ type ParameterControlsProps = {
     paramKey: string;
     text: string;
     axis: number;
-    onSelect: (key: string) => () => void;
-    onSelectAxis: (key: string, step: number) => () => void;
+    index: number;
+    onSelect: (key: string, index?: number) => () => void;
+    onSelectAxis?: (key: string, step: number) => () => void;
+    selected?: boolean;
 };
 
 export const ParameterControls = ({
@@ -16,17 +18,29 @@ export const ParameterControls = ({
     paramKey,
     onSelect,
     onSelectAxis,
+    selected = false,
+    index = 0,
 }: ParameterControlsProps) => {
     return (
-        <div className={styles.container}>
-            <button className={styles.button} onClick={onSelect(paramKey)}>
+        <div className={`${styles.container} ${selected ? styles['container-selected'] : ''}`}>
+            <button className={styles.button} onClick={onSelect(paramKey, index)}>
+                <div className={`${styles.circle} ${selected ? styles['circles-selected'] : ''}`} />
                 {text}
             </button>
-            <div className={styles.axis}>
-                <button onClick={onSelectAxis(paramKey, 1)}>+</button>
-                {axis}
-                <button onClick={onSelectAxis(paramKey, -1)}>-</button>
-            </div>
+            {onSelectAxis ? (
+                <div className={styles.axis}>
+                    <button className={styles['axis-selector']} onClick={onSelectAxis(paramKey, 1)}>
+                        +
+                    </button>
+                    <span className={styles['axis-selector-label']}>{axis}</span>
+                    <button
+                        className={styles['axis-selector']}
+                        onClick={onSelectAxis(paramKey, -1)}
+                    >
+                        -
+                    </button>
+                </div>
+            ) : null}
         </div>
     );
 };

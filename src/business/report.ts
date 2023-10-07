@@ -2,15 +2,9 @@
 import {updateProductSales} from './product';
 import {summary} from './summary';
 import {calculateTotal} from './total';
-import {
-    ProductName,
-    // ProductName,
-    SourceData,
-} from './types';
-// import { ProductName } from './types';
+import {ProductName, SourceData} from './types';
 import {PlanName} from './types/plans';
 import {calculateCosts, correctUsers, updateUsers} from './user';
-import {flattenObject} from './utils';
 
 export type ProductReport = {
     profit: number;
@@ -98,15 +92,10 @@ export const getInitialReport = (source: SourceData): Report => {
     };
 };
 
-export type GetReportResponse = {
-    month: number;
-    report: Report;
-    flat: Record<string, string | number>;
-};
+export type GetReportResponse = Report;
 
 export const getReport = (source: SourceData): GetReportResponse[] => {
     const report = getInitialReport(source);
-    // console.log('reportreport', JSON.stringify(report.byPlan, null, 3));
     const periods = [];
     for (let month = 0; month < source.period; month++) {
         updateUsers({report, month, source});
@@ -116,7 +105,7 @@ export const getReport = (source: SourceData): GetReportResponse[] => {
         calculateTotal({report, source});
         // calculateTeam({report, source});
         summary({report, source});
-        periods.push(JSON.parse(JSON.stringify({month, report, flat: flattenObject(report)})));
+        periods.push(JSON.parse(JSON.stringify({...report, month})));
     }
 
     return periods;
