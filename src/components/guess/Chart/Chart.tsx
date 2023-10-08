@@ -49,11 +49,11 @@ export const Chart = ({
         : undefined;
 
     const handleDescriptionChange = editable
-        // React.FormEvent<HTMLDivElement>
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ? (event: any) => {
-            setDescription(event.target.innerTex || '-');
-            onChangeDescription?.(event.target.innerText || '-');
+        ? // React.FormEvent<HTMLDivElement>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (event: any) => {
+              setDescription(event.target.innerTex || '-');
+              onChangeDescription?.(event.target.innerText || '-');
           }
         : undefined;
 
@@ -136,7 +136,7 @@ export const Chart = ({
                 <div className={s['input-container']}>
                     <input
                         type="text"
-                        value={titleExternal ||  title}
+                        value={titleExternal || title}
                         className={s.input}
                         onChange={handleTitleChange}
                         disabled={!editable}

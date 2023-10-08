@@ -32,7 +32,9 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
 
     const [data, setData] = useState<GetReportResponse[] | null>(null);
-    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>([{title: 'Chart#1', description: '-', options: {}}]);
+    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>([
+        {title: 'Chart#1', description: '-', options: {}},
+    ]);
     const [section, setSection] = useState<Section>(Section.Overview);
 
     useEffect(() => {
