@@ -20,15 +20,22 @@ type ChartProps = {
     viewConfig?: Record<string, string[]>;
     saveViewConfig?: (config: Record<string, string[]>) => void;
     handleDeleteChart?: () => void;
+    onChangeTitle?: (value: string) => void;
+    onChangeDescription?: (value: string) => void;
 };
 
 export const Chart = ({
+    title: titleExternal,
+    description: descriptionExternal,
     reportData,
     viewConfig = {},
     saveViewConfig,
     handleDeleteChart,
+    onChangeTitle,
+    onChangeDescription,
 }: ChartProps) => {
     const [title, setTitle] = useState('Chart #1');
+    const [description, setDescription] = useState('-');
     const [graphHeight] = useState(300);
     const [editable, setEditable] = useState(false);
     const [axisByParameter, setAxisByParameter] = useState<Record<string, number>>({});
@@ -37,6 +44,16 @@ export const Chart = ({
     const handleTitleChange = editable
         ? (event: React.ChangeEvent<HTMLInputElement>) => {
               setTitle(event.target.value);
+              onChangeTitle?.(event.target.value);
+          }
+        : undefined;
+
+    const handleDescriptionChange = editable
+        // React.FormEvent<HTMLDivElement>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ? (event: any) => {
+            setDescription(event.target.innerTex || '-');
+            onChangeDescription?.(event.target.innerText || '-');
           }
         : undefined;
 
@@ -119,7 +136,7 @@ export const Chart = ({
                 <div className={s['input-container']}>
                     <input
                         type="text"
-                        value={title}
+                        value={titleExternal ||  title}
                         className={s.input}
                         onChange={handleTitleChange}
                         disabled={!editable}
@@ -133,6 +150,15 @@ export const Chart = ({
                 <button className={s['button-container']} onClick={() => setEditable(!editable)}>
                     {editable ? <Check /> : <Pencil />}
                 </button>
+            </div>
+            <div className={s['input-container']}>
+                <div
+                    className={s.textarea}
+                    onInput={handleDescriptionChange}
+                    contentEditable={editable}
+                >
+                    {descriptionExternal || description}
+                </div>
             </div>
             <ResponsiveContainer width="100%" height={graphHeight}>
                 <LineChart

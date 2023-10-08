@@ -12,6 +12,7 @@
     margin-bottom: 24px;
 }
 
+.textarea,
 .input {
     border: none;
     background: none;
@@ -20,6 +21,11 @@
     font-size: 220%;
     padding: 0px 10px;
     width: 100%;
+}
+
+.textarea {
+    font-size: 100%;
+    margin-bottom: 16px;
 }
 
 .input-container {

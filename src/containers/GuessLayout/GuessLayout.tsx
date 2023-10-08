@@ -32,7 +32,7 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
 
     const [data, setData] = useState<GetReportResponse[] | null>(null);
-    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>([{title: 'Chart#1', options: {}}]);
+    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>([{title: 'Chart#1', description: '-', options: {}}]);
     const [section, setSection] = useState<Section>(Section.Overview);
 
     useEffect(() => {
@@ -64,6 +64,18 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
         setViewConfigs(newConfig);
     };
 
+    const onChangeTitle = (index: number) => (value: string) => {
+        const newConfig = JSON.parse(JSON.stringify(viewConfigs));
+        newConfig[index].title = value;
+        setViewConfigs(newConfig);
+    };
+
+    const onChangeDescription = (index: number) => (value: string) => {
+        const newConfig = JSON.parse(JSON.stringify(viewConfigs));
+        newConfig[index].description = value;
+        setViewConfigs(newConfig);
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles['main-navigation']}>
@@ -84,7 +96,7 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                             <button>By Product</button>
                             <button>Total</button>
                         </div> */}
-                        {viewConfigs.map((_config, index) => {
+                        {viewConfigs.map((config, index) => {
                             const getConfig = memoize((vc: ViewConfig[], i) => {
                                 return vc[i].options;
                             });
@@ -93,6 +105,10 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                                 <Chart
                                     key={index}
                                     reportData={data}
+                                    title={config.title}
+                                    description={config.description}
+                                    onChangeTitle={onChangeTitle(index)}
+                                    onChangeDescription={onChangeDescription(index)}
                                     saveViewConfig={saveViewConfig(index)}
                                     viewConfig={getConfig(viewConfigs, index)}
                                     handleDeleteChart={handleDeleteChart(index)}
