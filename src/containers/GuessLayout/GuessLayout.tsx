@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+
+import {memoize} from 'lodash';
 
 import {GetReportResponse, getReport} from '../../business/report';
 import {NavButton} from '../../components/NavButton/NavButton';
@@ -19,10 +21,17 @@ enum Section {
     Products = 'products',
 }
 
+type ViewConfig = {
+    title: string;
+    description?: string;
+    options: Record<string, string[]>;
+};
+
 export const GuessLayout = (_props: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
 
     const [data, setData] = useState<GetReportResponse[] | null>(null);
+    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>([{title: 'Chart#1', options: {}}]);
     const [section, setSection] = useState<Section>(Section.Overview);
 
     useEffect(() => {
@@ -33,6 +42,26 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
         // eslint-disable-next-line no-console
         setData(getReport(sourceData));
     }, [section, sourceData]);
+
+    const saveViewConfig = useCallback(
+        (index: number) =>
+            memoize((config: Record<string, string[]>) => {
+                const newConfig = JSON.parse(JSON.stringify(viewConfigs));
+                newConfig[index].options = JSON.parse(JSON.stringify(config));
+                setViewConfigs(newConfig);
+            }),
+        [viewConfigs],
+    );
+
+    const handleAddChart = () => {
+        setViewConfigs([...viewConfigs, {title: `Chart#${viewConfigs.length + 1}`, options: {}}]);
+    };
+
+    const handleDeleteChart = (index: number) => () => {
+        const newConfig = JSON.parse(JSON.stringify(viewConfigs));
+        newConfig.splice(index, 1);
+        setViewConfigs(newConfig);
+    };
 
     return (
         <div className={styles.container}>
@@ -45,7 +74,7 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
             <div className={styles['section']}>
                 {section === Section.Overview && data ? (
                     <div>
-                        <div className={styles.view}>
+                        {/* <div className={styles.view}>
                             <button>Chart</button>
                             <button>Table</button>
                         </div>
@@ -53,8 +82,25 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                             <button>By Plan</button>
                             <button>By Product</button>
                             <button>Total</button>
+                        </div> */}
+                        {viewConfigs.map((_config, index) => {
+                            const getConfig = memoize((vc: ViewConfig[], i) => {
+                                return vc[i].options;
+                            });
+
+                            return (
+                                <Chart
+                                    key={index}
+                                    reportData={data}
+                                    saveViewConfig={saveViewConfig(index)}
+                                    viewConfig={getConfig(viewConfigs, index)}
+                                    handleDeleteChart={handleDeleteChart(index)}
+                                />
+                            );
+                        })}
+                        <div>
+                            <button onClick={handleAddChart}>+</button>
                         </div>
-                        <Chart reportData={data} />
                     </div>
                 ) : null}
                 {section === Section.Period ? <GuessPeriodForm /> : null}

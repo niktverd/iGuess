@@ -11,5 +11,5 @@ export const summary = ({report}: SummaryArgs) => {
     const costs = report.total.marketingCosts + report.total.cost;
 
     // eslint-disable-next-line no-param-reassign
-    report.total.balance = report.total.profit - costs;
+    report.total.balance = report.total.revenue - costs;
 };

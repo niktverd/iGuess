@@ -11,6 +11,12 @@ type CalculateTotalArgs = {
 };
 
 export const calculateTotal = ({report, source: _}: CalculateTotalArgs) => {
+    const repKeys = Object.keys(report.total);
+    for (const rk of repKeys) {
+        // eslint-disable-next-line no-param-reassign
+        report.total[rk] = 0;
+    }
+
     wrapper(report, (key: PlanName) => {
         const reports = omit(report, 'team', 'total');
         const planReport = reports.byPlan[key];

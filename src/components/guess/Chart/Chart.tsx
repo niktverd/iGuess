@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 
-import {ChartMixed, Check, Pencil} from '@gravity-ui/icons';
+import {ChartMixed, Check, Pencil, TrashBin} from '@gravity-ui/icons';
 import _, {flatten, omit, reverse, uniq, zip} from 'lodash';
-import {CartesianGrid, Line, LineChart, Tooltip, XAxis} from 'recharts';
+import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis} from 'recharts';
 
 import {flattenObject} from '../../../business/utils';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
@@ -14,14 +14,25 @@ import s from './Chart.module.css';
 type ReportType = {[key: string]: number | ReportType};
 
 type ChartProps = {
+    title?: string;
+    description?: string;
     reportData: ReportType[];
+    viewConfig?: Record<string, string[]>;
+    saveViewConfig?: (config: Record<string, string[]>) => void;
+    handleDeleteChart?: () => void;
 };
 
-export const Chart = ({reportData}: ChartProps) => {
+export const Chart = ({
+    reportData,
+    viewConfig = {},
+    saveViewConfig,
+    handleDeleteChart,
+}: ChartProps) => {
     const [title, setTitle] = useState('Chart #1');
+    const [graphHeight] = useState(300);
     const [editable, setEditable] = useState(false);
     const [axisByParameter, setAxisByParameter] = useState<Record<string, number>>({});
-    const [options, setOptions] = useState<Record<string, string[]>>({});
+    const [options, setOptions] = useState<Record<string, string[]>>(viewConfig);
 
     const handleTitleChange = editable
         ? (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,12 +47,21 @@ export const Chart = ({reportData}: ChartProps) => {
 
         if (Array.isArray(options[index])) {
             if (options[index].includes(planName)) {
-                setOptions({...options, [index]: options[index].filter((opt) => opt !== planName)});
+                const newOption = {
+                    ...options,
+                    [index]: options[index].filter((opt) => opt !== planName),
+                };
+                setOptions(newOption);
+                saveViewConfig?.(newOption);
             } else {
-                setOptions({...options, [index]: uniq([...options[index], planName])});
+                const newOption = {...options, [index]: uniq([...options[index], planName])};
+                setOptions(newOption);
+                saveViewConfig?.(newOption);
             }
         } else {
-            setOptions({...options, [index]: [planName]});
+            const newOption = {...options, [index]: [planName]};
+            setOptions(newOption);
+            saveViewConfig?.(newOption);
         }
     };
 
@@ -105,11 +125,16 @@ export const Chart = ({reportData}: ChartProps) => {
                         disabled={!editable}
                     />
                 </div>
+                {editable && handleDeleteChart ? (
+                    <button className={s['button-container']} onClick={handleDeleteChart}>
+                        <TrashBin />
+                    </button>
+                ) : null}
                 <button className={s['button-container']} onClick={() => setEditable(!editable)}>
                     {editable ? <Check /> : <Pencil />}
                 </button>
             </div>
-            <div>
+            <ResponsiveContainer width="100%" height={graphHeight}>
                 <LineChart
                     width={1000}
                     height={600}
@@ -137,7 +162,7 @@ export const Chart = ({reportData}: ChartProps) => {
                         );
                     })}
                 </LineChart>
-            </div>
+            </ResponsiveContainer>
             <div>
                 {editable
                     ? selectors.map((group, index) => {
