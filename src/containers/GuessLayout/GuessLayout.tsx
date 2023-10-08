@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 
+import {CirclePlusFill} from '@gravity-ui/icons';
 import {memoize} from 'lodash';
 
 import {GetReportResponse, getReport} from '../../business/report';
@@ -98,9 +99,9 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                                 />
                             );
                         })}
-                        <div>
-                            <button onClick={handleAddChart}>+</button>
-                        </div>
+                        <button className={styles['charts-add-button']} onClick={handleAddChart}>
+                            <CirclePlusFill width={32} height={32} />
+                        </button>
                     </div>
                 ) : null}
                 {section === Section.Period ? <GuessPeriodForm /> : null}
