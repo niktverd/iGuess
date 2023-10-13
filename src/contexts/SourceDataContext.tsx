@@ -31,11 +31,6 @@ export const initialSourceData: SourceData = {
         {
             ...initialProduct,
         },
-        {
-            ...initialProduct,
-            id: uuid(),
-            name: 'Product 2',
-        },
     ],
 };
 
