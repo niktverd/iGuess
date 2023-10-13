@@ -7,6 +7,7 @@ import {GetReportResponse, getReport} from '../../business/report';
 import {NavButton} from '../../components/NavButton/NavButton';
 import {Chart} from '../../components/guess/Chart/Chart';
 import {useSourceData} from '../../hooks/useSourceData';
+import useStorage from '../../hooks/useStorage';
 import {GuessPeriodForm} from '../guess/GuessPeriodForm/GuessPeriodForm';
 import {GuessPlanList} from '../guess/GuessPlanList/GuessPlanList';
 import {GuessProductList} from '../guess/GuessProductList/GuessProductList';
@@ -30,11 +31,13 @@ type ViewConfig = {
 
 export const GuessLayout = (_props: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
+    const {setItem, getItem} = useStorage();
+    const savedConfig = JSON.parse((getItem('viewConfig', 'local') || '[]') as string);
 
     const [data, setData] = useState<GetReportResponse[] | null>(null);
-    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>([
-        {title: 'Chart#1', description: '-', options: {}},
-    ]);
+    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>(
+        savedConfig || [{title: 'Chart#1', description: '-', options: {}}],
+    );
     const [section, setSection] = useState<Section>(Section.Overview);
 
     useEffect(() => {
@@ -52,8 +55,9 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                 const newConfig = JSON.parse(JSON.stringify(viewConfigs));
                 newConfig[index].options = JSON.parse(JSON.stringify(config));
                 setViewConfigs(newConfig);
+                setItem('viewConfig', JSON.stringify(newConfig), 'local');
             }),
-        [viewConfigs],
+        [setItem, viewConfigs],
     );
 
     const handleAddChart = () => {
