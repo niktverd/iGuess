@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useSourceData } from '../../hooks/useSourceData';
+import {useSourceData} from '../../hooks/useSourceData';
 
 import styles from './ParameterControls.module.css';
 
@@ -28,7 +28,9 @@ export const ParameterControls = ({
         <div className={`${styles.container} ${selected ? styles['container-selected'] : ''}`}>
             <button className={styles.button} onClick={onSelect(paramKey, index)}>
                 <div className={`${styles.circle} ${selected ? styles['circles-selected'] : ''}`} />
-                {sourceData.plans.find((p) => p.id === text)?.name || sourceData.products.find((p) => p.id === text)?.name || text}
+                {sourceData.plans.find((p) => p.id === text)?.name ||
+                    sourceData.products.find((p) => p.id === text)?.name ||
+                    text}
             </button>
             {onSelectAxis ? (
                 <div className={styles.axis}>
