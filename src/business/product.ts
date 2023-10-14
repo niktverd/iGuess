@@ -26,8 +26,8 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
         let salesCount = 0;
         let revenue = 0;
         let cost = 0;
-        for (const productName of plan.availableProducts) {
-            const product = source.products.find((p) => p.id === productName);
+        for (const productId of plan.availableProducts) {
+            const product = source.products.find((p) => p.id === productId);
             if (!product) {
                 continue;
             }
@@ -44,6 +44,12 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
             salesCount += salesCountByProduct;
             revenue += revenueByProduct;
             cost += costByProduct;
+            /* eslint-disable no-param-reassign */
+            report.byProduct[productId].profit = profitByProduct;
+            report.byProduct[productId].salesCount = salesCountByProduct;
+            report.byProduct[productId].revenue = revenueByProduct;
+            report.byProduct[productId].cost = costByProduct;
+            /* eslint-enable no-param-reassign */
         }
 
         /* eslint-disable no-param-reassign */

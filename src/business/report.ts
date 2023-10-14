@@ -33,27 +33,12 @@ export type Report = {
     total: Record<string, number>;
 };
 
-// export const initializeParameterByProduct: (initialValue: number) => Record<ProductName, number> = (
-//     initialValue = 0,
-// ) => {
-//     const values = Object.values(ProductName);
-
-//     return values.reduce((acc, value) => {
-//         // eslint-disable-next-line no-param-reassign
-//         acc[value] = initialValue;
-//         return acc;
-//     }, {} as Record<ProductName, number>);
-// };
-
 export const initialProductReport: ProductReport = {
     profit: 0,
     cost: 0,
     revenue: 0,
     salesCount: 0,
     balance: 0,
-    // salesCountByProduct: initializeParameterByProduct(0),
-    // profitByProduct: initializeParameterByProduct(0),
-    // revenueByProduct: initializeParameterByProduct(0),
 };
 
 export const initialPlanReport: PlanReport = {
