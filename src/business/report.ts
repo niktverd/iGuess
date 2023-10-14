@@ -82,7 +82,14 @@ export type GetReportResponse = Report;
 export const getReport = (source: SourceData): GetReportResponse[] => {
     const report = getInitialReport(source);
     const periods = [];
+    const productIds = source.products.map((product) => product.id);
     for (let month = 0; month < source.period; month++) {
+        for (const productId of productIds) {
+            report.byProduct[productId].revenue = 0;
+            report.byProduct[productId].cost = 0;
+            report.byProduct[productId].profit = 0;
+            report.byProduct[productId].salesCount = 0;
+        }
         updateUsers({report, month, source});
         correctUsers({report, month, source});
         calculateCosts({report, month, source});
