@@ -45,10 +45,14 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
             revenue += revenueByProduct;
             cost += costByProduct;
             /* eslint-disable no-param-reassign */
-            report.byProduct[productId].profit = profitByProduct;
-            report.byProduct[productId].salesCount = salesCountByProduct;
-            report.byProduct[productId].revenue = revenueByProduct;
-            report.byProduct[productId].cost = costByProduct;
+            report.byProduct[productId].profit =
+                (report.byProduct[productId].profit || 0) + profitByProduct;
+            report.byProduct[productId].salesCount =
+                (report.byProduct[productId].salesCount || 0) + salesCountByProduct;
+            report.byProduct[productId].revenue =
+                (report.byProduct[productId].revenue || 0) + revenueByProduct;
+            report.byProduct[productId].cost =
+                (report.byProduct[productId].cost || 0) + costByProduct;
             /* eslint-enable no-param-reassign */
         }
 
