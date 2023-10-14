@@ -1,8 +1,12 @@
 import {Report} from './report';
 import {PlanName} from './types/plans';
 
-export const wrapper = (report: Report, callback: (key: PlanName) => void) => {
-    const keys = Object.keys(report.byPlan) as PlanName[];
+export const wrapper = (
+    report: Report,
+    entityType: 'byPlan' | 'byProduct',
+    callback: (key: PlanName) => void,
+) => {
+    const keys = Object.keys(report[entityType]) as string[];
 
     keys.forEach(callback);
 };

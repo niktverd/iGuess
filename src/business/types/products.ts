@@ -7,6 +7,7 @@ export type Product = {
     price: number;
     profit: number;
     cost: number;
+    staff: number;
 };
 
 export type Products = Record<string, Product>;

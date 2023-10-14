@@ -11,6 +11,7 @@ export const initialProduct: Product = {
     cost: 0,
     price: 0,
     frequency: 1,
+    staff: 1,
 };
 
 export const initialPlan: Plan = {

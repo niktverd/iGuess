@@ -8,7 +8,11 @@ type SummaryArgs = {
 };
 
 export const summary = ({report}: SummaryArgs) => {
-    const costs = report.total.marketingCosts + report.total.cost;
+    const costs =
+        report.total.marketingCosts +
+        report.total.cost +
+        report.team.blueColorsSalary +
+        report.team.whiteColorsSalary;
 
     // eslint-disable-next-line no-param-reassign
     report.total.balance = report.total.revenue - costs;

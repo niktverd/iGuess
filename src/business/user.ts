@@ -9,7 +9,7 @@ type UpdateUsersArgs = {
 };
 
 export const updateUsers = ({report, source}: UpdateUsersArgs) => {
-    wrapper(report, (key: PlanName) => {
+    wrapper(report, 'byPlan', (key: PlanName) => {
         const plan = source.plans.find((p) => p.id === key);
         if (!plan) {
             return;
@@ -32,7 +32,7 @@ export const updateUsers = ({report, source}: UpdateUsersArgs) => {
 };
 
 export const correctUsers = ({report, source}: UpdateUsersArgs) => {
-    wrapper(report, (key: PlanName) => {
+    wrapper(report, 'byPlan', (key: PlanName) => {
         const plan = source.plans.find((p) => p.id === key);
         if (!plan) {
             return;
@@ -52,7 +52,7 @@ export const correctUsers = ({report, source}: UpdateUsersArgs) => {
 };
 
 export const calculateCosts = ({report, source}: UpdateUsersArgs) => {
-    wrapper(report, (key: PlanName) => {
+    wrapper(report, 'byPlan', (key: PlanName) => {
         const plan = source.plans.find((p) => p.id === key);
         if (!plan) {
             return;

@@ -10,59 +10,30 @@ import styles from './ProductCard.module.css';
 
 type ProductCardProps = Product;
 
-export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductCardProps) => {
+export const ProductCard = ({
+    id,
+    name,
+    cost,
+    profit,
+    frequency,
+    price,
+    staff,
+}: ProductCardProps) => {
     const [editable, setEditable] = useState(false);
     const {sourceData, setSourceData} = useSourceData();
 
-    const handleNameChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editableProduct = sourceData.products.find((p) => p.id === id);
-              if (!editableProduct) {
-                  return;
+    const handleChange = (field: keyof Product) =>
+        editable
+            ? (event: React.ChangeEvent<HTMLInputElement>) => {
+                  const editableProduct = sourceData.products.find((p) => p.id === id);
+                  if (!editableProduct) {
+                      return;
+                  }
+
+                  editableProduct[field] = Number(event.target.value);
+                  setSourceData({...sourceData});
               }
-
-              editableProduct.name = event.target.value;
-              setSourceData({...sourceData});
-          }
-        : undefined;
-
-    const handleCostChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editableProduct = sourceData.products.find((p) => p.id === id);
-              if (!editableProduct) {
-                  return;
-              }
-
-              editableProduct.cost = Number(event.target.value || 0);
-              editableProduct.profit = editableProduct.price - editableProduct.cost;
-              setSourceData({...sourceData});
-          }
-        : undefined;
-
-    const handleRevenueChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editableProduct = sourceData.products.find((p) => p.id === id);
-              if (!editableProduct) {
-                  return;
-              }
-
-              editableProduct.price = Number(event.target.value || 0);
-              editableProduct.profit = editableProduct.price - editableProduct.cost;
-              setSourceData({...sourceData});
-          }
-        : undefined;
-
-    const handleFrequencyChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editableProduct = sourceData.products.find((p) => p.id === id);
-              if (!editableProduct) {
-                  return;
-              }
-
-              editableProduct.frequency = Number(event.target.value || 0);
-              setSourceData({...sourceData});
-          }
-        : undefined;
+            : undefined;
 
     return (
         <div className={styles.container}>
@@ -75,7 +46,7 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                         type="text"
                         value={name}
                         className={styles.input}
-                        onChange={handleNameChange}
+                        onChange={handleChange('name')}
                         disabled={!editable}
                     />
                 </div>
@@ -91,7 +62,7 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                     type="text"
                     value={id}
                     className={styles.input}
-                    onChange={handleNameChange}
+                    onChange={handleChange('id')}
                     disabled
                     style={{color: 'grey', fontSize: 12}}
                 />
@@ -103,7 +74,7 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleCostChange}
+                    onChange={handleChange('cost')}
                 />
             </div>
             <div>
@@ -123,7 +94,7 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleRevenueChange}
+                    onChange={handleChange('price')}
                 />
             </div>
             <div>
@@ -133,7 +104,17 @@ export const ProductCard = ({id, name, cost, profit, frequency, price}: ProductC
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleFrequencyChange}
+                    onChange={handleChange('frequency')}
+                />
+            </div>
+            <div>
+                <CardField
+                    label="Staff"
+                    value={staff}
+                    type="number"
+                    inputClassName={styles.input}
+                    editable={editable}
+                    onChange={handleChange('staff')}
                 />
             </div>
         </div>

@@ -1,4 +1,4 @@
-// import {calculateTeam} from './capex';
+import {calculateTeam} from './capex';
 import {updateProductSales} from './product';
 import {summary} from './summary';
 import {calculateTotal} from './total';
@@ -89,16 +89,19 @@ export const getReport = (source: SourceData): GetReportResponse[] => {
             report.byProduct[productId].cost = 0;
             report.byProduct[productId].profit = 0;
             report.byProduct[productId].salesCount = 0;
+            report.team.blueColors = 0;
+            report.team.whiteColors = 0;
+            report.team.blueColorsSalary = 0;
+            report.team.whiteColorsSalary = 0;
         }
         updateUsers({report, month, source});
         correctUsers({report, month, source});
         calculateCosts({report, month, source});
         updateProductSales({report, month, source});
         calculateTotal({report, source});
-        // calculateTeam({report, source});
+        calculateTeam({report, month, source});
         summary({report, source});
         periods.push(JSON.parse(JSON.stringify({...report, month})));
     }
-
     return periods;
 };

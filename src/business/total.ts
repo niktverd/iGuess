@@ -17,7 +17,7 @@ export const calculateTotal = ({report, source: _}: CalculateTotalArgs) => {
         report.total[rk] = 0;
     }
 
-    wrapper(report, (key: PlanName) => {
+    wrapper(report, 'byPlan', (key: PlanName) => {
         const reports = omit(report, 'team', 'total');
         const planReport = reports.byPlan[key];
         if (!planReport) {
