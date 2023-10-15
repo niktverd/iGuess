@@ -8,7 +8,9 @@ import {CardField} from '../CardField/CardField';
 
 import styles from './ProductCard.module.css';
 
-type ProductCardProps = Product;
+type ProductCardProps = Product & {
+    previewOnly?: boolean;
+};
 
 export const ProductCard = ({
     id,
@@ -18,12 +20,13 @@ export const ProductCard = ({
     frequency,
     price,
     staff,
+    previewOnly,
 }: ProductCardProps) => {
     const [editable, setEditable] = useState(false);
     const {sourceData, setSourceData} = useSourceData();
 
     const handleChange = (field: keyof Product) =>
-        editable
+        !previewOnly && editable
             ? (event: React.ChangeEvent<HTMLInputElement>) => {
                   const editableProduct = sourceData.products.find((p) => p.id === id);
                   if (!editableProduct) {
@@ -50,12 +53,14 @@ export const ProductCard = ({
                         disabled={!editable}
                     />
                 </div>
-                <button
-                    className={styles['button-container']}
-                    onClick={() => setEditable(!editable)}
-                >
-                    {editable ? <Check /> : <Pencil />}
-                </button>
+                {previewOnly ? null : (
+                    <button
+                        className={styles['button-container']}
+                        onClick={() => setEditable(!editable)}
+                    >
+                        {editable ? <Check /> : <Pencil />}
+                    </button>
+                )}
             </div>
             <div>
                 <input

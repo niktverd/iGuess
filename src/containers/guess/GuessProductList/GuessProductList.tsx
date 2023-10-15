@@ -7,18 +7,20 @@ import {useSourceData} from '../../../hooks/useSourceData';
 
 import styles from './GuessProductList.module.css';
 
-type GuessProductListProps = {};
+type GuessProductListProps = {
+    previewOnly?: boolean;
+};
 
-export const GuessProductList = (_props: GuessProductListProps) => {
+export const GuessProductList = ({previewOnly}: GuessProductListProps) => {
     const {sourceData} = useSourceData();
 
     return (
         <div className={styles.container}>
             <div className={styles.list}>
                 {sourceData.products.map((product) => (
-                    <ProductCard key={product.id} {...product} />
+                    <ProductCard key={product.id} {...product} previewOnly={previewOnly} />
                 ))}
-                <AddCard type="products" initialValue={initialProduct} />
+                {previewOnly ? null : <AddCard type="products" initialValue={initialProduct} />}
             </div>
         </div>
     );

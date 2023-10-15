@@ -9,7 +9,9 @@ import {CardSelector} from '../CardSelector/CardSelector';
 
 import styles from './PlanCard.module.css';
 
-type PlanCardProps = Plan;
+type PlanCardProps = Plan & {
+    previewOnly?: boolean;
+};
 
 export const PlanCard = (props: PlanCardProps) => {
     const {
@@ -21,69 +23,23 @@ export const PlanCard = (props: PlanCardProps) => {
         churnRate,
         sourceOfUserAqcusition,
         availableProducts,
+        previewOnly,
     } = props;
     const [editable, setEditable] = useState(false);
     const {sourceData, setSourceData} = useSourceData();
 
-    const handleNameChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editablePlan = sourceData.plans.find((p) => p.id === id);
-              if (!editablePlan) {
-                  return;
+    const handleChange = (field: string) =>
+        !previewOnly && editable
+            ? (event: React.ChangeEvent<HTMLInputElement>) => {
+                  const editablePlan = sourceData.plans.find((p) => p.id === id);
+                  if (!editablePlan) {
+                      return;
+                  }
+
+                  editablePlan[field] = event.target.value;
+                  setSourceData({...sourceData});
               }
-
-              editablePlan.name = event.target.value;
-              setSourceData({...sourceData});
-          }
-        : undefined;
-
-    const handleCacChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editablePlan = sourceData.plans.find((p) => p.id === id);
-              if (!editablePlan) {
-                  return;
-              }
-
-              editablePlan.cac = Number(event.target.value || 0);
-              setSourceData({...sourceData});
-          }
-        : undefined;
-
-    const handleMinimalGrowthCountChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editablePlan = sourceData.plans.find((p) => p.id === id);
-              if (!editablePlan) {
-                  return;
-              }
-
-              editablePlan.minimalGrowthCount = Number(event.target.value || 0);
-              setSourceData({...sourceData});
-          }
-        : undefined;
-
-    const handleGrowthRateChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editablePlan = sourceData.plans.find((p) => p.id === id);
-              if (!editablePlan) {
-                  return;
-              }
-
-              editablePlan.growthRate = Number(event.target.value || 0);
-              setSourceData({...sourceData});
-          }
-        : undefined;
-
-    const handleChurnthRateChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              const editablePlan = sourceData.plans.find((p) => p.id === id);
-              if (!editablePlan) {
-                  return;
-              }
-
-              editablePlan.churnRate = Number(event.target.value || 0);
-              setSourceData({...sourceData});
-          }
-        : undefined;
+            : undefined;
 
     const handleSourceOfUserAcqusitionChange = (ids: Array<string>) => {
         const editablePlan = sourceData.plans.find((p) => p.id === id);
@@ -116,23 +72,24 @@ export const PlanCard = (props: PlanCardProps) => {
                         type="text"
                         value={name}
                         className={styles.input}
-                        onChange={handleNameChange}
+                        onChange={handleChange('name')}
                         disabled={!editable}
                     />
                 </div>
-                <button
-                    className={styles['button-container']}
-                    onClick={() => setEditable(!editable)}
-                >
-                    {editable ? <Check /> : <Pencil />}
-                </button>
+                {previewOnly ? null : (
+                    <button
+                        className={styles['button-container']}
+                        onClick={() => setEditable(!editable)}
+                    >
+                        {editable ? <Check /> : <Pencil />}
+                    </button>
+                )}
             </div>
             <div>
                 <input
                     type="text"
                     value={id}
                     className={styles.input}
-                    onChange={handleNameChange}
                     disabled
                     style={{color: 'grey', fontSize: 12}}
                 />
@@ -144,7 +101,7 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleCacChange}
+                    onChange={handleChange('cac')}
                 />
             </div>
             <div>
@@ -154,7 +111,7 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleMinimalGrowthCountChange}
+                    onChange={handleChange('minimalGrowthCount')}
                 />
             </div>
             <div>
@@ -164,7 +121,7 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleGrowthRateChange}
+                    onChange={handleChange('growthRate')}
                 />
             </div>
             <div>
@@ -174,7 +131,7 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleChurnthRateChange}
+                    onChange={handleChange('churnRate')}
                 />
             </div>
             <div>

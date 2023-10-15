@@ -4,7 +4,9 @@ import {useSourceData} from '../../../hooks/useSourceData';
 
 import styles from './GuessPeriodForm.module.css';
 
-type GuessPeriodFormProps = {};
+type GuessPeriodFormProps = {
+    previewOnly?: boolean;
+};
 
 export const GuessPeriodForm = (_props: GuessPeriodFormProps) => {
     const {sourceData, setSourceData} = useSourceData();

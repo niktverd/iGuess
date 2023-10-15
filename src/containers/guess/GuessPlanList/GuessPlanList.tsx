@@ -7,18 +7,20 @@ import {useSourceData} from '../../../hooks/useSourceData';
 
 import styles from './GuessPlanList.module.css';
 
-type GuessPlanListProps = {};
+type GuessPlanListProps = {
+    previewOnly?: boolean;
+};
 
-export const GuessPlanList = (_props: GuessPlanListProps) => {
+export const GuessPlanList = ({previewOnly}: GuessPlanListProps) => {
     const {sourceData} = useSourceData();
 
     return (
         <div className={styles.container}>
             <div className={styles.list}>
                 {sourceData.plans.map((plan) => (
-                    <PlanCard key={plan.id} {...plan} />
+                    <PlanCard key={plan.id} {...plan} previewOnly={previewOnly} />
                 ))}
-                <AddCard type="plans" initialValue={initialPlan} />
+                {previewOnly ? null : <AddCard type="plans" initialValue={initialPlan} />}
             </div>
         </div>
     );

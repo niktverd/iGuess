@@ -3,12 +3,12 @@ import React from 'react';
 import {Plan, Product} from '../../../business/types';
 import {useSourceData} from '../../../hooks/useSourceData';
 
-// import s from './CustomTooltip.module.css';
+import s from './CustomTooltip.module.css';
 
 export type CustomTooltipProps = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CustomTooltip = ({active, payload, label, contentStyle}: any) => {
+export const CustomTooltip = ({active, payload, contentStyle}: any) => {
     const {sourceData} = useSourceData();
 
     if (active && payload && payload.length) {
@@ -24,8 +24,7 @@ export const CustomTooltip = ({active, payload, label, contentStyle}: any) => {
         }, {} as Record<string, Product>);
 
         return (
-            <div className="custom-tooltip" style={{...contentStyle, padding: 15}}>
-                <div>{label}</div>
+            <div className={s['custom-tooltip']} style={{...contentStyle, padding: 15}}>
                 {payload.map((pl: Record<string, string>, index: number) => {
                     const labelParts = `${pl.name}`.split('.');
                     const newLabel = labelParts
@@ -49,7 +48,7 @@ export const CustomTooltip = ({active, payload, label, contentStyle}: any) => {
                         <p
                             key={pl.name}
                             style={{color: pl.color}}
-                            className="label"
+                            className={s.label}
                         >{`${newLabel.join(' ')} : ${payload[index].value}`}</p>
                     );
                 })}

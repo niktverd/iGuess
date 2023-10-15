@@ -14,7 +14,9 @@ import {GuessProductList} from '../guess/GuessProductList/GuessProductList';
 
 import styles from './GuessLayout.module.css';
 
-type GuessLayoutProps = {};
+type GuessLayoutProps = {
+    previewOnly?: boolean;
+};
 
 enum Section {
     Overview = 'overview',
@@ -29,7 +31,7 @@ type ViewConfig = {
     options: Record<string, string[]>;
 };
 
-export const GuessLayout = (_props: GuessLayoutProps) => {
+export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
     const {setItem, getItem} = useStorage();
     const savedConfig = JSON.parse((getItem('viewConfig', 'local') || '[]') as string);
@@ -93,15 +95,6 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
             <div className={styles['section']}>
                 {section === Section.Overview && data ? (
                     <div>
-                        {/* <div className={styles.view}>
-                            <button>Chart</button>
-                            <button>Table</button>
-                        </div>
-                        <div className={styles.kind}>
-                            <button>By Plan</button>
-                            <button>By Product</button>
-                            <button>Total</button>
-                        </div> */}
                         {viewConfigs.map((config, index) => {
                             const getConfig = memoize((vc: ViewConfig[], i) => {
                                 return vc[i].options;
@@ -118,17 +111,25 @@ export const GuessLayout = (_props: GuessLayoutProps) => {
                                     saveViewConfig={saveViewConfig(index)}
                                     viewConfig={getConfig(viewConfigs, index)}
                                     handleDeleteChart={handleDeleteChart(index)}
+                                    previewOnly={previewOnly}
                                 />
                             );
                         })}
-                        <button className={styles['charts-add-button']} onClick={handleAddChart}>
-                            <CirclePlusFill width={32} height={32} />
-                        </button>
+                        {previewOnly ? null : (
+                            <button
+                                className={styles['charts-add-button']}
+                                onClick={handleAddChart}
+                            >
+                                <CirclePlusFill width={32} height={32} />
+                            </button>
+                        )}
                     </div>
                 ) : null}
-                {section === Section.Period ? <GuessPeriodForm /> : null}
-                {section === Section.Products ? <GuessProductList /> : null}
-                {section === Section.Plans ? <GuessPlanList /> : null}
+                {section === Section.Period ? <GuessPeriodForm previewOnly={previewOnly} /> : null}
+                {section === Section.Products ? (
+                    <GuessProductList previewOnly={previewOnly} />
+                ) : null}
+                {section === Section.Plans ? <GuessPlanList previewOnly={previewOnly} /> : null}
             </div>
         </div>
     );

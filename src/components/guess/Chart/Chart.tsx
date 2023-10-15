@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {ChartMixed, Check, Pencil, TrashBin} from '@gravity-ui/icons';
 import _, {flatten, omit, reverse, uniq, zip} from 'lodash';
-import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis} from 'recharts';
+import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
 import {flattenObject} from '../../../business/utils';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
@@ -18,6 +18,7 @@ type ChartProps = {
     description?: string;
     reportData: ReportType[];
     viewConfig?: Record<string, string[]>;
+    previewOnly?: boolean;
     saveViewConfig?: (config: Record<string, string[]>) => void;
     handleDeleteChart?: () => void;
     onChangeTitle?: (value: string) => void;
@@ -29,6 +30,7 @@ export const Chart = ({
     description: descriptionExternal,
     reportData,
     viewConfig = {},
+    previewOnly = false,
     saveViewConfig,
     handleDeleteChart,
     onChangeTitle,
@@ -41,21 +43,23 @@ export const Chart = ({
     const [axisByParameter, setAxisByParameter] = useState<Record<string, number>>({});
     const [options, setOptions] = useState<Record<string, string[]>>(viewConfig);
 
-    const handleTitleChange = editable
-        ? (event: React.ChangeEvent<HTMLInputElement>) => {
-              setTitle(event.target.value);
-              onChangeTitle?.(event.target.value);
-          }
-        : undefined;
+    const handleTitleChange =
+        !previewOnly && editable
+            ? (event: React.ChangeEvent<HTMLInputElement>) => {
+                  setTitle(event.target.value);
+                  onChangeTitle?.(event.target.value);
+              }
+            : undefined;
 
-    const handleDescriptionChange = editable
-        ? // React.FormEvent<HTMLDivElement>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (event: any) => {
-              setDescription(event.target.innerTex || '-');
-              onChangeDescription?.(event.target.innerText || '-');
-          }
-        : undefined;
+    const handleDescriptionChange =
+        !previewOnly && editable
+            ? // React.FormEvent<HTMLDivElement>
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (event: any) => {
+                  setDescription(event.target.innerTex || '-');
+                  onChangeDescription?.(event.target.innerText || '-');
+              }
+            : undefined;
 
     const handleSelectorSelection = (planName: string, index?: number) => () => {
         if (!index && index !== 0) {
@@ -147,9 +151,14 @@ export const Chart = ({
                         <TrashBin />
                     </button>
                 ) : null}
-                <button className={s['button-container']} onClick={() => setEditable(!editable)}>
-                    {editable ? <Check /> : <Pencil />}
-                </button>
+                {previewOnly ? null : (
+                    <button
+                        className={s['button-container']}
+                        onClick={() => setEditable(!editable)}
+                    >
+                        {editable ? <Check /> : <Pencil />}
+                    </button>
+                )}
             </div>
             <div className={s['input-container']}>
                 <div
@@ -167,9 +176,17 @@ export const Chart = ({
                     data={flatData}
                     margin={{top: 5, right: 20, left: 10, bottom: 5}}
                 >
-                    <XAxis dataKey="month" />
+                    <XAxis
+                        dataKey="month"
+                        type="category"
+                        tick={true}
+                        tickFormatter={(_value: string, index: number) => (index + 1).toString()}
+                    />
+                    <YAxis />
+
                     <Tooltip
-                        contentStyle={{backgroundColor: 'black'}}
+                        trigger="hover"
+                        contentStyle={{backgroundColor: 'rgb(0 0 0 / 0.7)'}}
                         content={<CustomTooltip />}
                     />
                     <CartesianGrid stroke="#050505aa" />
@@ -190,7 +207,7 @@ export const Chart = ({
                 </LineChart>
             </ResponsiveContainer>
             <div>
-                {editable
+                {!previewOnly && editable
                     ? selectors.map((group, index) => {
                           return (
                               <div key={index} className={s['controls-group']}>
@@ -217,7 +234,7 @@ export const Chart = ({
                     : null}
             </div>
             <div className={s['controls-group']}>
-                {editable
+                {!previewOnly && editable
                     ? params.map((pc) => (
                           <ParameterControls
                               key={pc}
