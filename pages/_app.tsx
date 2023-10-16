@@ -1,8 +1,10 @@
 import React, {SetStateAction, useState} from 'react';
 
+import {SessionProvider} from 'next-auth/react';
 import type {AppProps} from 'next/app';
 
-import {SourceData, SourceDataContext, initialSourceData} from '../src/contexts/SourceDataContext';
+import type {SourceData} from '../src/contexts/SourceDataContext';
+import {SourceDataContext, initialSourceData} from '../src/contexts/SourceDataContext';
 import useStorage from '../src/hooks/useStorage';
 
 import '../styles/globals.css';
@@ -24,9 +26,11 @@ function MyApp({Component, pageProps}: AppProps) {
     };
 
     return (
-        <SourceDataContext.Provider value={{sourceData, setSourceData: setSourceDataUpdated}}>
-            <Component {...pageProps} />
-        </SourceDataContext.Provider>
+        <SessionProvider>
+            <SourceDataContext.Provider value={{sourceData, setSourceData: setSourceDataUpdated}}>
+                <Component {...pageProps} />
+            </SourceDataContext.Provider>
+        </SessionProvider>
     );
 }
 

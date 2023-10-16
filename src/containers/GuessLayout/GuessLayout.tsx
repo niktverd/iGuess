@@ -2,6 +2,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 
 import {CirclePlusFill} from '@gravity-ui/icons';
 import {memoize} from 'lodash';
+import {signOut} from 'next-auth/react';
+import Link from 'next/link';
 
 import {GetReportResponse, getReport} from '../../business/report';
 import {NavButton} from '../../components/NavButton/NavButton';
@@ -91,6 +93,15 @@ export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
                 <NavButton text="Period" onClick={() => setSection(Section.Period)}></NavButton>
                 <NavButton text="Products" onClick={() => setSection(Section.Products)}></NavButton>
                 <NavButton text="Plans" onClick={() => setSection(Section.Plans)}></NavButton>
+                <hr />
+                <NavButton text="Sign Out" onClick={() => signOut()}></NavButton>
+                <NavButton
+                    text="get"
+                    onClick={async () => {
+                        await fetch('/api/configs');
+                    }}
+                ></NavButton>
+                <Link href="/api/auth/signin">Sign In</Link>
             </div>
             <div className={styles['section']}>
                 {section === Section.Overview && data ? (
