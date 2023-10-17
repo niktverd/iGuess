@@ -89,18 +89,33 @@ export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
     return (
         <div className={styles.container}>
             <div className={styles['main-navigation']}>
-                <NavButton text="Overview" onClick={() => setSection(Section.Overview)}></NavButton>
-                <NavButton text="Period" onClick={() => setSection(Section.Period)}></NavButton>
-                <NavButton text="Products" onClick={() => setSection(Section.Products)}></NavButton>
-                <NavButton text="Plans" onClick={() => setSection(Section.Plans)}></NavButton>
+                <NavButton text="Overview" onClick={() => setSection(Section.Overview)} />
+                <NavButton text="Period" onClick={() => setSection(Section.Period)} />
+                <NavButton text="Products" onClick={() => setSection(Section.Products)} />
+                <NavButton text="Plans" onClick={() => setSection(Section.Plans)} />
                 <hr />
-                <NavButton text="Sign Out" onClick={() => signOut()}></NavButton>
+                <NavButton text="Sign Out" onClick={() => signOut()} />
                 <NavButton
-                    text="get"
+                    text="Save"
                     onClick={async () => {
-                        await fetch('/api/configs');
+                        await fetch('/api/configs', {
+                            method: 'POST',
+                            body: JSON.stringify({...sourceData, projectId: 'uuid1', version: 2}),
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
                     }}
-                ></NavButton>
+                />
+                <NavButton
+                    text="Get"
+                    onClick={async () => {
+                        const resp = await fetch('/api/configs?projectId=uuid1');
+                        const json = await resp.json();
+                        // eslint-disable-next-line no-console
+                        console.log('loaded', json);
+                    }}
+                />
                 <Link href="/api/auth/signin">Sign In</Link>
             </div>
             <div className={styles['section']}>
