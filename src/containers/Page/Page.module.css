@@ -20,3 +20,14 @@
 
     padding: 10px;
 }
+
+.nav-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: row;
+    margin-right: 10px;
+}

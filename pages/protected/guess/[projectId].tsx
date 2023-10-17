@@ -2,16 +2,15 @@ import React from 'react';
 
 import type {NextPage} from 'next';
 
+import {GuessLayout} from '../../../src/containers/GuessLayout/GuessLayout';
 import {Page} from '../../../src/containers/Page/Page';
 
-// import styles from 'styles/Home.module.css';
-
-const Tasks: NextPage = () => {
+const Guess: NextPage = () => {
     return (
         <Page>
-            <div>List of Projects</div>
+            <GuessLayout />
         </Page>
     );
 };
 
-export default Tasks;
+export default Guess;
