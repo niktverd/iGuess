@@ -3,15 +3,15 @@ import React from 'react';
 import {CirclePlus} from '@gravity-ui/icons';
 import {uuid} from 'uuidv4';
 
-import {Product} from '../../../business/types';
-import {Plan} from '../../../business/types/plans';
+import {Plan, Product, Project} from '../../../business/types';
 import {useSourceData} from '../../../hooks/useSourceData';
+import {deepCopy} from '../../../utils/json';
 
 import styles from './AddCard.module.css';
 
 type AddCardProps = {
-    type: 'products' | 'plans';
-    initialValue: Product | Plan;
+    type: 'products' | 'plans' | 'project';
+    initialValue: Product | Plan | Project;
 };
 
 export const AddCard = ({type, initialValue}: AddCardProps) => {
@@ -26,7 +26,11 @@ export const AddCard = ({type, initialValue}: AddCardProps) => {
             sourceData[type].push({...initialValue, id: uuid()} as Product);
         }
 
-        setSourceData({...sourceData});
+        if (type === 'project') {
+            sourceData[type] = initialValue as Project;
+        }
+
+        setSourceData(deepCopy(sourceData));
     };
 
     return (

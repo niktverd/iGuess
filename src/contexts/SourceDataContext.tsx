@@ -2,7 +2,7 @@ import React from 'react';
 
 import {uuid} from 'uuidv4';
 
-import {Plan, Product, SourceData} from '../business/types';
+import {Plan, Product, Project, SourceData} from '../business/types';
 
 export const initialProduct: Product = {
     id: uuid(),
@@ -25,14 +25,22 @@ export const initialPlan: Plan = {
     availableProducts: [],
 };
 
+export const initialProject: Project = {
+    id: uuid(),
+    name: '',
+    description: '',
+};
+
 export const initialSourceData: SourceData = {
     period: 36,
+    project: {...initialProject},
     plans: [{...initialPlan}],
     products: [
         {
             ...initialProduct,
         },
     ],
+    version: 0,
 };
 
 export type SourceDataContextProps = {

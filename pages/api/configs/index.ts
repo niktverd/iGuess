@@ -21,7 +21,7 @@ async function saveConfig(req: NextApiRequest, res: NextApiResponse<DataBase>) {
     const newVersion = version + 1;
     const updatedBody = {...config, version: newVersion};
 
-    const projectRef = doc(guessDocRef, 'projects', config.projectId);
+    const projectRef = doc(guessDocRef, 'projects', config.project.id);
     await setDoc(projectRef, updatedBody);
 
     const versionsDocRef = doc(projectRef, 'versions', newVersion.toString());

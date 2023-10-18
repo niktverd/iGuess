@@ -10,7 +10,7 @@ import {NavButton} from '../../components/NavButton/NavButton';
 import {Chart} from '../../components/guess/Chart/Chart';
 import {useSourceData} from '../../hooks/useSourceData';
 import useStorage from '../../hooks/useStorage';
-import {GuessPeriodForm} from '../guess/GuessPeriodForm/GuessPeriodForm';
+import {GuessGeneralForm} from '../guess/GuessGeneralForm/GuessGeneralForm';
 import {GuessPlanList} from '../guess/GuessPlanList/GuessPlanList';
 import {GuessProductList} from '../guess/GuessProductList/GuessProductList';
 
@@ -18,11 +18,12 @@ import styles from './GuessLayout.module.css';
 
 type GuessLayoutProps = {
     previewOnly?: boolean;
+    saveMode?: 'none' | 'local' | 'server';
 };
 
 enum Section {
     Overview = 'overview',
-    Period = 'period',
+    General = 'general',
     Plans = 'plans',
     Products = 'products',
 }
@@ -90,7 +91,7 @@ export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
         <div className={styles.container}>
             <div className={styles['main-navigation']}>
                 <NavButton text="Overview" onClick={() => setSection(Section.Overview)} />
-                <NavButton text="Period" onClick={() => setSection(Section.Period)} />
+                <NavButton text="General" onClick={() => setSection(Section.General)} />
                 <NavButton text="Products" onClick={() => setSection(Section.Products)} />
                 <NavButton text="Plans" onClick={() => setSection(Section.Plans)} />
                 <hr />
@@ -98,9 +99,11 @@ export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
                 <NavButton
                     text="Save"
                     onClick={async () => {
+                        // console.log('sourceData', sourceData);
+                        // return;
                         await fetch('/api/configs', {
                             method: 'POST',
-                            body: JSON.stringify({...sourceData, projectId: 'uuid1', version: 2}),
+                            body: JSON.stringify({...sourceData, version: sourceData.version || 0}),
                             headers: {
                                 'Content-Type': 'application/json',
                             },
@@ -151,7 +154,9 @@ export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
                         )}
                     </div>
                 ) : null}
-                {section === Section.Period ? <GuessPeriodForm previewOnly={previewOnly} /> : null}
+                {section === Section.General ? (
+                    <GuessGeneralForm previewOnly={previewOnly} />
+                ) : null}
                 {section === Section.Products ? (
                     <GuessProductList previewOnly={previewOnly} />
                 ) : null}

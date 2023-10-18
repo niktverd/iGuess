@@ -8,7 +8,7 @@ import {Page} from '../../src/containers/Page/Page';
 const Tasks: NextPage = () => {
     return (
         <Page>
-            <GuessLayout previewOnly />
+            <GuessLayout previewOnly={false} />
         </Page>
     );
 };

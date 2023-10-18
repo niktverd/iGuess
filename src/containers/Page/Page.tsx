@@ -19,12 +19,16 @@ export const Page: NextPage<PageProps> = ({hideNavigation = false, children}: Pa
                             <Link href="/">Home</Link>
                         </li>
                         <li className={styles['nav-item']}>
-                            <Link href="/">Demo</Link>
+                            <Link href="/guess">Demo</Link>
                         </li>
-                        <li className={styles['nav-item']}>Sign In</li>
-                        <li className={styles['nav-item']}>Projects</li>
+                        <li className={styles['nav-item']}>
+                            <Link href="/protected/guess">Projects</Link>
+                        </li>
                         <li className={styles['nav-item']}>Donate</li>
                         <li className={styles['nav-item']}>Payments</li>
+                        <li className={styles['nav-item']}>
+                            <Link href="/api/auth/signin">Sign In</Link>
+                        </li>
                     </ul>
                 </div>
             )}

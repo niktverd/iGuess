@@ -18,7 +18,7 @@ export const obtainToken = async (req: NextApiRequest, res: NextApiResponse<Data
 
 export const obtainConfig = async (req: NextApiRequest, res: NextApiResponse<DataBase>) => {
     const {body} = req;
-    if (!body.projectId) {
+    if (!body.project?.id) {
         const errorMessage = 'Project ID is not provided';
         res.status(404).json({ok: false, message: errorMessage});
 
