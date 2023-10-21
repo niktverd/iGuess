@@ -1,6 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 
+import { useRouter } from 'next/router';
+
 import {Project} from '../../../business/types';
+import { PopupContainer } from '../../../components/PopupContainer/PopupContainer';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
 import {initialProjectData} from '../../../contexts/SourceDataContext';
 
@@ -11,7 +14,9 @@ type ProjectListProps = {
 };
 
 export const ProjectList = (_props: ProjectListProps) => {
+    const router = useRouter();
     const [projects, setProjects] = useState<Project[]>([]);
+    const [projectId, setProjectId] = useState<string | null>(null);
 
     const fetchProjects = useCallback(async () => {
         const response = await fetch('/api/projects');
@@ -31,16 +36,29 @@ export const ProjectList = (_props: ProjectListProps) => {
         });
         const json = await response.json();
         if (json.ok) {
-            alert('Project has been created');
+            setProjectId(((json.data as Project)?.projectData.id || null));
+            fetchProjects();
         }
-    }, []);
+    }, [fetchProjects]);
 
     useEffect(() => {
         fetchProjects();
     }, [fetchProjects]);
 
+    const popupHandler = useCallback(() => {
+        setProjectId(null);
+
+        router.push(`/protected/guess/${projectId}`);
+    }, [projectId, router]);
+
     return (
         <div className={styles.container}>
+            {projectId ? <PopupContainer
+                text="Open project"
+                title="Project was created"
+                subtitle={`Project with ID ${1} was successfully created`}
+                onClick={popupHandler}
+            /> : null}
             <div>
                 <h1>Projects</h1>
                 <button onClick={fetchProjects}>update</button>
