@@ -1,31 +1,19 @@
-import {collection, doc, getDoc, setDoc} from 'firebase/firestore/lite';
+import {collection, doc, getDoc} from 'firebase/firestore/lite';
 import type {NextApiRequest, NextApiResponse} from 'next';
 
 import db from '../../../configs/firebase';
 import {SourceData} from '../../../src/business/types';
 import {DataBase} from '../../../src/types/api';
-import {obtainConfig, obtainToken} from '../../../src/utils/api';
+import {obtainProject, obtainToken, writeProjectToDataBase} from '../../../src/utils/api';
 
 async function saveConfig(req: NextApiRequest, res: NextApiResponse<DataBase>) {
-    const token = await obtainToken(req, res);
-    const config = await obtainConfig(req, res);
+    const tokenId = await obtainToken(req, res);
+    const project = await obtainProject(req, res);
 
-    const guessCollectionRef = collection(db, 'guesses');
-    const guessDocRef = doc(guessCollectionRef, token.sub);
-    const guessDoc = await getDoc(guessDocRef);
-    if (!guessDoc.exists()) {
-        await setDoc(guessDocRef, {userId: token.sub});
-    }
-
-    const version = (config.version || 0) as number;
-    const newVersion = version + 1;
-    const updatedBody = {...config, version: newVersion};
-
-    const projectRef = doc(guessDocRef, 'projects', config.project.id);
-    await setDoc(projectRef, updatedBody);
-
-    const versionsDocRef = doc(projectRef, 'versions', newVersion.toString());
-    await setDoc(versionsDocRef, updatedBody);
+    await writeProjectToDataBase({
+        project,
+        tokenId,
+    });
 
     res.json({
         ok: true,
@@ -35,7 +23,7 @@ async function saveConfig(req: NextApiRequest, res: NextApiResponse<DataBase>) {
 }
 
 async function getConfig(req: NextApiRequest, res: NextApiResponse<DataBase<SourceData>>) {
-    const token = await obtainToken(req, res);
+    const tokenId = await obtainToken(req, res);
     const {projectId} = req.query as Partial<{[key: string]: string}>;
     if (!projectId) {
         res.status(404).json({ok: false, message: 'Project ID is not provided'});
@@ -43,7 +31,7 @@ async function getConfig(req: NextApiRequest, res: NextApiResponse<DataBase<Sour
     }
 
     const guessCollectionRef = collection(db, 'guesses');
-    const guessDocRef = doc(guessCollectionRef, token.sub);
+    const guessDocRef = doc(guessCollectionRef, tokenId);
     const projectRef = doc(guessDocRef, 'projects', projectId);
     const docSnap = await getDoc(projectRef);
 

@@ -1,16 +1,19 @@
 import {collection, doc, getDocs} from 'firebase/firestore/lite';
 import type {NextApiRequest, NextApiResponse} from 'next';
+import {uuid} from 'uuidv4';
 
 import db from '../../../configs/firebase';
-import {SourceData} from '../../../src/business/types';
+import {Project, SourceData} from '../../../src/business/types';
+import {initialProject} from '../../../src/contexts/ProjectsContext';
 import {DataBase} from '../../../src/types/api';
-import {obtainToken} from '../../../src/utils/api';
+import {obtainToken, writeProjectToDataBase} from '../../../src/utils/api';
+import {deepCopy} from '../../../src/utils/json';
 
 async function getProjectList(req: NextApiRequest, res: NextApiResponse<DataBase<SourceData[]>>) {
-    const token = await obtainToken(req, res);
+    const tokenId = await obtainToken(req, res);
 
     const guessCollectionRef = collection(db, 'guesses');
-    const guessDocRef = doc(guessCollectionRef, token.sub);
+    const guessDocRef = doc(guessCollectionRef, tokenId);
     const projectCollectionRef = collection(guessDocRef, 'projects');
     const docSnaps = await getDocs(projectCollectionRef);
 
@@ -26,12 +29,35 @@ async function getProjectList(req: NextApiRequest, res: NextApiResponse<DataBase
     });
 }
 
+async function addProject(req: NextApiRequest, res: NextApiResponse<DataBase<Project>>) {
+    const tokenId = await obtainToken(req, res);
+
+    const project = deepCopy(initialProject) as Project;
+    project.projectData.id = uuid();
+
+    const savedProject = await writeProjectToDataBase({
+        project,
+        tokenId,
+    });
+
+    res.json({
+        ok: true,
+        message: 'Project created',
+        data: savedProject,
+    });
+}
+
 export default function handler(req: NextApiRequest, res: NextApiResponse<DataBase>) {
     if (req.method === 'GET') {
         getProjectList(req, res);
         return;
     }
 
-    res.status(404).json({ok: false, message: 'not found'});
+    if (req.method === 'POST') {
+        addProject(req, res);
+        return;
+    }
+
+    res.status(404).json({ok: false, message: 'Method not found'});
     return;
 }

@@ -103,7 +103,7 @@ export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
                         // return;
                         await fetch('/api/configs', {
                             method: 'POST',
-                            body: JSON.stringify({...sourceData, version: sourceData.version || 0}),
+                            body: JSON.stringify({...sourceData, version: 0}),
                             headers: {
                                 'Content-Type': 'application/json',
                             },

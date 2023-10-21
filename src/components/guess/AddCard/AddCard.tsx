@@ -3,7 +3,7 @@ import React from 'react';
 import {CirclePlus} from '@gravity-ui/icons';
 import {uuid} from 'uuidv4';
 
-import {Plan, Product, Project} from '../../../business/types';
+import {Plan, Product, ProjectData} from '../../../business/types';
 import {useSourceData} from '../../../hooks/useSourceData';
 import {deepCopy} from '../../../utils/json';
 
@@ -11,10 +11,12 @@ import styles from './AddCard.module.css';
 
 type AddCardProps = {
     type: 'products' | 'plans' | 'project';
-    initialValue: Product | Plan | Project;
+    initialValue: Product | Plan | ProjectData;
+    placeholder?: string;
+    onClick?: () => void;
 };
 
-export const AddCard = ({type, initialValue}: AddCardProps) => {
+export const AddCard = ({type, initialValue, placeholder, onClick}: AddCardProps) => {
     const {sourceData, setSourceData} = useSourceData();
 
     const addNewEntitty = () => {
@@ -27,7 +29,7 @@ export const AddCard = ({type, initialValue}: AddCardProps) => {
         }
 
         if (type === 'project') {
-            sourceData[type] = initialValue as Project;
+            sourceData[type] = initialValue as ProjectData;
         }
 
         setSourceData(deepCopy(sourceData));
@@ -35,9 +37,10 @@ export const AddCard = ({type, initialValue}: AddCardProps) => {
 
     return (
         <div className={styles.container}>
-            <button className={styles['button-container']} onClick={() => addNewEntitty()}>
+            <button className={styles['button-container']} onClick={onClick || addNewEntitty}>
                 <CirclePlus width={54} height={54} />
             </button>
+            {placeholder ? <div className={styles.placeholder}>{placeholder}</div> : null}
         </div>
     );
 };
