@@ -1,4 +1,4 @@
-import {collection, doc, getDocs} from 'firebase/firestore/lite';
+import {collection, doc, getDoc, getDocs} from 'firebase/firestore/lite';
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {uuid} from 'uuidv4';
 
@@ -28,6 +28,36 @@ async function getProjectList(req: NextApiRequest, res: NextApiResponse<DataBase
         data: docSnaps.docs.map((docEnt) => docEnt.data() as SourceData),
     });
 }
+async function getProjectById(req: NextApiRequest, res: NextApiResponse<DataBase<Project | null>>) {
+    const tokenId = await obtainToken(req, res);
+    const {projectId} = req.query as Partial<{
+        [key: string]: string;
+    }>;
+    if (!projectId) {
+        res.status(404).json({ok: false, message: `Project ID was not provided`, data: null});
+        return;
+    }
+
+    const guessCollectionRef = collection(db, 'guesses');
+    const guessDocRef = doc(guessCollectionRef, tokenId);
+    const projectCollectionRef = doc(guessDocRef, 'projects', projectId);
+    const docSnap = await getDoc(projectCollectionRef);
+
+    if (!docSnap.exists()) {
+        res.status(404).json({
+            ok: false,
+            message: 'Project with given id is not found',
+            data: null,
+        });
+        return;
+    }
+
+    res.json({
+        ok: true,
+        message: 'Success',
+        data: docSnap.data() as Project,
+    });
+}
 
 async function addProject(req: NextApiRequest, res: NextApiResponse<DataBase<Project>>) {
     const tokenId = await obtainToken(req, res);
@@ -48,8 +78,13 @@ async function addProject(req: NextApiRequest, res: NextApiResponse<DataBase<Pro
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<DataBase>) {
-    if (req.method === 'GET') {
+    if (req.method === 'GET' && !req.query.projectId) {
         getProjectList(req, res);
+        return;
+    }
+
+    if (req.method === 'GET' && req.query.projectId) {
+        getProjectById(req, res);
         return;
     }
 

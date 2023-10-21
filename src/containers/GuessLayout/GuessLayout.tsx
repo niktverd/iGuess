@@ -6,6 +6,7 @@ import {signOut} from 'next-auth/react';
 import Link from 'next/link';
 
 import {GetReportResponse, getReport} from '../../business/report';
+import {Project} from '../../business/types';
 import {NavButton} from '../../components/NavButton/NavButton';
 import {Chart} from '../../components/guess/Chart/Chart';
 import {useSourceData} from '../../hooks/useSourceData';
@@ -17,6 +18,7 @@ import {GuessProductList} from '../guess/GuessProductList/GuessProductList';
 import styles from './GuessLayout.module.css';
 
 type GuessLayoutProps = {
+    project: Project;
     previewOnly?: boolean;
     saveMode?: 'none' | 'local' | 'server';
 };
