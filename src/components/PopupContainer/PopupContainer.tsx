@@ -12,17 +12,13 @@ type PopupContainerProps = {
 export const PopupContainer = ({title, subtitle, text, onClick}: PopupContainerProps) => {
     return (
         <div className={s.background}>
-        <div className={s.popup}>
-            <h2 className={s.title}>
-                {title}
-            </h2>
-            <div className={s.subtitle}>
-                {subtitle}
+            <div className={s.popup}>
+                <h2 className={s.title}>{title}</h2>
+                <div className={s.subtitle}>{subtitle}</div>
+                <button className={s.container} onClick={onClick}>
+                    {text}
+                </button>
             </div>
-            <button className={s.container} onClick={onClick}>
-                {text}
-            </button>
-        </div>
         </div>
     );
 };

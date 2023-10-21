@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 
 import {Project} from '../../../business/types';
-import { PopupContainer } from '../../../components/PopupContainer/PopupContainer';
+import {PopupContainer} from '../../../components/PopupContainer/PopupContainer';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
 import {initialProjectData} from '../../../contexts/SourceDataContext';
 
@@ -36,7 +36,7 @@ export const ProjectList = (_props: ProjectListProps) => {
         });
         const json = await response.json();
         if (json.ok) {
-            setProjectId(((json.data as Project)?.projectData.id || null));
+            setProjectId((json.data as Project)?.projectData.id || null);
             fetchProjects();
         }
     }, [fetchProjects]);
@@ -53,12 +53,14 @@ export const ProjectList = (_props: ProjectListProps) => {
 
     return (
         <div className={styles.container}>
-            {projectId ? <PopupContainer
-                text="Open project"
-                title="Project was created"
-                subtitle={`Project with ID ${1} was successfully created`}
-                onClick={popupHandler}
-            /> : null}
+            {projectId ? (
+                <PopupContainer
+                    text="Open project"
+                    title="Project was created"
+                    subtitle={`Project with ID ${1} was successfully created`}
+                    onClick={popupHandler}
+                />
+            ) : null}
             <div>
                 <h1>Projects</h1>
                 <button onClick={fetchProjects}>update</button>
