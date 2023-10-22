@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useCallback} from 'react';
+
+import {uuid} from 'uuidv4';
 
 import {Product} from '../../../business/types';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
@@ -15,6 +17,14 @@ type GuessProductListProps = {
 };
 
 export const GuessProductList = ({products, onChange, previewOnly}: GuessProductListProps) => {
+    const addProduct = useCallback(() => {
+        onChange({
+            path: 'sourceData.products',
+            value: [...products, {...initialProduct, id: uuid()}],
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [products]);
+
     return (
         <div className={styles.container}>
             <div className={styles.list}>
@@ -30,7 +40,9 @@ export const GuessProductList = ({products, onChange, previewOnly}: GuessProduct
                         />
                     );
                 })}
-                {previewOnly ? null : <AddCard type="products" initialValue={initialProduct} />}
+                {previewOnly ? null : (
+                    <AddCard onClick={addProduct} placeholder="Add new product" />
+                )}
             </div>
         </div>
     );

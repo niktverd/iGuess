@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useCallback} from 'react';
+
+import {uuid} from 'uuidv4';
 
 import {Plan} from '../../../business/types';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
@@ -15,6 +17,14 @@ type GuessPlanListProps = {
 };
 
 export const GuessPlanList = ({plans, onChange, previewOnly}: GuessPlanListProps) => {
+    const addPlan = useCallback(() => {
+        onChange({
+            path: 'sourceData.plans',
+            value: [...plans, {...initialPlan, id: uuid()}],
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [plans]);
+
     return (
         <div className={styles.container}>
             <div className={styles.list}>
@@ -30,7 +40,7 @@ export const GuessPlanList = ({plans, onChange, previewOnly}: GuessPlanListProps
                         />
                     );
                 })}
-                {previewOnly ? null : <AddCard type="plans" initialValue={initialPlan} />}
+                {previewOnly ? null : <AddCard onClick={addPlan} placeholder="Add new plan" />}
             </div>
         </div>
     );

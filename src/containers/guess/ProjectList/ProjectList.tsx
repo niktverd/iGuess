@@ -5,7 +5,6 @@ import {useRouter} from 'next/router';
 import {Project} from '../../../business/types';
 import {PopupContainer} from '../../../components/PopupContainer/PopupContainer';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
-import {initialProjectData} from '../../../contexts/SourceDataContext';
 
 import styles from './ProjectList.module.css';
 
@@ -69,12 +68,7 @@ export const ProjectList = (_props: ProjectListProps) => {
                 {projects.map((prjct, index) => (
                     <div key={prjct.projectData?.id + index}>{prjct.projectData?.id}</div>
                 ))}
-                <AddCard
-                    type="products"
-                    initialValue={initialProjectData}
-                    placeholder="Create new project"
-                    onClick={addProject}
-                />
+                <AddCard placeholder="Create new project" onClick={addProject} />
             </div>
         </div>
     );
