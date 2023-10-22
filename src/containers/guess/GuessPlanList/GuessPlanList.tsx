@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 
 import {uuid} from 'uuidv4';
 
-import {Plan} from '../../../business/types';
+import {Plan, Project} from '../../../business/types';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
 import {PlanCard} from '../../../components/guess/PlanCard/PlanCard';
 import {initialPlan} from '../../../contexts/SourceDataContext';
@@ -11,12 +11,13 @@ import {OnProjectChangeArgs} from '../../../types/common';
 import styles from './GuessPlanList.module.css';
 
 type GuessPlanListProps = {
+    project: Project;
     plans: Plan[];
     onChange: (event: OnProjectChangeArgs) => void;
     previewOnly?: boolean;
 };
 
-export const GuessPlanList = ({plans, onChange, previewOnly}: GuessPlanListProps) => {
+export const GuessPlanList = ({plans, onChange, previewOnly, project}: GuessPlanListProps) => {
     const addPlan = useCallback(() => {
         onChange({
             path: 'sourceData.plans',
@@ -34,6 +35,7 @@ export const GuessPlanList = ({plans, onChange, previewOnly}: GuessPlanListProps
                         <PlanCard
                             key={plan.id}
                             {...plan}
+                            project={project}
                             previewOnly={previewOnly}
                             namePrefix={namePrefix}
                             onChange={onChange}

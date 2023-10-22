@@ -166,6 +166,7 @@ export const GuessLayout = ({
                 ) : null}
                 {section === Section.Plans ? (
                     <GuessPlanList
+                        project={project}
                         previewOnly={previewOnly}
                         plans={project.sourceData.plans}
                         onChange={onChange}

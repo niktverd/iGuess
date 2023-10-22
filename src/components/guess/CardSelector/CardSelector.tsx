@@ -3,12 +3,12 @@ import React, {useMemo, useState} from 'react';
 import {CircleXmark, Magnifier, TrashBin} from '@gravity-ui/icons';
 import {uniq} from 'lodash';
 
-import {Product} from '../../../business/types';
+import {Product, Project} from '../../../business/types';
 import {Plan} from '../../../business/types/plans';
-import {useSourceData} from '../../../hooks/useSourceData';
 
 import s from './CardSelector.module.css';
 type CardSelectorProps = {
+    project: Project;
     value: Array<string>;
     type: 'single' | 'array';
     source: 'plans' | 'products';
@@ -30,8 +30,9 @@ export const CardSelector = ({
     source,
     containerClassName,
     currentCard,
+    project,
 }: CardSelectorProps) => {
-    const {sourceData} = useSourceData();
+    const {sourceData} = project;
     const [query, setQuery] = useState('');
     const [showList, setShowList] = useState(false);
 

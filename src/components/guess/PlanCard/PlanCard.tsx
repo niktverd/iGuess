@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 
 import {Check, Pencil, Shapes3} from '@gravity-ui/icons';
 
+import {Project} from '../../../business/types';
 import {Plan} from '../../../business/types/plans';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardField} from '../CardField/CardField';
@@ -13,6 +14,7 @@ type PlanCardProps = Plan & {
     onChange: (event: OnProjectChangeArgs) => void;
     namePrefix: string;
     previewOnly?: boolean;
+    project: Project;
 };
 
 export const PlanCard = (props: PlanCardProps) => {
@@ -28,6 +30,7 @@ export const PlanCard = (props: PlanCardProps) => {
         previewOnly,
         onChange,
         namePrefix,
+        project,
     } = props;
     const [editable, setEditable] = useState(false);
     const handleSourceOfUserAcqusitionChange = (ids: Array<string>) => {
@@ -124,6 +127,7 @@ export const PlanCard = (props: PlanCardProps) => {
             </div>
             <div>
                 <CardSelector
+                    project={project}
                     label="Source of user acqusition"
                     value={sourceOfUserAqcusition ? [sourceOfUserAqcusition] : []}
                     type="single"
@@ -137,6 +141,7 @@ export const PlanCard = (props: PlanCardProps) => {
             </div>
             <div>
                 <CardSelector
+                    project={project}
                     label="Available products"
                     value={availableProducts}
                     type="array"
