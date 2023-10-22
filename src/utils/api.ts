@@ -34,7 +34,7 @@ export const obtainProject = async (req: NextApiRequest, res: NextApiResponse<Da
 
         throw new Error(errorMessage);
     }
-    if (!('viewConfig' in body)) {
+    if (!('viewConfigs' in body)) {
         const errorMessage = 'View Config is not provided';
         res.status(404).json({ok: false, message: errorMessage});
 

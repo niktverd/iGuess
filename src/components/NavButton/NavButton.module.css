@@ -13,3 +13,7 @@
 .container:hover {
     background-color: rgb(255 255 255 / 0.4);
 }
+
+.container:disabled {
+    color: rgb(255 255 255 / 0.4);
+}

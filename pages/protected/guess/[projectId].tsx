@@ -1,3 +1,5 @@
+import {deepEqual} from 'assert';
+
 import React, {useCallback, useEffect, useState} from 'react';
 
 import _ from 'lodash';
@@ -8,6 +10,7 @@ import {Project} from '../../../src/business/types';
 import {GuessLayout} from '../../../src/containers/GuessLayout/GuessLayout';
 import {Page} from '../../../src/containers/Page/Page';
 import {OnProjectChangeArgs} from '../../../src/types/common';
+import {deepCopy} from '../../../src/utils/json';
 import {isEvent} from '../../../src/utils/typeguards';
 
 const Guess: NextPage = () => {
@@ -16,18 +19,43 @@ const Guess: NextPage = () => {
     } = useRouter();
 
     const [project, setProject] = useState<Project | null>(null);
+    const [initialProject, setInitialProject] = useState<Project | null>(null);
+    const [isDirty, setIsDirty] = useState<boolean>(false);
+
+    const getProject = useCallback(async () => {
+        const response = await fetch(`/api/projects?projectId=${projectId}`);
+        const json = await response.json();
+
+        if (json.ok) {
+            setProject(json.data);
+            setInitialProject(deepCopy(json.data));
+        }
+    }, [projectId]);
+
+    const saveProject = useCallback(async () => {
+        await fetch(`/api/configs`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(project),
+        });
+
+        getProject();
+    }, [getProject, project]);
 
     useEffect(() => {
-        const getProject = async () => {
-            const response = await fetch(`/api/projects?projectId=${projectId}`);
-            const json = await response.json();
-
-            if (json.ok) {
-                setProject(json.data);
-            }
-        };
         getProject();
-    }, [projectId]);
+    }, [getProject]);
+
+    useEffect(() => {
+        try {
+            deepEqual(initialProject, project);
+            setIsDirty(false);
+        } catch (error) {
+            setIsDirty(true);
+        }
+    }, [initialProject, project]);
 
     const onChange = useCallback(
         (entry: OnProjectChangeArgs) => {
@@ -47,7 +75,19 @@ const Guess: NextPage = () => {
         [project],
     );
 
-    return <Page>{project ? <GuessLayout project={project} onChange={onChange} /> : null}</Page>;
+    return (
+        <Page>
+            {project ? (
+                <GuessLayout
+                    getProject={getProject}
+                    saveProject={saveProject}
+                    project={project}
+                    onChange={onChange}
+                    isDirty={isDirty}
+                />
+            ) : null}
+        </Page>
+    );
 };
 
 export default Guess;

@@ -6,12 +6,11 @@ import {signOut} from 'next-auth/react';
 import Link from 'next/link';
 
 import {GetReportResponse, getReport} from '../../business/report';
-import {Project} from '../../business/types';
+import {Project, ViewConfig} from '../../business/types';
 import {NavButton} from '../../components/NavButton/NavButton';
 import {Chart} from '../../components/guess/Chart/Chart';
-import {useSourceData} from '../../hooks/useSourceData';
-import useStorage from '../../hooks/useStorage';
 import {OnProjectChangeArgs} from '../../types/common';
+import {deepCopy} from '../../utils/json';
 import {GuessGeneralForm} from '../guess/GuessGeneralForm/GuessGeneralForm';
 import {GuessPlanList} from '../guess/GuessPlanList/GuessPlanList';
 import {GuessProductList} from '../guess/GuessProductList/GuessProductList';
@@ -21,8 +20,10 @@ import styles from './GuessLayout.module.css';
 type GuessLayoutProps = {
     project: Project;
     onChange: (event: OnProjectChangeArgs) => void;
+    isDirty?: boolean;
     previewOnly?: boolean;
-    saveMode?: 'none' | 'local' | 'server';
+    getProject?: () => void;
+    saveProject?: () => void;
 };
 
 enum Section {
@@ -32,21 +33,15 @@ enum Section {
     Products = 'products',
 }
 
-type ViewConfig = {
-    title: string;
-    description?: string;
-    options: Record<string, string[]>;
-};
-
-export const GuessLayout = ({project, onChange, previewOnly}: GuessLayoutProps) => {
-    const {sourceData} = useSourceData();
-    const {setItem, getItem} = useStorage();
-    const savedConfig = JSON.parse((getItem('viewConfig', 'local') || '[]') as string);
-
+export const GuessLayout = ({
+    project,
+    onChange,
+    previewOnly,
+    isDirty = false,
+    saveProject,
+}: GuessLayoutProps) => {
+    const {sourceData, viewConfigs} = project;
     const [data, setData] = useState<GetReportResponse[] | null>(null);
-    const [viewConfigs, setViewConfigs] = useState<ViewConfig[]>(
-        savedConfig || [{title: 'Chart#1', description: '-', options: {}}],
-    );
     const [section, setSection] = useState<Section>(Section.Overview);
 
     useEffect(() => {
@@ -63,32 +58,46 @@ export const GuessLayout = ({project, onChange, previewOnly}: GuessLayoutProps) 
             memoize((config: Record<string, string[]>) => {
                 const newConfig = JSON.parse(JSON.stringify(viewConfigs));
                 newConfig[index].options = JSON.parse(JSON.stringify(config));
-                setViewConfigs(newConfig);
-                setItem('viewConfig', JSON.stringify(newConfig), 'local');
+                onChange({
+                    path: `viewConfigs[${index}].options`,
+                    value: config,
+                });
             }),
-        [setItem, viewConfigs],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [viewConfigs],
     );
 
     const handleAddChart = () => {
-        setViewConfigs([...viewConfigs, {title: `Chart#${viewConfigs.length + 1}`, options: {}}]);
+        onChange({
+            path: `viewConfigs`,
+            value: [
+                ...viewConfigs,
+                {title: `Chart#${viewConfigs.length}`, description: '-', options: {}},
+            ],
+        });
     };
 
     const handleDeleteChart = (index: number) => () => {
-        const newConfig = JSON.parse(JSON.stringify(viewConfigs));
+        const newConfig = deepCopy(viewConfigs);
         newConfig.splice(index, 1);
-        setViewConfigs(newConfig);
+        onChange({
+            path: `viewConfigs`,
+            value: newConfig,
+        });
     };
 
     const onChangeTitle = (index: number) => (value: string) => {
-        const newConfig = JSON.parse(JSON.stringify(viewConfigs));
-        newConfig[index].title = value;
-        setViewConfigs(newConfig);
+        onChange({
+            path: `viewConfigs[${index}].title`,
+            value: value,
+        });
     };
 
     const onChangeDescription = (index: number) => (value: string) => {
-        const newConfig = JSON.parse(JSON.stringify(viewConfigs));
-        newConfig[index].description = value;
-        setViewConfigs(newConfig);
+        onChange({
+            path: `viewConfigs[${index}].description`,
+            value: value,
+        });
     };
 
     return (
@@ -99,36 +108,19 @@ export const GuessLayout = ({project, onChange, previewOnly}: GuessLayoutProps) 
                 <NavButton text="Products" onClick={() => setSection(Section.Products)} />
                 <NavButton text="Plans" onClick={() => setSection(Section.Plans)} />
                 <hr />
+                <NavButton
+                    text={isDirty ? 'Save' : 'Saved'}
+                    onClick={saveProject}
+                    disabled={!isDirty}
+                />
+                <hr />
                 <NavButton text="Sign Out" onClick={() => signOut()} />
-                <NavButton
-                    text="Save"
-                    onClick={async () => {
-                        // console.log('sourceData', sourceData);
-                        // return;
-                        await fetch('/api/configs', {
-                            method: 'POST',
-                            body: JSON.stringify({...sourceData, version: 0}),
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                        });
-                    }}
-                />
-                <NavButton
-                    text="Get"
-                    onClick={async () => {
-                        const resp = await fetch('/api/configs?projectId=uuid1');
-                        const json = await resp.json();
-                        // eslint-disable-next-line no-console
-                        console.log('loaded', json);
-                    }}
-                />
                 <Link href="/api/auth/signin">Sign In</Link>
             </div>
             <div className={styles['section']}>
                 {section === Section.Overview && data ? (
                     <div>
-                        {viewConfigs.map((config, index) => {
+                        {viewConfigs.map((viewConfig, index) => {
                             const getConfig = memoize((vc: ViewConfig[], i) => {
                                 return vc[i].options;
                             });
@@ -137,12 +129,12 @@ export const GuessLayout = ({project, onChange, previewOnly}: GuessLayoutProps) 
                                 <Chart
                                     key={index}
                                     reportData={data}
-                                    title={config.title}
-                                    description={config.description}
+                                    title={viewConfig.title}
+                                    description={viewConfig.description}
                                     onChangeTitle={onChangeTitle(index)}
                                     onChangeDescription={onChangeDescription(index)}
                                     saveViewConfig={saveViewConfig(index)}
-                                    viewConfig={getConfig(viewConfigs, index)}
+                                    viewConfigOptions={getConfig(viewConfigs, index)}
                                     handleDeleteChart={handleDeleteChart(index)}
                                     previewOnly={previewOnly}
                                 />

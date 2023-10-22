@@ -6,11 +6,15 @@ export type SourceData = {
     products: Array<Product>;
 };
 
-export type ViewConfig = {};
+export type ViewConfig = {
+    title?: string;
+    description?: string;
+    options: Record<string, string[]>;
+};
 
 export type Project = {
     sourceData: SourceData;
     projectData: ProjectData;
-    viewConfig: ViewConfig;
+    viewConfigs: ViewConfig[];
     version: number;
 };

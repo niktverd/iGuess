@@ -7,7 +7,7 @@ import {initialProjectData, initialSourceData} from './SourceDataContext';
 export const initialProject: Project = {
     sourceData: initialSourceData,
     projectData: initialProjectData,
-    viewConfig: {},
+    viewConfigs: [],
     version: 0,
 };
 

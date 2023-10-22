@@ -4,6 +4,7 @@ import {ChartMixed, Check, Pencil, TrashBin} from '@gravity-ui/icons';
 import _, {flatten, omit, reverse, uniq, zip} from 'lodash';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
+import {ViewConfig} from '../../../business/types';
 import {flattenObject} from '../../../business/utils';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
 import {randomHex} from '../../utils/common';
@@ -17,7 +18,7 @@ type ChartProps = {
     title?: string;
     description?: string;
     reportData: ReportType[];
-    viewConfig?: Record<string, string[]>;
+    viewConfigOptions?: ViewConfig['options'];
     previewOnly?: boolean;
     saveViewConfig?: (config: Record<string, string[]>) => void;
     handleDeleteChart?: () => void;
@@ -29,7 +30,7 @@ export const Chart = ({
     title: titleExternal,
     description: descriptionExternal,
     reportData,
-    viewConfig = {},
+    viewConfigOptions = {},
     previewOnly = false,
     saveViewConfig,
     handleDeleteChart,
@@ -41,7 +42,7 @@ export const Chart = ({
     const [graphHeight] = useState(300);
     const [editable, setEditable] = useState(false);
     const [axisByParameter, setAxisByParameter] = useState<Record<string, number>>({});
-    const [options, setOptions] = useState<Record<string, string[]>>(viewConfig);
+    const [options, setOptions] = useState<Record<string, string[]>>(viewConfigOptions);
 
     const handleTitleChange =
         !previewOnly && editable
