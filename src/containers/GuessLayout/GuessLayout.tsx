@@ -3,7 +3,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {CirclePlusFill} from '@gravity-ui/icons';
 import {memoize} from 'lodash';
 import {signOut} from 'next-auth/react';
-import Link from 'next/link';
 
 import {GetReportResponse, getReport} from '../../business/report';
 import {Project, ViewConfig} from '../../business/types';
@@ -115,7 +114,6 @@ export const GuessLayout = ({
                 />
                 <hr />
                 <NavButton text="Sign Out" onClick={() => signOut()} />
-                <Link href="/api/auth/signin">Sign In</Link>
             </div>
             <div className={styles['section']}>
                 {section === Section.Overview && data ? (
