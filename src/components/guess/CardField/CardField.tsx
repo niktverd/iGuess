@@ -5,6 +5,7 @@ import s from './CardField.module.css';
 type CardFieldProps = {
     value: string | number;
     type: string;
+    name: string;
     label?: string;
     inputContainerClassName?: string;
     inputClassName?: string;
@@ -20,6 +21,7 @@ export const CardField = ({
     editable,
     type = 'text',
     inputContainerClassName,
+    name,
 }: CardFieldProps) => {
     return (
         <div className={`${s.container} ${inputContainerClassName}`}>
@@ -29,6 +31,7 @@ export const CardField = ({
             </label>
             <input
                 type={type}
+                name={name}
                 value={value}
                 className={`${s.input} ${inputClassName}`}
                 onChange={onChange}

@@ -11,6 +11,7 @@ import {NavButton} from '../../components/NavButton/NavButton';
 import {Chart} from '../../components/guess/Chart/Chart';
 import {useSourceData} from '../../hooks/useSourceData';
 import useStorage from '../../hooks/useStorage';
+import {OnProjectChangeArgs} from '../../types/common';
 import {GuessGeneralForm} from '../guess/GuessGeneralForm/GuessGeneralForm';
 import {GuessPlanList} from '../guess/GuessPlanList/GuessPlanList';
 import {GuessProductList} from '../guess/GuessProductList/GuessProductList';
@@ -19,6 +20,7 @@ import styles from './GuessLayout.module.css';
 
 type GuessLayoutProps = {
     project: Project;
+    onChange: (event: OnProjectChangeArgs) => void;
     previewOnly?: boolean;
     saveMode?: 'none' | 'local' | 'server';
 };
@@ -36,7 +38,7 @@ type ViewConfig = {
     options: Record<string, string[]>;
 };
 
-export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
+export const GuessLayout = ({project, onChange, previewOnly}: GuessLayoutProps) => {
     const {sourceData} = useSourceData();
     const {setItem, getItem} = useStorage();
     const savedConfig = JSON.parse((getItem('viewConfig', 'local') || '[]') as string);
@@ -157,12 +159,26 @@ export const GuessLayout = ({previewOnly}: GuessLayoutProps) => {
                     </div>
                 ) : null}
                 {section === Section.General ? (
-                    <GuessGeneralForm previewOnly={previewOnly} />
+                    <GuessGeneralForm
+                        previewOnly={previewOnly}
+                        project={project}
+                        onChange={onChange}
+                    />
                 ) : null}
                 {section === Section.Products ? (
-                    <GuessProductList previewOnly={previewOnly} />
+                    <GuessProductList
+                        previewOnly={previewOnly}
+                        products={project.sourceData.products}
+                        onChange={onChange}
+                    />
                 ) : null}
-                {section === Section.Plans ? <GuessPlanList previewOnly={previewOnly} /> : null}
+                {section === Section.Plans ? (
+                    <GuessPlanList
+                        previewOnly={previewOnly}
+                        plans={project.sourceData.plans}
+                        onChange={onChange}
+                    />
+                ) : null}
             </div>
         </div>
     );

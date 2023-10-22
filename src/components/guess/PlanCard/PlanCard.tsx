@@ -3,13 +3,15 @@ import React, {useState} from 'react';
 import {Check, Pencil, Shapes3} from '@gravity-ui/icons';
 
 import {Plan} from '../../../business/types/plans';
-import {useSourceData} from '../../../hooks/useSourceData';
+import {OnProjectChangeArgs} from '../../../types/common';
 import {CardField} from '../CardField/CardField';
 import {CardSelector} from '../CardSelector/CardSelector';
 
 import styles from './PlanCard.module.css';
 
 type PlanCardProps = Plan & {
+    onChange: (event: OnProjectChangeArgs) => void;
+    namePrefix: string;
     previewOnly?: boolean;
 };
 
@@ -24,41 +26,22 @@ export const PlanCard = (props: PlanCardProps) => {
         sourceOfUserAqcusition,
         availableProducts,
         previewOnly,
+        onChange,
+        namePrefix,
     } = props;
     const [editable, setEditable] = useState(false);
-    const {sourceData, setSourceData} = useSourceData();
-
-    const handleChange = (field: string) =>
-        !previewOnly && editable
-            ? (event: React.ChangeEvent<HTMLInputElement>) => {
-                  const editablePlan = sourceData.plans.find((p) => p.id === id);
-                  if (!editablePlan) {
-                      return;
-                  }
-
-                  editablePlan[field] = event.target.value;
-                  setSourceData({...sourceData});
-              }
-            : undefined;
-
     const handleSourceOfUserAcqusitionChange = (ids: Array<string>) => {
-        const editablePlan = sourceData.plans.find((p) => p.id === id);
-        if (!editablePlan) {
-            return;
-        }
-
-        editablePlan.sourceOfUserAqcusition = ids[0] ?? null;
-        setSourceData({...sourceData});
+        onChange({
+            path: `${namePrefix}.sourceOfUserAqcusition`,
+            value: ids[0],
+        });
     };
 
     const handleAvailableProductsChange = (ids: Array<string>) => {
-        const editablePlan = sourceData.plans.find((p) => p.id === id);
-        if (!editablePlan) {
-            return;
-        }
-
-        editablePlan.availableProducts = ids;
-        setSourceData({...sourceData});
+        onChange({
+            path: `${namePrefix}.availableProducts`,
+            value: ids,
+        });
     };
 
     return (
@@ -72,8 +55,9 @@ export const PlanCard = (props: PlanCardProps) => {
                         type="text"
                         value={name}
                         className={styles.input}
-                        onChange={handleChange('name')}
+                        onChange={onChange}
                         disabled={!editable}
+                        name={`${namePrefix}.name`}
                     />
                 </div>
                 {previewOnly ? null : (
@@ -101,7 +85,8 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleChange('cac')}
+                    onChange={onChange}
+                    name={`${namePrefix}.cac`}
                 />
             </div>
             <div>
@@ -111,7 +96,8 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleChange('minimalGrowthCount')}
+                    onChange={onChange}
+                    name={`${namePrefix}.minimalGrowthCount`}
                 />
             </div>
             <div>
@@ -121,7 +107,8 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleChange('growthRate')}
+                    onChange={onChange}
+                    name={`${namePrefix}.growthRate`}
                 />
             </div>
             <div>
@@ -131,7 +118,8 @@ export const PlanCard = (props: PlanCardProps) => {
                     type="number"
                     inputClassName={styles.input}
                     editable={editable}
-                    onChange={handleChange('churnRate')}
+                    onChange={onChange}
+                    name={`${namePrefix}.churnRate`}
                 />
             </div>
             <div>

@@ -1,17 +1,19 @@
 import React from 'react';
 
-import {initialProject} from '../../../contexts/SourceDataContext';
-import {useSourceData} from '../../../hooks/useSourceData';
+import _ from 'lodash';
+
+import {Project} from '../../../business/types';
+import {OnProjectChangeArgs} from '../../../types/common';
 
 import styles from './GuessGeneralForm.module.css';
 
 type GuessGeneralFormProps = {
+    project: Project;
+    onChange: (event: OnProjectChangeArgs) => void;
     previewOnly?: boolean;
 };
 
-export const GuessGeneralForm = (_props: GuessGeneralFormProps) => {
-    const {sourceData, setSourceData} = useSourceData();
-    const project = sourceData.project || initialProject;
+export const GuessGeneralForm = ({project, onChange}: GuessGeneralFormProps) => {
     return (
         <div className={styles.container}>
             <div>
@@ -20,8 +22,9 @@ export const GuessGeneralForm = (_props: GuessGeneralFormProps) => {
                     type="number"
                     min={1}
                     max={36}
-                    value={sourceData.period}
-                    onChange={(e) => setSourceData({...sourceData, period: Number(e.target.value)})}
+                    value={_.get(project, 'sourceData.period')}
+                    name="sourceData.period"
+                    onChange={onChange}
                 />
             </div>
             <div>
@@ -30,39 +33,28 @@ export const GuessGeneralForm = (_props: GuessGeneralFormProps) => {
                     <span>projectId:</span>
                     <input
                         type="text"
-                        value={project.id}
-                        onChange={(e) =>
-                            setSourceData({
-                                ...sourceData,
-                                project: {...project, id: e.target.value},
-                            })
-                        }
+                        value={_.get(project, 'projectData.id')}
+                        name="projectData.id"
+                        onChange={onChange}
+                        disabled
                     />
                 </div>
                 <div>
                     <span>projectName:</span>
                     <input
                         type="text"
-                        value={project.name}
-                        onChange={(e) =>
-                            setSourceData({
-                                ...sourceData,
-                                project: {...project, name: e.target.value},
-                            })
-                        }
+                        value={_.get(project, 'projectData.name')}
+                        name="projectData.name"
+                        onChange={onChange}
                     />
                 </div>
                 <div>
                     <span>projectDescription:</span>
                     <input
                         type="text"
-                        value={project.description}
-                        onChange={(e) =>
-                            setSourceData({
-                                ...sourceData,
-                                project: {...project, description: e.target.value},
-                            })
-                        }
+                        value={_.get(project, 'projectData.description')}
+                        name="projectData.description"
+                        onChange={onChange}
                     />
                 </div>
             </div>
