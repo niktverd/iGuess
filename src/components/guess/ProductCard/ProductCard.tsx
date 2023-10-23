@@ -4,6 +4,7 @@ import {Box, Check, Pencil} from '@gravity-ui/icons';
 
 import {Product} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
+import { CardBase } from '../../CardBase/CardBase';
 import {CardField} from '../CardField/CardField';
 
 import styles from './ProductCard.module.css';
@@ -46,7 +47,7 @@ export const ProductCard = ({
     );
 
     return (
-        <div className={styles.container}>
+        <CardBase>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <Box />
@@ -134,6 +135,6 @@ export const ProductCard = ({
                     onChange={onChange}
                 />
             </div>
-        </div>
+        </CardBase>
     );
 };

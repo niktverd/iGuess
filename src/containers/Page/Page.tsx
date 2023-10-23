@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type {NextPage} from 'next';
+import {signOut, useSession} from 'next-auth/react';
 import Link from 'next/link';
 
 import styles from './Page.module.css';
@@ -10,6 +11,7 @@ type PageProps = {
 } & React.PropsWithChildren;
 
 export const Page: NextPage<PageProps> = ({hideNavigation = false, children}: PageProps) => {
+    const session = useSession();
     return (
         <div className={styles.container}>
             {!hideNavigation && (
@@ -27,7 +29,7 @@ export const Page: NextPage<PageProps> = ({hideNavigation = false, children}: Pa
                         <li className={styles['nav-item']}>Donate</li>
                         <li className={styles['nav-item']}>Payments</li>
                         <li className={styles['nav-item']}>
-                            <Link href="/api/auth/signin">Sign In</Link>
+                            {session.status === 'authenticated' ? <Link href="/" onClick={() => signOut()}>Sign out</Link> : <Link href="/api/auth/signin">Sign In</Link>}
                         </li>
                     </ul>
                 </div>

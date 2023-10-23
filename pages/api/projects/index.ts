@@ -3,13 +3,13 @@ import type {NextApiRequest, NextApiResponse} from 'next';
 import {uuid} from 'uuidv4';
 
 import db from '../../../configs/firebase';
-import {Project, SourceData} from '../../../src/business/types';
+import {Project} from '../../../src/business/types';
 import {initialProject} from '../../../src/contexts/ProjectsContext';
 import {DataBase} from '../../../src/types/api';
 import {obtainToken, writeProjectToDataBase} from '../../../src/utils/api';
 import {deepCopy} from '../../../src/utils/json';
 
-async function getProjectList(req: NextApiRequest, res: NextApiResponse<DataBase<SourceData[]>>) {
+async function getProjectList(req: NextApiRequest, res: NextApiResponse<DataBase<Project[]>>) {
     const tokenId = await obtainToken(req, res);
 
     const guessCollectionRef = collection(db, 'guesses');
@@ -25,7 +25,7 @@ async function getProjectList(req: NextApiRequest, res: NextApiResponse<DataBase
     res.json({
         ok: true,
         message: 'Success',
-        data: docSnaps.docs.map((docEnt) => docEnt.data() as SourceData),
+        data: docSnaps.docs.map((docEnt) => docEnt.data() as Project),
     });
 }
 async function getProjectById(req: NextApiRequest, res: NextApiResponse<DataBase<Project | null>>) {

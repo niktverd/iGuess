@@ -12,6 +12,7 @@
     font-size: 120%;
     padding: 0px 10px;
     width: 100%;
+    text-wrap: wrap;
 }
 
 .input-container {
@@ -38,10 +39,35 @@
     background-color: rgb(200 200 200 / 0.3);
 }
 
+.button-container:disabled {
+    background-color: rgb(200 200 200 / 0.3);
+    color: rgb(200 200 200 / 0.5);
+}
+
 .high-z-index {
     z-index: 2;
 }
 
 .low-z-index {
     z-index: 1;
+}
+
+.description-container {
+    margin-top: 12px;
+}
+
+.description {
+    max-width: 100%;
+    text-wrap: wrap;
+    overflow: hidden;
+    color: rgb(200 200 200 / 0.8);
+    font-size: 80%;
+    margin-top: 10px;
+}
+
+.actions-container {
+    display: flex;
+    flex-grow: 1;
+    align-items: flex-end;
+    justify-content: flex-end;
 }

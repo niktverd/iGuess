@@ -107,12 +107,16 @@ export const GuessLayout = ({
                 <NavButton text="Products" onClick={() => setSection(Section.Products)} />
                 <NavButton text="Plans" onClick={() => setSection(Section.Plans)} />
                 <hr />
+                {previewOnly ? null :
+                <React.Fragment>
                 <NavButton
                     text={isDirty ? 'Save' : 'Saved'}
                     onClick={saveProject}
                     disabled={!isDirty}
                 />
                 <hr />
+                </React.Fragment>
+            }
                 <NavButton text="Sign Out" onClick={() => signOut()} />
             </div>
             <div className={styles['section']}>

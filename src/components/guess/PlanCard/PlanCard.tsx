@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 
 import {Check, Pencil, Shapes3} from '@gravity-ui/icons';
 
-import {Project} from '../../../business/types';
-import {Plan} from '../../../business/types/plans';
+import {Plan, Project} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
+import { CardBase } from '../../CardBase/CardBase';
 import {CardField} from '../CardField/CardField';
 import {CardSelector} from '../CardSelector/CardSelector';
 
@@ -48,7 +48,7 @@ export const PlanCard = (props: PlanCardProps) => {
     };
 
     return (
-        <div className={styles.container}>
+        <CardBase>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <Shapes3 />
@@ -153,6 +153,6 @@ export const PlanCard = (props: PlanCardProps) => {
                     source="products"
                 />
             </div>
-        </div>
+        </CardBase>
     );
 };

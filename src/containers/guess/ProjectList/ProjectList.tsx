@@ -1,10 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 
+import _ from 'lodash';
 import {useRouter} from 'next/router';
 
 import {Project} from '../../../business/types';
 import {PopupContainer} from '../../../components/PopupContainer/PopupContainer';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
+import { ProjectCard } from '../../../components/guess/ProjectCard/ProjectCard';
+import { OnProjectChangeArgs } from '../../../types/common';
+import { isEvent } from '../../../utils/typeguards';
 
 import styles from './ProjectList.module.css';
 
@@ -24,6 +28,22 @@ export const ProjectList = (_props: ProjectListProps) => {
             setProjects(json.data);
         }
     }, []);
+
+    const updateProject = useCallback(async (prjctId: string) => {
+        const prjct = projects.find((prj) => prj.projectData.id === prjctId);
+        if (!prjct) {
+            return;
+        }
+
+        await fetch('/api/configs/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(prjct)
+        });
+        fetchProjects();
+    }, [fetchProjects, projects]);
 
     const addProject = useCallback(async () => {
         const response = await fetch('/api/projects', {
@@ -50,6 +70,24 @@ export const ProjectList = (_props: ProjectListProps) => {
         router.push(`/protected/guess/${projectId}`);
     }, [projectId, router]);
 
+    const onChange = useCallback(
+        (entry: OnProjectChangeArgs) => {
+            if (!projects) {
+                return;
+            }
+
+            if (isEvent(entry)) {
+                const {name: path, value} = entry.target;
+                setProjects([...(_.set(projects, path, value) as Project[])]);
+                return;
+            } else {
+                const {path, value} = entry;
+                setProjects([...(_.set(projects, path, value) as Project[])]);
+            }
+        },
+        [projects],
+    );
+
     return (
         <div className={styles.container}>
             {projectId ? (
@@ -62,12 +100,14 @@ export const ProjectList = (_props: ProjectListProps) => {
             ) : null}
             <div>
                 <h1>Projects</h1>
-                <button onClick={fetchProjects}>update</button>
             </div>
             <div className={styles.list}>
-                {projects.map((prjct, index) => (
-                    <div key={prjct.projectData?.id + index}>{prjct.projectData?.id}</div>
-                ))}
+                {projects.map((prjct, index) => {
+                    const namePrefix = `[${index}].projectData`;
+                    return (
+                    
+                    <ProjectCard {...prjct.projectData} key={prjct.projectData.id} onChange={onChange} namePrefix={namePrefix} updateProject={updateProject}/>
+                )})}
                 <AddCard placeholder="Create new project" onClick={addProject} />
             </div>
         </div>
