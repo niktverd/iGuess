@@ -29,7 +29,13 @@ export const Page: NextPage<PageProps> = ({hideNavigation = false, children}: Pa
                         <li className={styles['nav-item']}>Donate</li>
                         <li className={styles['nav-item']}>Payments</li>
                         <li className={styles['nav-item']}>
-                            {session.status === 'authenticated' ? <Link href="/" onClick={() => signOut()}>Sign out</Link> : <Link href="/api/auth/signin">Sign In</Link>}
+                            {session.status === 'authenticated' ? (
+                                <Link href="/" onClick={() => signOut()}>
+                                    Sign out
+                                </Link>
+                            ) : (
+                                <Link href="/api/auth/signin">Sign In</Link>
+                            )}
                         </li>
                     </ul>
                 </div>

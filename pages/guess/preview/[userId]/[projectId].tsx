@@ -25,18 +25,13 @@ const Guess: NextPage = () => {
         }
     }, [projectId, userId]);
 
-    const saveProject = useCallback(async () => {
-        
-    }, []);
+    const saveProject = useCallback(async () => {}, []);
 
     useEffect(() => {
         getProject();
     }, [getProject]);
 
-    const onChange = useCallback(
-        (_entry: OnProjectChangeArgs) => {},
-        [],
-    );
+    const onChange = useCallback((_entry: OnProjectChangeArgs) => {}, []);
 
     return (
         <Page>

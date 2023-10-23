@@ -4,7 +4,7 @@ import {Box, Check, Pencil} from '@gravity-ui/icons';
 
 import {Product} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
-import { CardBase } from '../../CardBase/CardBase';
+import {CardBase} from '../../CardBase/CardBase';
 import {CardField} from '../CardField/CardField';
 
 import styles from './ProductCard.module.css';

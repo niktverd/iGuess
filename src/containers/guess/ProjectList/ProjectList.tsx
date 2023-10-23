@@ -6,9 +6,9 @@ import {useRouter} from 'next/router';
 import {Project} from '../../../business/types';
 import {PopupContainer} from '../../../components/PopupContainer/PopupContainer';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
-import { ProjectCard } from '../../../components/guess/ProjectCard/ProjectCard';
-import { OnProjectChangeArgs } from '../../../types/common';
-import { isEvent } from '../../../utils/typeguards';
+import {ProjectCard} from '../../../components/guess/ProjectCard/ProjectCard';
+import {OnProjectChangeArgs} from '../../../types/common';
+import {isEvent} from '../../../utils/typeguards';
 
 import styles from './ProjectList.module.css';
 
@@ -29,21 +29,24 @@ export const ProjectList = (_props: ProjectListProps) => {
         }
     }, []);
 
-    const updateProject = useCallback(async (prjctId: string) => {
-        const prjct = projects.find((prj) => prj.projectData.id === prjctId);
-        if (!prjct) {
-            return;
-        }
+    const updateProject = useCallback(
+        async (prjctId: string) => {
+            const prjct = projects.find((prj) => prj.projectData.id === prjctId);
+            if (!prjct) {
+                return;
+            }
 
-        await fetch('/api/configs/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(prjct)
-        });
-        fetchProjects();
-    }, [fetchProjects, projects]);
+            await fetch('/api/configs/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(prjct),
+            });
+            fetchProjects();
+        },
+        [fetchProjects, projects],
+    );
 
     const addProject = useCallback(async () => {
         const response = await fetch('/api/projects', {
@@ -105,9 +108,15 @@ export const ProjectList = (_props: ProjectListProps) => {
                 {projects.map((prjct, index) => {
                     const namePrefix = `[${index}].projectData`;
                     return (
-                    
-                    <ProjectCard {...prjct.projectData} key={prjct.projectData.id} onChange={onChange} namePrefix={namePrefix} updateProject={updateProject}/>
-                )})}
+                        <ProjectCard
+                            {...prjct.projectData}
+                            key={prjct.projectData.id}
+                            onChange={onChange}
+                            namePrefix={namePrefix}
+                            updateProject={updateProject}
+                        />
+                    );
+                })}
                 <AddCard placeholder="Create new project" onClick={addProject} />
             </div>
         </div>
