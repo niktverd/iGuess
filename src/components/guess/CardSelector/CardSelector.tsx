@@ -42,7 +42,8 @@ export const CardSelector = ({
 
     const list = useMemo(
         () =>
-            sourceData[source].filter((p) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (sourceData[source] as any[]).filter((p) => {
                 if (p.id === currentCard.id) {
                     return false;
                 }
@@ -68,7 +69,8 @@ export const CardSelector = ({
     };
 
     const items = useMemo(() => {
-        return sourceData[source]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return (sourceData[source] as any[])
             .filter((item) => {
                 return value?.includes(item.id);
             })
