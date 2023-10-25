@@ -3,7 +3,7 @@ import React, {SetStateAction, useState} from 'react';
 import {SessionProvider} from 'next-auth/react';
 import type {AppProps} from 'next/app';
 
-import type {SourceData} from '../src/contexts/SourceDataContext';
+import {SourceData} from '../src/business/types';
 import {SourceDataContext, initialSourceData} from '../src/contexts/SourceDataContext';
 import useStorage from '../src/hooks/useStorage';
 
