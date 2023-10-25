@@ -133,7 +133,9 @@ export const CardSelector = ({
                 <div className={s['selected-list-container']}>
                     {items.map((selectedId) => {
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        const foundItem = (sourceData[source] as any[]).find((item) => item.id === selectedId);
+                        const foundItem = (sourceData[source] as any[]).find(
+                            (item) => item.id === selectedId,
+                        );
                         if (!foundItem) {
                             return null;
                         }
