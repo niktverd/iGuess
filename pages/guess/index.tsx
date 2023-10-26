@@ -75,7 +75,6 @@ const Guess: NextPage = () => {
 
     return (
         <Page>
-            process.env.FIREBASE_PRIVATE_KEY: {process.env.FIREBASE_PRIVATE_KEY}
             {project ? (
                 <GuessLayout
                     getProject={getProject}
