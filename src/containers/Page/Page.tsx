@@ -27,7 +27,9 @@ export const Page: NextPage<PageProps> = ({hideNavigation = false, children}: Pa
                             <Link href="/protected/guess">Projects</Link>
                         </li>
                         <li className={styles['nav-item']}>Donate</li>
-                        <li className={styles['nav-item']}>Payments</li>
+                        <li className={styles['nav-item']}>
+                            <Link href="/payments">Payments</Link>
+                        </li>
                         <li className={styles['nav-item']}>
                             {session.status === 'authenticated' ? (
                                 <Link href="/" onClick={() => signOut()}>
