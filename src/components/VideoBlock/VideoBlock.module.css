@@ -1,0 +1,65 @@
+.container {
+    width: 100%;
+    height: 100vh;
+
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.video-container {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.video {
+    width: 100%;
+}
+
+.big-content,
+.small-content,
+.content {
+    z-index: 2;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .big-content {
+    justify-content: center;
+}
+
+.small-content {
+    justify-content: left;
+} */
+
+.big-title {
+    font-size: 126px;
+}
+
+.small-title {
+    font-size: 36px;
+}
+
+.big-subtitle {
+    font-size: 36px;
+}
+
+.small-subtitle {
+    font-size: 18px;
+}
+
+.big-title,
+.big-subtitle,
+.small-title,
+.small-subtitle {
+    transition: all 1s ease-in-out;
+}
