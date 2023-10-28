@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 
 import {ChartMixed, Check, Pencil, TrashBin} from '@gravity-ui/icons';
 import _, {flatten, omit, reverse, uniq, zip} from 'lodash';
+import numeral from 'numeral';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
 import {Project, ViewConfig} from '../../../business/types';
@@ -183,9 +184,11 @@ export const Chart = ({
                         dataKey="month"
                         type="category"
                         tick={true}
-                        tickFormatter={(_value: string, index: number) => (index + 1).toString()}
+                        tickFormatter={(_value: string, index: number) => index % 2 ? (index + 1).toString(): ''}
                     />
-                    <YAxis />
+                    <YAxis
+                        tickFormatter={(value) => numeral(value).format('0a')}
+                    />
 
                     <Tooltip
                         trigger="hover"
