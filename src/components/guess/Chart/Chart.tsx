@@ -184,11 +184,11 @@ export const Chart = ({
                         dataKey="month"
                         type="category"
                         tick={true}
-                        tickFormatter={(_value: string, index: number) => index % 2 ? (index + 1).toString(): ''}
+                        tickFormatter={(_value: string, index: number) =>
+                            index % 2 ? (index + 1).toString() : ''
+                        }
                     />
-                    <YAxis
-                        tickFormatter={(value) => numeral(value).format('0a')}
-                    />
+                    <YAxis tickFormatter={(value) => numeral(value).format('0a')} />
 
                     <Tooltip
                         trigger="hover"
