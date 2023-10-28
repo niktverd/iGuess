@@ -2,7 +2,7 @@ import {calculateTeam} from './capex';
 import {updateProductSales} from './product';
 import {summary} from './summary';
 import {calculateTotal} from './total';
-import {ProductName, SourceData} from './types';
+import {ProductName, Project, SourceData} from './types';
 import {PlanName} from './types/plans';
 import {calculateCosts, correctUsers, updateUsers} from './user';
 
@@ -79,7 +79,7 @@ export const getInitialReport = (source: SourceData): Report => {
 
 export type GetReportResponse = Report;
 
-export const getReport = (source: SourceData): GetReportResponse[] => {
+export const getReport = (source: SourceData, project: Project): GetReportResponse[] => {
     const report = getInitialReport(source);
     const periods = [];
     const productIds = source.products.map((product) => product.id);
@@ -89,17 +89,17 @@ export const getReport = (source: SourceData): GetReportResponse[] => {
             report.byProduct[productId].cost = 0;
             report.byProduct[productId].profit = 0;
             report.byProduct[productId].salesCount = 0;
-            report.team.blueColors = 0;
-            report.team.whiteColors = 0;
-            report.team.blueColorsSalary = 0;
-            report.team.whiteColorsSalary = 0;
+            report.team.executors = 0;
+            report.team.managers = 0;
+            report.team.executorsSalary = 0;
+            report.team.managersSalary = 0;
         }
         updateUsers({report, month, source});
         correctUsers({report, month, source});
         calculateCosts({report, month, source});
         updateProductSales({report, month, source});
         calculateTotal({report, source});
-        calculateTeam({report, month, source});
+        calculateTeam({report, month, source, projectData: project.projectData});
         summary({report, source});
         periods.push(JSON.parse(JSON.stringify({...report, month})));
     }

@@ -1,8 +1,9 @@
 import React, {useCallback, useState} from 'react';
 
 import {Box, Check, Pencil} from '@gravity-ui/icons';
+import _ from 'lodash';
 
-import {Product} from '../../../business/types';
+import {Product, Project} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
 import {CardField} from '../CardField/CardField';
@@ -13,6 +14,7 @@ type ProductCardProps = Product & {
     onChange: (event: OnProjectChangeArgs) => void;
     namePrefix: string;
     previewOnly?: boolean;
+    project: Project;
 };
 
 export const ProductCard = ({
@@ -20,14 +22,16 @@ export const ProductCard = ({
     name,
     cost = 0,
     profit = 0,
-    frequency = 1,
+    frequency = 100,
     price = 0,
     staff,
     previewOnly,
     namePrefix,
     onChange,
+    project,
 }: ProductCardProps) => {
     const [editable, setEditable] = useState(false);
+    const currency = _.get(project, 'projectData.currency') || '';
 
     const onChangeSpecial = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +94,7 @@ export const ProductCard = ({
                     inputClassName={styles.input}
                     editable={editable}
                     onChange={onChangeSpecial}
+                    unit={currency}
                 />
             </div>
             <div>
@@ -100,6 +105,7 @@ export const ProductCard = ({
                     type="number"
                     inputClassName={styles.input}
                     editable={false}
+                    unit={currency}
                 />
             </div>
             <div>
@@ -111,6 +117,7 @@ export const ProductCard = ({
                     inputClassName={styles.input}
                     editable={editable}
                     onChange={onChangeSpecial}
+                    unit={currency}
                 />
             </div>
             <div>
@@ -122,6 +129,7 @@ export const ProductCard = ({
                     inputClassName={styles.input}
                     editable={editable}
                     onChange={onChange}
+                    unit={'%'}
                 />
             </div>
             <div>

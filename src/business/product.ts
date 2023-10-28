@@ -25,7 +25,9 @@ export const updateProductSales = ({report, source}: UpdateEarningsArgs) => {
             if (!product) {
                 continue;
             }
-            const salesCountByProduct = Math.ceil(product.frequency * report.byPlan[key].users);
+            const salesCountByProduct = Math.ceil(
+                (product.frequency * report.byPlan[key].users) / 100,
+            );
             const profitByProduct = product.profit * salesCountByProduct;
             const costByProduct = product.cost * salesCountByProduct;
             const revenueByProduct =

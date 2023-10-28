@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 
 import {uuid} from 'uuidv4';
 
-import {Product} from '../../../business/types';
+import {Product, Project} from '../../../business/types';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
 import {ProductCard} from '../../../components/guess/ProductCard/ProductCard';
 import {initialProduct} from '../../../contexts/SourceDataContext';
@@ -14,9 +14,15 @@ type GuessProductListProps = {
     products: Product[];
     onChange: (event: OnProjectChangeArgs) => void;
     previewOnly?: boolean;
+    project: Project;
 };
 
-export const GuessProductList = ({products, onChange, previewOnly}: GuessProductListProps) => {
+export const GuessProductList = ({
+    products,
+    onChange,
+    previewOnly,
+    project,
+}: GuessProductListProps) => {
     const addProduct = useCallback(() => {
         onChange({
             path: 'sourceData.products',
@@ -37,6 +43,7 @@ export const GuessProductList = ({products, onChange, previewOnly}: GuessProduct
                             previewOnly={previewOnly}
                             namePrefix={namePrefix}
                             onChange={onChange}
+                            project={project}
                         />
                     );
                 })}

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {Check, Clock, Pencil} from '@gravity-ui/icons';
+import {Check, FileDollar, Pencil} from '@gravity-ui/icons';
 import _ from 'lodash';
 
 import {Project} from '../../../business/types';
@@ -8,29 +8,29 @@ import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
 import {CardField} from '../CardField/CardField';
 
-import styles from './PeriodCard.module.css';
+import styles from './SalariesCard.module.css';
 
-type PeriodCardProps = {
+type SalariesCardProps = {
     onChange: (event: OnProjectChangeArgs) => void;
     previewOnly?: boolean;
     project: Project;
 };
 
-export const PeriodCard = (props: PeriodCardProps) => {
+export const SalariesCard = (props: SalariesCardProps) => {
     const {previewOnly, onChange, project} = props;
     const [editable, setEditable] = useState(false);
-    const periodUnits = _.get(project, 'projectData.periodUnits') || '';
+    const currency = _.get(project, 'projectData.currency') || '';
 
     return (
         <CardBase>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
-                    <Clock />
+                    <FileDollar />
                 </div>
                 <div className={styles['input-container']}>
                     <input
                         type="text"
-                        value={`Period${periodUnits ? `, ${periodUnits}` : ''}`}
+                        value={`Salary${currency ? `, ${currency}` : ''}`}
                         className={styles.input}
                         onChange={onChange}
                         disabled={true}
@@ -46,15 +46,23 @@ export const PeriodCard = (props: PeriodCardProps) => {
                 )}
             </div>
             <CardField
-                label="Period"
-                value={_.get(project, 'sourceData.period')}
+                label="Executors"
+                value={_.get(project, 'projectData.executorsSalary') || 1000}
                 type="number"
                 inputClassName={styles.input}
                 editable={editable}
                 onChange={onChange}
-                name={`sourceData.period`}
-                min={1}
-                max={36}
+                name={`projectData.executorsSalary`}
+            />
+
+            <CardField
+                label="Managers"
+                value={_.get(project, 'projectData.managersSalary') || 2000}
+                type="number"
+                inputClassName={styles.input}
+                editable={editable}
+                onChange={onChange}
+                name={`projectData.managersSalary`}
             />
         </CardBase>
     );

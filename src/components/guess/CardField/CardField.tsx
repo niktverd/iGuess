@@ -6,6 +6,7 @@ type CardFieldProps = {
     value: string | number;
     type: string;
     name: string;
+    unit?: string;
     label?: string;
     min?: number;
     max?: number;
@@ -17,6 +18,7 @@ type CardFieldProps = {
 
 export const CardField = ({
     label = '',
+    unit = '',
     value,
     onChange,
     inputClassName,
@@ -30,7 +32,10 @@ export const CardField = ({
     return (
         <div className={`${s.container} ${inputContainerClassName}`}>
             <label className={s.label}>
-                <div className={s['label-text']}>{label}</div>
+                <div className={s['label-text']}>
+                    {label}
+                    {unit ? `, ${unit}` : ''}
+                </div>
                 <div>{type}</div>
             </label>
             <input

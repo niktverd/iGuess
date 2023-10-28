@@ -48,8 +48,8 @@ export const GuessLayout = ({
         }
 
         // eslint-disable-next-line no-console
-        setData(getReport(sourceData));
-    }, [section, sourceData]);
+        setData(getReport(sourceData, project));
+    }, [project, section, sourceData]);
 
     const handleAddChart = () => {
         onChange({
@@ -128,6 +128,7 @@ export const GuessLayout = ({
                         previewOnly={previewOnly}
                         products={project.sourceData.products}
                         onChange={onChange}
+                        project={project}
                     />
                 ) : null}
                 {section === Section.Plans ? (

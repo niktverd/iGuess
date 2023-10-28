@@ -19,7 +19,7 @@ export const updateUsers = ({report, source}: UpdateUsersArgs) => {
             ? report.byPlan[plan.sourceOfUserAqcusition].users
             : report.byPlan[key].users;
 
-        let usersDiff = Math.ceil(sourceData * plan.growthRate || plan.minimalGrowthCount);
+        let usersDiff = Math.ceil((sourceData * plan.growthRate) / 100 || plan.minimalGrowthCount);
         if (usersDiff < plan.minimalGrowthCount) {
             usersDiff = plan.minimalGrowthCount;
         }
@@ -38,7 +38,7 @@ export const correctUsers = ({report, source}: UpdateUsersArgs) => {
             return;
         }
 
-        const churn = Math.floor(report.byPlan[key].users * plan.churnRate);
+        const churn = Math.floor((report.byPlan[key].users * plan.churnRate) / 100);
         // eslint-disable-next-line no-param-reassign
         report.byPlan[key].users -= churn;
 

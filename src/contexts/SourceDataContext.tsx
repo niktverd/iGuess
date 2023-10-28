@@ -10,7 +10,7 @@ export const initialProduct: Product = {
     profit: 0,
     cost: 0,
     price: 0,
-    frequency: 1,
+    frequency: 100,
     staff: 1,
 };
 
@@ -19,7 +19,7 @@ export const initialPlan: Plan = {
     name: 'Plan',
     cac: 1,
     minimalGrowthCount: 100,
-    growthRate: 0.1,
+    growthRate: 10,
     churnRate: 0,
     sourceOfUserAqcusition: null,
     availableProducts: [],
@@ -29,6 +29,10 @@ export const initialProjectData: ProjectData = {
     id: uuid(),
     name: '',
     description: '',
+    executorsSalary: 1000,
+    managersSalary: 2000,
+    currency: '',
+    periodUnits: '',
 };
 
 export const initialSourceData: SourceData = {

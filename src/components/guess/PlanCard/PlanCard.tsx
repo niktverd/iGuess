@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import {Check, Pencil, Shapes3} from '@gravity-ui/icons';
+import _ from 'lodash';
 
 import {Plan, Project} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
@@ -33,6 +34,7 @@ export const PlanCard = (props: PlanCardProps) => {
         project,
     } = props;
     const [editable, setEditable] = useState(false);
+    const currency = _.get(project, 'projectData.currency') || '';
     const handleSourceOfUserAcqusitionChange = (ids: Array<string>) => {
         onChange({
             path: `${namePrefix}.sourceOfUserAqcusition`,
@@ -90,6 +92,7 @@ export const PlanCard = (props: PlanCardProps) => {
                     editable={editable}
                     onChange={onChange}
                     name={`${namePrefix}.cac`}
+                    unit={currency}
                 />
             </div>
             <div>
@@ -112,6 +115,7 @@ export const PlanCard = (props: PlanCardProps) => {
                     editable={editable}
                     onChange={onChange}
                     name={`${namePrefix}.growthRate`}
+                    unit="%"
                 />
             </div>
             <div>
@@ -123,6 +127,7 @@ export const PlanCard = (props: PlanCardProps) => {
                     editable={editable}
                     onChange={onChange}
                     name={`${namePrefix}.churnRate`}
+                    unit="%"
                 />
             </div>
             <div>

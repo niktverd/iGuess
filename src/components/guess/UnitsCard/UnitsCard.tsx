@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {Check, Clock, Pencil} from '@gravity-ui/icons';
+import {Check, Gear, Pencil} from '@gravity-ui/icons';
 import _ from 'lodash';
 
 import {Project} from '../../../business/types';
@@ -8,32 +8,32 @@ import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
 import {CardField} from '../CardField/CardField';
 
-import styles from './PeriodCard.module.css';
+import styles from './UnitsCard.module.css';
 
-type PeriodCardProps = {
+type UnitsCardProps = {
     onChange: (event: OnProjectChangeArgs) => void;
     previewOnly?: boolean;
     project: Project;
 };
 
-export const PeriodCard = (props: PeriodCardProps) => {
+export const UnitsCard = (props: UnitsCardProps) => {
     const {previewOnly, onChange, project} = props;
     const [editable, setEditable] = useState(false);
-    const periodUnits = _.get(project, 'projectData.periodUnits') || '';
 
     return (
         <CardBase>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
-                    <Clock />
+                    <Gear />
                 </div>
                 <div className={styles['input-container']}>
                     <input
                         type="text"
-                        value={`Period${periodUnits ? `, ${periodUnits}` : ''}`}
+                        value={'Units'}
                         className={styles.input}
                         onChange={onChange}
                         disabled={true}
+                        // name={`${namePrefix}.name`}
                     />
                 </div>
                 {previewOnly ? null : (
@@ -47,14 +47,22 @@ export const PeriodCard = (props: PeriodCardProps) => {
             </div>
             <CardField
                 label="Period"
-                value={_.get(project, 'sourceData.period')}
-                type="number"
+                value={_.get(project, 'projectData.periodUnits') || ''}
+                type="text"
                 inputClassName={styles.input}
                 editable={editable}
                 onChange={onChange}
-                name={`sourceData.period`}
-                min={1}
-                max={36}
+                name={`projectData.periodUnits`}
+            />
+
+            <CardField
+                label="Currency"
+                value={_.get(project, 'projectData.currency') || ''}
+                type="text"
+                inputClassName={styles.input}
+                editable={editable}
+                onChange={onChange}
+                name={`projectData.currency`}
             />
         </CardBase>
     );
