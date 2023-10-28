@@ -7,6 +7,8 @@ type CardFieldProps = {
     type: string;
     name: string;
     label?: string;
+    min?: number;
+    max?: number;
     inputContainerClassName?: string;
     inputClassName?: string;
     editable?: boolean;
@@ -22,6 +24,8 @@ export const CardField = ({
     type = 'text',
     inputContainerClassName,
     name,
+    min,
+    max,
 }: CardFieldProps) => {
     return (
         <div className={`${s.container} ${inputContainerClassName}`}>
@@ -33,6 +37,8 @@ export const CardField = ({
                 type={type}
                 name={name}
                 value={value}
+                min={min}
+                max={max}
                 className={`${s.input} ${inputClassName}`}
                 onChange={onChange}
                 disabled={!editable}

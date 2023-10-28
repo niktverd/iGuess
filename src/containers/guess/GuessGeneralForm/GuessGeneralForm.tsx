@@ -3,6 +3,8 @@ import React from 'react';
 import _ from 'lodash';
 
 import {Project} from '../../../business/types';
+import {PeriodCard} from '../../../components/guess/PeriodCard/PeriodCard';
+import {ProjectDetailsCard} from '../../../components/guess/ProjectDetailsCard/ProjectDetailsCard';
 import {OnProjectChangeArgs} from '../../../types/common';
 
 import styles from './GuessGeneralForm.module.css';
@@ -13,51 +15,11 @@ type GuessGeneralFormProps = {
     previewOnly?: boolean;
 };
 
-export const GuessGeneralForm = ({project, onChange}: GuessGeneralFormProps) => {
+export const GuessGeneralForm = ({project, onChange, previewOnly}: GuessGeneralFormProps) => {
     return (
         <div className={styles.container}>
-            <div>
-                <span>Period:</span>
-                <input
-                    type="number"
-                    min={1}
-                    max={36}
-                    value={_.get(project, 'sourceData.period')}
-                    name="sourceData.period"
-                    onChange={onChange}
-                />
-            </div>
-            <div>
-                Project
-                <div>
-                    <span>projectId:</span>
-                    <input
-                        type="text"
-                        value={_.get(project, 'projectData.id')}
-                        name="projectData.id"
-                        onChange={onChange}
-                        disabled
-                    />
-                </div>
-                <div>
-                    <span>projectName:</span>
-                    <input
-                        type="text"
-                        value={_.get(project, 'projectData.name')}
-                        name="projectData.name"
-                        onChange={onChange}
-                    />
-                </div>
-                <div>
-                    <span>projectDescription:</span>
-                    <input
-                        type="text"
-                        value={_.get(project, 'projectData.description')}
-                        name="projectData.description"
-                        onChange={onChange}
-                    />
-                </div>
-            </div>
+            <PeriodCard onChange={onChange} project={project} previewOnly={previewOnly} />
+            <ProjectDetailsCard onChange={onChange} project={project} previewOnly={previewOnly} />
         </div>
     );
 };
