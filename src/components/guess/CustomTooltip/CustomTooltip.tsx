@@ -2,16 +2,15 @@ import React from 'react';
 
 import numeral from 'numeral';
 
-import {Plan, Product} from '../../../business/types';
-import {useSourceData} from '../../../hooks/useSourceData';
+import {Plan, Product, Project} from '../../../business/types';
 
 import s from './CustomTooltip.module.css';
 
 export type CustomTooltipProps = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CustomTooltip = ({active, payload, contentStyle}: any) => {
-    const {sourceData} = useSourceData();
+export const CustomTooltip = ({active, payload, contentStyle, project}: any) => {
+    const {sourceData} = project as Project;
 
     if (active && payload && payload.length) {
         const plans = sourceData.plans.reduce((acc, plan) => {

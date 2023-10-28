@@ -4,7 +4,7 @@ import {ChartMixed, Check, Pencil, TrashBin} from '@gravity-ui/icons';
 import _, {flatten, omit, reverse, uniq, zip} from 'lodash';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
-import {ViewConfig} from '../../../business/types';
+import {Project, ViewConfig} from '../../../business/types';
 import {flattenObject} from '../../../business/utils';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
 import {randomHex} from '../../utils/common';
@@ -17,6 +17,7 @@ type ReportType = {[key: string]: number | ReportType};
 type ChartProps = {
     title?: string;
     description?: string;
+    project: Project;
     reportData: ReportType[];
     viewConfigOptions?: ViewConfig['options'];
     previewOnly?: boolean;
@@ -30,6 +31,7 @@ export const Chart = ({
     title: titleExternal,
     description: descriptionExternal,
     reportData,
+    project,
     viewConfigOptions = {},
     previewOnly = false,
     saveViewConfig,
@@ -188,7 +190,7 @@ export const Chart = ({
                     <Tooltip
                         trigger="hover"
                         contentStyle={{backgroundColor: 'rgb(0 0 0 / 0.7)'}}
-                        content={<CustomTooltip />}
+                        content={<CustomTooltip project={project} />}
                     />
                     <CartesianGrid stroke="#050505aa" />
                     {uniq(dataKeys).map((dk) => {
@@ -226,6 +228,7 @@ export const Chart = ({
                                               onSelect={handleSelectorSelection}
                                               index={index}
                                               selected={options[index]?.includes(pc)}
+                                              project={project}
                                           />
                                       );
                                   })}
@@ -246,6 +249,7 @@ export const Chart = ({
                               onSelect={handleSelectorSelection}
                               onSelectAxis={handleParameterAxisSelection}
                               selected={options[selectors.length]?.includes(pc)}
+                              project={project}
                           />
                       ))
                     : null}

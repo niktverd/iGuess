@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useSourceData} from '../../hooks/useSourceData';
+import {Project} from '../../business/types';
 
 import styles from './ParameterControls.module.css';
 
@@ -12,6 +12,7 @@ type ParameterControlsProps = {
     onSelect: (key: string, index?: number) => () => void;
     onSelectAxis?: (key: string, step: number) => () => void;
     selected?: boolean;
+    project: Project;
 };
 
 export const ParameterControls = ({
@@ -22,8 +23,9 @@ export const ParameterControls = ({
     onSelectAxis,
     selected = false,
     index = 0,
+    project,
 }: ParameterControlsProps) => {
-    const {sourceData} = useSourceData();
+    const {sourceData} = project;
     return (
         <div className={`${styles.container} ${selected ? styles['container-selected'] : ''}`}>
             <button className={styles.button} onClick={onSelect(paramKey, index)}>

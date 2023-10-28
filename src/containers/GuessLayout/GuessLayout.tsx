@@ -131,6 +131,7 @@ export const GuessLayout = ({
                                 <Chart
                                     key={index}
                                     reportData={data}
+                                    project={project}
                                     title={viewConfig.title}
                                     description={viewConfig.description}
                                     onChangeTitle={onChangeTitle(index)}
