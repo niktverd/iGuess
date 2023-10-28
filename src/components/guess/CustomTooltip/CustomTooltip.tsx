@@ -1,5 +1,7 @@
 import React from 'react';
 
+import numeral from 'numeral';
+
 import {Plan, Product} from '../../../business/types';
 import {useSourceData} from '../../../hooks/useSourceData';
 
@@ -49,7 +51,9 @@ export const CustomTooltip = ({active, payload, contentStyle}: any) => {
                             key={pl.name}
                             style={{color: pl.color}}
                             className={s.label}
-                        >{`${newLabel.join(' ')} : ${payload[index].value}`}</p>
+                        >{`${newLabel.join(' ')} : ${numeral(payload[index].value).format(
+                            '0.0a',
+                        )}`}</p>
                     );
                 })}
             </div>
