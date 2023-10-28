@@ -8,29 +8,45 @@ import styles from './Page.module.css';
 
 type PageProps = {
     hideNavigation?: boolean;
+    selectedKey?: string;
 } & React.PropsWithChildren;
 
-export const Page: NextPage<PageProps> = ({hideNavigation = false, children}: PageProps) => {
+const getItemClass = (className: string, selected: boolean) => {
+    if (selected) {
+        return `${className} ${styles.selected}`;
+    }
+    return className;
+};
+
+export const Page: NextPage<PageProps> = ({
+    hideNavigation = false,
+    children,
+    selectedKey,
+}: PageProps) => {
     const session = useSession();
     return (
         <div className={styles.container}>
             {!hideNavigation && (
                 <div className={styles.navigation}>
                     <ul className={styles['nav-list']}>
-                        <li className={styles['nav-item']}>
+                        <li className={getItemClass(styles['nav-item'], selectedKey === 'home')}>
                             <Link href="/">Home</Link>
                         </li>
-                        <li className={styles['nav-item']}>
+                        <li className={getItemClass(styles['nav-item'], selectedKey === 'guess')}>
                             <Link href="/guess">Demo</Link>
                         </li>
-                        <li className={styles['nav-item']}>
+                        <li
+                            className={getItemClass(styles['nav-item'], selectedKey === 'projects')}
+                        >
                             <Link href="/protected/guess">Projects</Link>
                         </li>
-                        <li className={styles['nav-item']}>Donate</li>
-                        <li className={styles['nav-item']}>
+                        {/* <li className={getItemClass(styles['nav-item'], selectedKey === 'donate')}>Donate</li> */}
+                        <li
+                            className={getItemClass(styles['nav-item'], selectedKey === 'payments')}
+                        >
                             <Link href="/payments">Payments</Link>
                         </li>
-                        <li className={styles['nav-item']}>
+                        <li className={getItemClass(styles['nav-item'], selectedKey === '')}>
                             {session.status === 'authenticated' ? (
                                 <Link href="/" onClick={() => signOut()}>
                                     Sign out

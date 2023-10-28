@@ -9,7 +9,7 @@ import {ProjectList} from '../../../src/containers/guess/ProjectList/ProjectList
 
 const Tasks: NextPage = () => {
     return (
-        <Page>
+        <Page selectedKey="projects">
             <ProjectList />
         </Page>
     );

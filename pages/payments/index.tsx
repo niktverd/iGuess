@@ -9,7 +9,7 @@ import {Payments} from '../../src/containers/Payments/Payments';
 
 const PaymentsPage: NextPage = () => {
     return (
-        <Page>
+        <Page selectedKey="payments">
             <Payments />
         </Page>
     );

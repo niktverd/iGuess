@@ -7,7 +7,7 @@ import {Page} from '../src/containers/Page/Page';
 
 const Home: NextPage = () => {
     return (
-        <Page>
+        <Page selectedKey="home">
             <VideoBlock
                 title="Plan your business"
                 subtitle="Sometime bigger/higher does not mean better"

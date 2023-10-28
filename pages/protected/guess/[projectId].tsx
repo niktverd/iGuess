@@ -76,7 +76,7 @@ const Guess: NextPage = () => {
     );
 
     return (
-        <Page>
+        <Page selectedKey="projects">
             {project ? (
                 <GuessLayout
                     getProject={getProject}
