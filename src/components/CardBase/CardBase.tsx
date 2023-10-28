@@ -2,6 +2,10 @@ import React, {PropsWithChildren} from 'react';
 
 import styles from './CardBase.module.css';
 
-export const CardBase = ({children}: PropsWithChildren) => {
-    return <div className={styles.container}>{children}</div>;
+type BaseCardProps = PropsWithChildren<{
+    editable?: boolean;
+}>;
+
+export const CardBase = ({children, editable = false}: BaseCardProps) => {
+    return <div className={`${styles.container} ${editable ? styles.edit : ''}`}>{children}</div>;
 };

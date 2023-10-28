@@ -22,7 +22,7 @@ export const PeriodCard = (props: PeriodCardProps) => {
     const periodUnits = _.get(project, 'projectData.periodUnits') || '';
 
     return (
-        <CardBase>
+        <CardBase editable={editable}>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <Clock />

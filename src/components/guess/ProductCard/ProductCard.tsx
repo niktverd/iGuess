@@ -51,7 +51,7 @@ export const ProductCard = ({
     );
 
     return (
-        <CardBase>
+        <CardBase editable={editable}>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <Box />

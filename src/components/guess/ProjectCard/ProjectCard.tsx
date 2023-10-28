@@ -39,7 +39,7 @@ export const ProjectCard = (props: ProjectCardProps) => {
     }, [initialProjectData, props]);
 
     return (
-        <CardBase>
+        <CardBase editable={editable}>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <FolderTree />

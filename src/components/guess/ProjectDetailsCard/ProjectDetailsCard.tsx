@@ -21,7 +21,7 @@ export const ProjectDetailsCard = (props: ProjectDetailsCardProps) => {
     const [editable, setEditable] = useState(false);
 
     return (
-        <CardBase>
+        <CardBase editable={editable}>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <FolderTree />

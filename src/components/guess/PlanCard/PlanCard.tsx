@@ -50,7 +50,7 @@ export const PlanCard = (props: PlanCardProps) => {
     };
 
     return (
-        <CardBase>
+        <CardBase editable={editable}>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <Shapes3 />

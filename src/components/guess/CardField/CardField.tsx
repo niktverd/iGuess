@@ -30,7 +30,7 @@ export const CardField = ({
     max,
 }: CardFieldProps) => {
     return (
-        <div className={`${s.container} ${inputContainerClassName}`}>
+        <div className={`${s.container} ${inputContainerClassName} ${editable ? s.edit : ''}`}>
             <label className={s.label}>
                 <div className={s['label-text']}>
                     {label}

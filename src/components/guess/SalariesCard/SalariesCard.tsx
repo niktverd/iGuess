@@ -22,7 +22,7 @@ export const SalariesCard = (props: SalariesCardProps) => {
     const currency = _.get(project, 'projectData.currency') || '';
 
     return (
-        <CardBase>
+        <CardBase editable={editable}>
             <div className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <FileDollar />
