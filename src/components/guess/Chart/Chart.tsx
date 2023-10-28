@@ -5,7 +5,7 @@ import _, {flatten, omit, reverse, uniq, zip} from 'lodash';
 import numeral from 'numeral';
 import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
-import {Project, ViewConfig} from '../../../business/types';
+import {Project} from '../../../business/types';
 import {flattenObject} from '../../../business/utils';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
@@ -22,9 +22,7 @@ type ChartProps = {
     namePrefix: string;
     project: Project;
     reportData: ReportType[];
-    viewConfigOptions?: ViewConfig['options'];
     previewOnly?: boolean;
-    saveViewConfig?: (config: Record<string, string[]>) => void;
     handleDeleteChart?: () => void;
     onChangeTitle?: (value: string) => void;
     onChangeDescription?: (value: string) => void;
@@ -34,17 +32,14 @@ type ChartProps = {
 export const Chart = ({
     reportData,
     project,
-    viewConfigOptions = {},
     previewOnly = false,
-    saveViewConfig,
     handleDeleteChart,
     onChange,
     namePrefix,
 }: ChartProps) => {
     const [graphHeight] = useState(300);
     const [editable, setEditable] = useState(false);
-    const [axisByParameter, setAxisByParameter] = useState<Record<string, number>>({});
-    const [options, setOptions] = useState<Record<string, string[]>>(viewConfigOptions);
+    const options = _.get(project, `${namePrefix}.options`) || {};
 
     const handleChange =
         !previewOnly && editable
@@ -53,42 +48,6 @@ export const Chart = ({
                   onChange(event);
               }
             : undefined;
-
-    const handleSelectorSelection = (planName: string, index?: number) => () => {
-        if (!index && index !== 0) {
-            return;
-        }
-
-        if (Array.isArray(options[index])) {
-            if (options[index].includes(planName)) {
-                const newOption = {
-                    ...options,
-                    [index]: options[index].filter((opt) => opt !== planName),
-                };
-                setOptions(newOption);
-                saveViewConfig?.(newOption);
-            } else {
-                const newOption = {...options, [index]: uniq([...options[index], planName])};
-                setOptions(newOption);
-                saveViewConfig?.(newOption);
-            }
-        } else {
-            const newOption = {...options, [index]: [planName]};
-            setOptions(newOption);
-            saveViewConfig?.(newOption);
-        }
-    };
-
-    const handleParameterAxisSelection = (paramName: string, step: number) => () => {
-        let value =
-            typeof axisByParameter[paramName] === 'number' ? axisByParameter[paramName] + step : 0;
-
-        if (value < 0) {
-            value = 0;
-        }
-
-        setAxisByParameter({...axisByParameter, [paramName]: value});
-    };
 
     const dataKeys = [];
     const optionsEntries = (Object.entries(options) as unknown) as [string, string[]];
@@ -192,16 +151,13 @@ export const Chart = ({
                     />
                     <CartesianGrid stroke="#050505aa" />
                     {uniq(dataKeys).map((dk) => {
-                        const splitedDK = dk.split('.');
-                        const axisRef = splitedDK[splitedDK.length - 1];
-                        const axisId = axisByParameter[axisRef];
                         return (
                             <Line
                                 key={dk}
                                 type="monotone"
                                 dataKey={dk}
                                 stroke={randomHex({min: 150})}
-                                yAxisId={axisId || 0}
+                                // yAxisId={0}
                             />
                         );
                     })}
@@ -221,12 +177,10 @@ export const Chart = ({
                                           <ParameterControls
                                               key={pc}
                                               paramKey={pc}
-                                              axis={axisByParameter[pc]}
-                                              text={pc}
-                                              onSelect={handleSelectorSelection}
                                               index={index}
-                                              selected={options[index]?.includes(pc)}
                                               project={project}
+                                              namePrefix={`${namePrefix}`}
+                                              onChange={onChange}
                                           />
                                       );
                                   })}
@@ -241,13 +195,10 @@ export const Chart = ({
                           <ParameterControls
                               key={pc}
                               paramKey={pc}
-                              axis={axisByParameter[pc]}
-                              text={pc}
                               index={selectors.length}
-                              onSelect={handleSelectorSelection}
-                              onSelectAxis={handleParameterAxisSelection}
-                              selected={options[selectors.length]?.includes(pc)}
                               project={project}
+                              namePrefix={`${namePrefix}`}
+                              onChange={onChange}
                           />
                       ))
                     : null}

@@ -1,48 +1,61 @@
 import React from 'react';
 
+import _ from 'lodash';
+
 import {Project} from '../../business/types';
+import {OnProjectChangeArgs} from '../../types/common';
 
 import styles from './ParameterControls.module.css';
 
 type ParameterControlsProps = {
     paramKey: string;
-    text: string;
-    axis: number;
+    namePrefix: string;
     index: number;
-    onSelect: (key: string, index?: number) => () => void;
-    onSelectAxis?: (key: string, step: number) => () => void;
-    selected?: boolean;
     project: Project;
+    onChange: (event: OnProjectChangeArgs) => void;
 };
 
 export const ParameterControls = ({
-    axis = 0,
-    text,
     paramKey,
-    onSelect,
-    onSelectAxis,
-    selected = false,
     index = 0,
+    namePrefix,
     project,
+    onChange,
 }: ParameterControlsProps) => {
+    const path = `${namePrefix}.options.${index}`;
     const {sourceData} = project;
+    const temp = false;
+    const destArray = _.get(project, path) || ([] as string[]);
+    const selected = destArray.includes(paramKey);
+    const handleSelect = () => {
+        if (selected) {
+            const value = [...destArray].filter((param) => param !== paramKey);
+            onChange({value, path});
+        } else {
+            const value = [...destArray, paramKey];
+            onChange({value, path});
+        }
+    };
+
     return (
         <div className={`${styles.container} ${selected ? styles['container-selected'] : ''}`}>
-            <button className={styles.button} onClick={onSelect(paramKey, index)}>
+            <button className={styles.button} onClick={handleSelect}>
                 <div className={`${styles.circle} ${selected ? styles['circles-selected'] : ''}`} />
-                {sourceData.plans.find((p) => p.id === text)?.name ||
-                    sourceData.products.find((p) => p.id === text)?.name ||
-                    text}
+                {sourceData.plans.find((p) => p.id === paramKey)?.name ||
+                    sourceData.products.find((p) => p.id === paramKey)?.name ||
+                    paramKey}
             </button>
-            {onSelectAxis ? (
+            {temp ? (
                 <div className={styles.axis}>
-                    <button className={styles['axis-selector']} onClick={onSelectAxis(paramKey, 1)}>
+                    {/* <button className={styles['axis-selector']} onClick={onSelectAxis(paramKey, 1)}> */}
+                    <button className={styles['axis-selector']} onClick={() => {}}>
                         +
                     </button>
-                    <span className={styles['axis-selector-label']}>{axis}</span>
+                    <span className={styles['axis-selector-label']}>{'axis'}</span>
                     <button
                         className={styles['axis-selector']}
-                        onClick={onSelectAxis(paramKey, -1)}
+                        onClick={() => {}}
+                        // onClick={onSelectAxis(paramKey, -1)}
                     >
                         -
                     </button>

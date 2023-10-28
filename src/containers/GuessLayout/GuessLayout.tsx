@@ -1,11 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {CirclePlusFill} from '@gravity-ui/icons';
-import {memoize} from 'lodash';
 import {signOut} from 'next-auth/react';
 
 import {GetReportResponse, getReport} from '../../business/report';
-import {Project, ViewConfig} from '../../business/types';
+import {Project} from '../../business/types';
 import {NavButton} from '../../components/NavButton/NavButton';
 import {Chart} from '../../components/guess/Chart/Chart';
 import {OnProjectChangeArgs} from '../../types/common';
@@ -52,20 +51,6 @@ export const GuessLayout = ({
         setData(getReport(sourceData));
     }, [section, sourceData]);
 
-    const saveViewConfig = useCallback(
-        (index: number) =>
-            memoize((config: Record<string, string[]>) => {
-                const newConfig = JSON.parse(JSON.stringify(viewConfigs));
-                newConfig[index].options = JSON.parse(JSON.stringify(config));
-                onChange({
-                    path: `viewConfigs[${index}].options`,
-                    value: config,
-                });
-            }),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [viewConfigs],
-    );
-
     const handleAddChart = () => {
         onChange({
             path: `viewConfigs`,
@@ -108,11 +93,7 @@ export const GuessLayout = ({
             <div className={styles['section']}>
                 {section === Section.Overview && data ? (
                     <div>
-                        {viewConfigs.map((viewConfig, index) => {
-                            const getConfig = memoize((vc: ViewConfig[], i) => {
-                                return vc[i].options;
-                            });
-
+                        {viewConfigs.map((_viewConfig, index) => {
                             return (
                                 <Chart
                                     onChange={onChange}
@@ -120,8 +101,6 @@ export const GuessLayout = ({
                                     key={index}
                                     reportData={data}
                                     project={project}
-                                    saveViewConfig={saveViewConfig(index)}
-                                    viewConfigOptions={getConfig(viewConfigs, index)}
                                     handleDeleteChart={handleDeleteChart(index)}
                                     previewOnly={previewOnly}
                                 />
