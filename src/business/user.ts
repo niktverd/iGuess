@@ -26,7 +26,7 @@ export const updateUsers = ({report, source}: UpdateUsersArgs) => {
 
         /* eslint-disable no-param-reassign */
         report.byPlan[key].usersDiff = usersDiff;
-        report.byPlan[key].users += usersDiff;
+        report.byPlan[key].users = Number(report.byPlan[key].users) + Number(usersDiff);
         /* eslint-enable no-param-reassign */
     });
 };
