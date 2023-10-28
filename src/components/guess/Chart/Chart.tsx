@@ -7,6 +7,7 @@ import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAx
 
 import {Project, ViewConfig} from '../../../business/types';
 import {flattenObject} from '../../../business/utils';
+import {OnProjectChangeArgs} from '../../../types/common';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
 import {randomHex} from '../../utils/common';
 import {CustomTooltip} from '../CustomTooltip/CustomTooltip';
@@ -18,6 +19,7 @@ type ReportType = {[key: string]: number | ReportType};
 type ChartProps = {
     title?: string;
     description?: string;
+    namePrefix: string;
     project: Project;
     reportData: ReportType[];
     viewConfigOptions?: ViewConfig['options'];
@@ -26,42 +28,29 @@ type ChartProps = {
     handleDeleteChart?: () => void;
     onChangeTitle?: (value: string) => void;
     onChangeDescription?: (value: string) => void;
+    onChange: (event: OnProjectChangeArgs) => void;
 };
 
 export const Chart = ({
-    title: titleExternal,
-    description: descriptionExternal,
     reportData,
     project,
     viewConfigOptions = {},
     previewOnly = false,
     saveViewConfig,
     handleDeleteChart,
-    onChangeTitle,
-    onChangeDescription,
+    onChange,
+    namePrefix,
 }: ChartProps) => {
-    const [title, setTitle] = useState('Chart #1');
-    const [description, setDescription] = useState('-');
     const [graphHeight] = useState(300);
     const [editable, setEditable] = useState(false);
     const [axisByParameter, setAxisByParameter] = useState<Record<string, number>>({});
     const [options, setOptions] = useState<Record<string, string[]>>(viewConfigOptions);
 
-    const handleTitleChange =
+    const handleChange =
         !previewOnly && editable
-            ? (event: React.ChangeEvent<HTMLInputElement>) => {
-                  setTitle(event.target.value);
-                  onChangeTitle?.(event.target.value);
-              }
-            : undefined;
-
-    const handleDescriptionChange =
-        !previewOnly && editable
-            ? // React.FormEvent<HTMLDivElement>
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
               (event: any) => {
-                  setDescription(event.target.innerTex || '-');
-                  onChangeDescription?.(event.target.innerText || '-');
+                  onChange(event);
               }
             : undefined;
 
@@ -93,6 +82,7 @@ export const Chart = ({
     const handleParameterAxisSelection = (paramName: string, step: number) => () => {
         let value =
             typeof axisByParameter[paramName] === 'number' ? axisByParameter[paramName] + step : 0;
+
         if (value < 0) {
             value = 0;
         }
@@ -144,10 +134,11 @@ export const Chart = ({
                 <div className={s['input-container']}>
                     <input
                         type="text"
-                        value={titleExternal || title}
+                        value={_.get(project, `${namePrefix}.title`)}
                         className={s.input}
-                        onChange={handleTitleChange}
+                        onChange={handleChange}
                         disabled={!editable}
+                        name={`${namePrefix}.title`}
                     />
                 </div>
                 {editable && handleDeleteChart ? (
@@ -165,13 +156,17 @@ export const Chart = ({
                 )}
             </div>
             <div className={s['input-container']}>
-                <div
-                    className={s.textarea}
-                    onInput={handleDescriptionChange}
-                    contentEditable={editable}
-                >
-                    {descriptionExternal || description}
-                </div>
+                {editable ? (
+                    <textarea
+                        value={_.get(project, `${namePrefix}.description`)}
+                        onChange={handleChange}
+                        name={`${namePrefix}.description`}
+                    />
+                ) : (
+                    <div className={s.textarea}>
+                        {_.get(project, `${namePrefix}.description`) || '-'}
+                    </div>
+                )}
             </div>
             <ResponsiveContainer width="100%" height={graphHeight}>
                 <LineChart

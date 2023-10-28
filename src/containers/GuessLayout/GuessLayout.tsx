@@ -85,20 +85,6 @@ export const GuessLayout = ({
         });
     };
 
-    const onChangeTitle = (index: number) => (value: string) => {
-        onChange({
-            path: `viewConfigs[${index}].title`,
-            value: value,
-        });
-    };
-
-    const onChangeDescription = (index: number) => (value: string) => {
-        onChange({
-            path: `viewConfigs[${index}].description`,
-            value: value,
-        });
-    };
-
     return (
         <div className={styles.container}>
             <div className={styles['main-navigation']}>
@@ -129,13 +115,11 @@ export const GuessLayout = ({
 
                             return (
                                 <Chart
+                                    onChange={onChange}
+                                    namePrefix={`viewConfigs[${index}]`}
                                     key={index}
                                     reportData={data}
                                     project={project}
-                                    title={viewConfig.title}
-                                    description={viewConfig.description}
-                                    onChangeTitle={onChangeTitle(index)}
-                                    onChangeDescription={onChangeDescription(index)}
                                     saveViewConfig={saveViewConfig(index)}
                                     viewConfigOptions={getConfig(viewConfigs, index)}
                                     handleDeleteChart={handleDeleteChart(index)}
