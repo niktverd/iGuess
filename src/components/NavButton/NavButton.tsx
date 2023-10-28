@@ -1,16 +1,21 @@
 import React from 'react';
 
-import styles from './NavButton.module.css';
+import s from './NavButton.module.css';
 
 type NavButtonProps = {
     text: string;
+    selected?: boolean;
     onClick?: () => void;
     disabled?: boolean;
 };
 
-export const NavButton = ({text, onClick, disabled = false}: NavButtonProps) => {
+export const NavButton = ({text, onClick, disabled = false, selected = false}: NavButtonProps) => {
     return (
-        <button className={styles.container} onClick={onClick} disabled={disabled}>
+        <button
+            className={`${s.container} ${selected ? s.selected : ''}`}
+            onClick={onClick}
+            disabled={disabled}
+        >
             {text}
         </button>
     );

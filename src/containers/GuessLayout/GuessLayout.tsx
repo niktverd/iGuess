@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
 import {CirclePlusFill} from '@gravity-ui/icons';
-import {signOut} from 'next-auth/react';
 
 import {GetReportResponse, getReport} from '../../business/report';
 import {Project} from '../../business/types';
@@ -73,10 +72,26 @@ export const GuessLayout = ({
     return (
         <div className={styles.container}>
             <div className={styles['main-navigation']}>
-                <NavButton text="Overview" onClick={() => setSection(Section.Overview)} />
-                <NavButton text="General" onClick={() => setSection(Section.General)} />
-                <NavButton text="Products" onClick={() => setSection(Section.Products)} />
-                <NavButton text="Plans" onClick={() => setSection(Section.Plans)} />
+                <NavButton
+                    text="Overview"
+                    onClick={() => setSection(Section.Overview)}
+                    selected={section === Section.Overview}
+                />
+                <NavButton
+                    text="General"
+                    onClick={() => setSection(Section.General)}
+                    selected={section === Section.General}
+                />
+                <NavButton
+                    text="Products"
+                    onClick={() => setSection(Section.Products)}
+                    selected={section === Section.Products}
+                />
+                <NavButton
+                    text="Plans"
+                    onClick={() => setSection(Section.Plans)}
+                    selected={section === Section.Plans}
+                />
                 <hr />
                 {previewOnly ? null : (
                     <React.Fragment>
@@ -88,7 +103,6 @@ export const GuessLayout = ({
                         <hr />
                     </React.Fragment>
                 )}
-                <NavButton text="Sign Out" onClick={() => signOut()} />
             </div>
             <div className={styles['section']}>
                 {section === Section.Overview && data ? (
