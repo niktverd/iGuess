@@ -1,0 +1,32 @@
+.container {
+    width: auto;
+
+    display: flex;
+    flex-direction: row;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+    border: 2px solid rgb(255 255 255 / 1);
+    font-size: 24px;
+    padding: 12px 24px;
+    margin-right: 16px;
+    border-radius: 8px;
+    min-width: 200px;
+    text-align: center;
+}
+
+.container:hover {
+    background-color: rgb(255 255 255 / 0.4);
+}
+
+.container:disabled {
+    color: rgb(255 255 255 / 0.4);
+}
+
+.selected {
+    background-color: rgb(255 255 255 / 0.1);
+}
+
+.primary {
+    background-color: rgb(255 255 255 / 0.3);
+}

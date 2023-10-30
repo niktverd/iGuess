@@ -5,13 +5,13 @@ import s from './VideoBlock.module.css';
 type VideoBlockProps = {
     title: string;
     subtitle: string;
-    // text: string;
-    // onClick: () => void;
+    startBlur?: number;
+    endBlur?: number;
 };
 
-export const VideoBlock = ({title, subtitle}: VideoBlockProps) => {
+export const VideoBlock = ({title, subtitle, startBlur = 10, endBlur = 90}: VideoBlockProps) => {
     const [progress, setProgress] = useState(0);
-    const trigger = progress < 10 || progress > 70;
+    const trigger = progress < startBlur || progress > endBlur;
     const styles = {
         filter: trigger ? 'blur(16px)' : undefined,
     };
