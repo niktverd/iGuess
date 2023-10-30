@@ -41,11 +41,11 @@ export const Page: NextPage<PageProps> = ({
                             <Link href="/protected/guess">Projects</Link>
                         </li>
                         {/* <li className={getItemClass(styles['nav-item'], selectedKey === 'donate')}>Donate</li> */}
-                        <li
+                        {/* <li
                             className={getItemClass(styles['nav-item'], selectedKey === 'payments')}
                         >
                             <Link href="/payments">Payments</Link>
-                        </li>
+                        </li> */}
                         <li className={getItemClass(styles['nav-item'], selectedKey === '')}>
                             {session.status === 'authenticated' ? (
                                 <Link href="/" onClick={() => signOut()}>

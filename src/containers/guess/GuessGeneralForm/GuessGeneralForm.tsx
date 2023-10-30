@@ -20,8 +20,8 @@ type GuessGeneralFormProps = {
 export const GuessGeneralForm = ({project, onChange, previewOnly}: GuessGeneralFormProps) => {
     return (
         <div className={styles.container}>
-            <PeriodCard onChange={onChange} project={project} previewOnly={previewOnly} />
             <ProjectDetailsCard onChange={onChange} project={project} previewOnly={previewOnly} />
+            <PeriodCard onChange={onChange} project={project} previewOnly={previewOnly} />
             <SalariesCard onChange={onChange} project={project} previewOnly={previewOnly} />
             <UnitsCard onChange={onChange} project={project} previewOnly={previewOnly} />
         </div>
