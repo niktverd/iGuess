@@ -12,6 +12,7 @@ import styles from './ProductCard.module.css';
 
 type ProductCardProps = Product & {
     onChange: (event: OnProjectChangeArgs) => void;
+    onFinishEdit?: () => void;
     namePrefix: string;
     previewOnly?: boolean;
     project: Project;
@@ -27,8 +28,9 @@ export const ProductCard = ({
     staff,
     previewOnly,
     namePrefix,
-    onChange,
     project,
+    onChange,
+    onFinishEdit,
 }: ProductCardProps) => {
     const [editable, setEditable] = useState(false);
     const currency = _.get(project, 'projectData.currency') || '';
@@ -69,7 +71,12 @@ export const ProductCard = ({
                 {previewOnly ? null : (
                     <button
                         className={styles['button-container']}
-                        onClick={() => setEditable(!editable)}
+                        onClick={() => {
+                            if (editable) {
+                                onFinishEdit?.();
+                            }
+                            setEditable(!editable);
+                        }}
                     >
                         {editable ? <Check /> : <Pencil />}
                     </button>
