@@ -13,6 +13,7 @@ import styles from './PlanCard.module.css';
 
 type PlanCardProps = Plan & {
     onChange: (event: OnProjectChangeArgs) => void;
+    onFinishEdit?: () => void;
     namePrefix: string;
     previewOnly?: boolean;
     project: Project;
@@ -29,9 +30,10 @@ export const PlanCard = (props: PlanCardProps) => {
         sourceOfUserAqcusition,
         availableProducts,
         previewOnly,
-        onChange,
         namePrefix,
         project,
+        onChange,
+        onFinishEdit,
     } = props;
     const [editable, setEditable] = useState(false);
     const currency = _.get(project, 'projectData.currency') || '';
@@ -68,7 +70,12 @@ export const PlanCard = (props: PlanCardProps) => {
                 {previewOnly ? null : (
                     <button
                         className={styles['button-container']}
-                        onClick={() => setEditable(!editable)}
+                        onClick={() => {
+                            if (editable) {
+                                onFinishEdit?.();
+                            }
+                            setEditable(!editable);
+                        }}
                     >
                         {editable ? <Check /> : <Pencil />}
                     </button>
