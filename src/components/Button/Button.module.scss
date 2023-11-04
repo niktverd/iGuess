@@ -28,6 +28,28 @@
     background-color: rgb(255 255 255 / 0.1);
 }
 
+.highlighted,
 .primary {
     background-color: rgb(255 255 255 / 0.3);
+}
+
+.clear {
+    border: none;
+    background: none;
+}
+
+.highlighted {
+    border: none;
+}
+
+.size-s {
+    font-size: 15px;
+}
+
+.size-m {
+    font-size: 24px;
+}
+
+.size-l {
+    font-size: 36px;
 }

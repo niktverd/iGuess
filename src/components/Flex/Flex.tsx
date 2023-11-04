@@ -6,22 +6,27 @@ import s from './Flex.module.scss';
 
 type FlexProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
     direction?: 'row' | 'column';
+    grow?: number;
+    gap?: 's' | 'm' | 'l';
 };
 
 export const Flex: NextPage<FlexProps> = ({
     direction = 'row',
     children,
+    grow,
+    gap,
     className = undefined,
     ...props
 }: FlexProps) => {
     const classes = useMemo(() => {
-        return [className, s.display, direction === 'column' ? s.column : s.row]
+        const gapClassName = gap ? s[`gap-${gap}`] : undefined;
+        return [className, s.display, direction === 'column' ? s.column : s.row, gapClassName]
             .filter(Boolean)
             .join(' ');
-    }, [className, direction]);
+    }, [className, direction, gap]);
 
     return (
-        <div {...props} className={classes}>
+        <div {...props} className={classes} style={{flexGrow: grow}}>
             {children}
         </div>
     );

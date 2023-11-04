@@ -9,8 +9,9 @@ type ButtonProps = {
     selected?: boolean;
     onClick?: () => void;
     disabled?: boolean;
-    view: 'primary' | 'secondary';
-    url: string;
+    view: 'primary' | 'secondary' | 'clear' | 'highlighted';
+    url?: string;
+    size?: 's' | 'm' | 'l';
 };
 
 export const Button = ({
@@ -20,16 +21,23 @@ export const Button = ({
     disabled = false,
     selected = false,
     view = 'secondary',
+    size = 'm',
 }: ButtonProps) => {
-    return (
-        <Link href={url}>
-            <button
-                className={`${s.container} ${selected ? s.selected : ''} ${s[view]}`}
-                onClick={onClick}
-                disabled={disabled}
-            >
-                {text}
-            </button>
-        </Link>
+    const buttonContent = (
+        <button
+            className={`${s.container} ${selected ? s.selected : ''} ${s[view]} ${
+                size ? s[`size-${size}`] : ''
+            }`}
+            onClick={onClick}
+            disabled={disabled}
+        >
+            {text}
+        </button>
     );
+
+    if (!url) {
+        return buttonContent;
+    }
+
+    return <Link href={url}>{buttonContent}</Link>;
 };

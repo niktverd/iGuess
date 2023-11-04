@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {Fragment, useCallback, useEffect, useState} from 'react';
 
 import _ from 'lodash';
 
 import {Project} from '../../business/types';
 import {Flex} from '../../components/Flex/Flex';
 import {PlanCard} from '../../components/guess/PlanCard/PlanCard';
+import {Example} from '../../containers/Example/Example';
 import {initialProject} from '../../contexts/ProjectsContext';
 import useStorage from '../../hooks/useStorage';
-import {OnProjectChangeArgs} from '../../types/common';
+import {DrawOrder, OnProjectChangeArgs} from '../../types/common';
 import {isEvent} from '../../utils/typeguards';
 import {appVersion} from '../../version';
 import {VideoBlock} from '../VideoBlock/VideoBlock';
@@ -29,6 +30,7 @@ type PlanBlockProps = {
     };
     // text: string;
     // onClick: () => void;
+    drawOrder?: DrawOrder;
 };
 
 const savedProjectKey = `prjct-${appVersion}`;
@@ -38,12 +40,17 @@ export const PlanBlock = ({
     subtitle,
     // mainButton,
     // secondaryButton,
+    drawOrder = 'direct',
     ...rest
 }: PlanBlockProps) => {
     const [project, setProject] = useState<Project | null>(initialProject);
     const {setItem, getItem} = useStorage();
 
     const getProject = useCallback(async () => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
         try {
             const prjct = JSON.parse(getItem(savedProjectKey, 'local'));
 
@@ -85,27 +92,27 @@ export const PlanBlock = ({
         [project],
     );
 
+    const videoExample = <VideoBlock {...rest} title="" subtitle="" endBlur={100} startBlur={0} />;
+    const realExample = (
+        <Fragment>
+            <div>Try it right here</div>
+            {plan ? (
+                <PlanCard
+                    {...plan}
+                    project={project}
+                    namePrefix="sourceData.plans.0"
+                    onChange={onChange}
+                    onFinishEdit={saveProject}
+                />
+            ) : null}
+        </Fragment>
+    );
     return (
         <Flex className={s.container}>
-            <div className={s.video}>
-                <VideoBlock {...rest} title="" subtitle="" endBlur={100} startBlur={0} />
-            </div>
-            <Flex direction="column" className={s.content}>
+            <Example videoExample={videoExample} realExample={realExample} drawOrder={drawOrder}>
                 <h2 className={s.title}>{title}</h2>
                 <p className={s.subtitle}>{subtitle}</p>
-            </Flex>
-            <Flex direction="column" className={s['try-zone']}>
-                <div>Try it right here</div>
-                {plan ? (
-                    <PlanCard
-                        {...plan}
-                        project={project}
-                        namePrefix="sourceData.plans.0"
-                        onChange={onChange}
-                        onFinishEdit={saveProject}
-                    />
-                ) : null}
-            </Flex>
+            </Example>
         </Flex>
     );
 };

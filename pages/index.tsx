@@ -17,7 +17,16 @@ const Home: NextPage = () => {
                 mainButton={{text: 'Create Project', url: '/protected/guess'}}
                 secondaryButton={{text: 'Demo', url: '/guess'}}
             />
-            <PlanBlock title="Create Plan" subtitle="Try to change plan parameters" />
+            <PlanBlock
+                drawOrder="direct"
+                title="Create Plan"
+                subtitle="Try to change plan parameters"
+            />
+            <PlanBlock
+                drawOrder="reverse"
+                title="Create Plan"
+                subtitle="Try to change plan parameters"
+            />
             <ProductBlock title="Create Product" subtitle="Try to change product parameters" />
             <PlanBlock title="Add Product to Plan" subtitle="Try to change plan parameters" />
             <VideoBlock

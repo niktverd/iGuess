@@ -8,3 +8,5 @@ export type SelectorArgs = {
 };
 
 export type OnProjectChangeArgs = ChangeEvent<HTMLInputElement> | SelectorArgs;
+
+export type DrawOrder = 'direct' | 'reverse';

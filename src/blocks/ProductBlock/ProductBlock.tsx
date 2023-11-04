@@ -44,6 +44,10 @@ export const ProductBlock = ({
     const {setItem, getItem} = useStorage();
 
     const getProject = useCallback(async () => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
         try {
             const prjct = JSON.parse(getItem(savedProjectKey, 'local'));
 
