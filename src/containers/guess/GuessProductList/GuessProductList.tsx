@@ -3,12 +3,13 @@ import React, {useCallback} from 'react';
 import {uuid} from 'uuidv4';
 
 import {Product, Project} from '../../../business/types';
+import {Flex} from '../../../components/Flex/Flex';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
 import {ProductCard} from '../../../components/guess/ProductCard/ProductCard';
 import {initialProduct} from '../../../contexts/SourceDataContext';
 import {OnProjectChangeArgs} from '../../../types/common';
 
-import styles from './GuessProductList.module.css';
+import styles from './GuessProductList.module.scss';
 
 type GuessProductListProps = {
     products: Product[];
@@ -32,8 +33,8 @@ export const GuessProductList = ({
     }, [products]);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.list}>
+        <Flex direction="column" className={styles.container}>
+            <Flex className={styles.list}>
                 {products.map((product, index) => {
                     const namePrefix = `sourceData.products[${index}]`;
                     return (
@@ -50,7 +51,7 @@ export const GuessProductList = ({
                 {previewOnly ? null : (
                     <AddCard onClick={addProduct} placeholder="Add new product" />
                 )}
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 };

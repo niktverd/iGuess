@@ -2,7 +2,9 @@ import React from 'react';
 
 import type {NextPage} from 'next';
 
-import styles from './Breadcrumbs.module.css';
+import {Flex} from '../Flex/Flex';
+
+import styles from './Breadcrumbs.module.scss';
 
 type BreadcrumbsProps = {
     breadcrumbs: {
@@ -13,7 +15,7 @@ type BreadcrumbsProps = {
 
 export const Breadcrumbs: NextPage<BreadcrumbsProps> = ({breadcrumbs}: BreadcrumbsProps) => {
     return (
-        <div className={styles.container}>
+        <Flex className={styles.container}>
             {breadcrumbs.map((bc) => {
                 return (
                     <div key={bc.url} className={styles.breadcrumb}>
@@ -21,6 +23,6 @@ export const Breadcrumbs: NextPage<BreadcrumbsProps> = ({breadcrumbs}: Breadcrum
                     </div>
                 );
             })}
-        </div>
+        </Flex>
     );
 };

@@ -2,7 +2,9 @@ import React from 'react';
 
 import {CirclePlus} from '@gravity-ui/icons';
 
-import styles from './AddCard.module.css';
+import {Flex} from '../../Flex/Flex';
+
+import styles from './AddCard.module.scss';
 
 type AddCardProps = {
     placeholder?: string;
@@ -11,11 +13,11 @@ type AddCardProps = {
 
 export const AddCard = ({placeholder, onClick}: AddCardProps) => {
     return (
-        <div className={styles.container}>
+        <Flex direction="column" className={styles.container}>
             <button className={styles['button-container']} onClick={onClick}>
                 <CirclePlus width={54} height={54} />
             </button>
             {placeholder ? <div className={styles.placeholder}>{placeholder}</div> : null}
-        </div>
+        </Flex>
     );
 };

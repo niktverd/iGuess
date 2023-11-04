@@ -1,6 +1,4 @@
 .container {
-    display: flex;
-    flex-direction: column;
     /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
     flex-wrap: wrap;
 
@@ -12,8 +10,6 @@
 }
 
 .list {
-    display: flex;
-    flex-direction: row;
     /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
     flex-wrap: wrap;
     flex-grow: 1;

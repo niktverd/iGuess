@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import _ from 'lodash';
 
 import {Project} from '../../business/types';
+import {Flex} from '../../components/Flex/Flex';
 import {PlanCard} from '../../components/guess/PlanCard/PlanCard';
 import {initialProject} from '../../contexts/ProjectsContext';
 import useStorage from '../../hooks/useStorage';
@@ -11,7 +12,7 @@ import {isEvent} from '../../utils/typeguards';
 import {appVersion} from '../../version';
 import {VideoBlock} from '../VideoBlock/VideoBlock';
 
-import s from './PlanBlock.module.css';
+import s from './PlanBlock.module.scss';
 
 type PlanBlockProps = {
     title: string;
@@ -85,15 +86,15 @@ export const PlanBlock = ({
     );
 
     return (
-        <div className={s.container}>
+        <Flex className={s.container}>
             <div className={s.video}>
                 <VideoBlock {...rest} title="" subtitle="" endBlur={100} startBlur={0} />
             </div>
-            <div className={s.content}>
-                <h1 className={s.title}>{title}</h1>
+            <Flex direction="column" className={s.content}>
+                <h2 className={s.title}>{title}</h2>
                 <p className={s.subtitle}>{subtitle}</p>
-            </div>
-            <div className={s['try-zone']}>
+            </Flex>
+            <Flex direction="column" className={s['try-zone']}>
                 <div>Try it right here</div>
                 {plan ? (
                     <PlanCard
@@ -104,7 +105,7 @@ export const PlanBlock = ({
                         onFinishEdit={saveProject}
                     />
                 ) : null}
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 };

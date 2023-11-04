@@ -1,6 +1,4 @@
 .container {
-    display: flex;
-    flex-direction: column;
     position: relative;
     width: 100%;
     padding: 15px;
@@ -27,8 +25,6 @@
 }
 
 .search-container {
-    display: flex;
-    flex-direction: row;
     align-items: center;
     margin-top: 12px;
     border: 1px solid rgb(255 255 255 / 0.2);
@@ -50,8 +46,6 @@
 }
 
 .search-list-header-container {
-    display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     color: rgb(222 222 222 / 0.5);
@@ -104,7 +98,6 @@
 }
 
 .selected-list-item {
-    display: flex;
     align-items: center;
     justify-content: space-between;
 }

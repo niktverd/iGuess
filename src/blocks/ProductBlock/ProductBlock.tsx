@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import _ from 'lodash';
 
 import {Project} from '../../business/types';
+import {Flex} from '../../components/Flex/Flex';
 import {ProductCard} from '../../components/guess/ProductCard/ProductCard';
 import {initialProject} from '../../contexts/ProjectsContext';
 import useStorage from '../../hooks/useStorage';
@@ -11,7 +12,7 @@ import {isEvent} from '../../utils/typeguards';
 import {appVersion} from '../../version';
 import {VideoBlock} from '../VideoBlock/VideoBlock';
 
-import s from './ProductBlock.module.css';
+import s from './ProductBlock.module.scss';
 
 type ProductBlockProps = {
     title: string;
@@ -85,8 +86,8 @@ export const ProductBlock = ({
     );
 
     return (
-        <div className={s.container}>
-            <div className={s['try-zone']}>
+        <Flex className={s.container}>
+            <Flex direction="column" className={s['try-zone']}>
                 <div>Try it right here</div>
                 {product ? (
                     <ProductCard
@@ -97,14 +98,14 @@ export const ProductBlock = ({
                         onFinishEdit={saveProject}
                     />
                 ) : null}
-            </div>
-            <div className={s.content}>
-                <h1 className={s.title}>{title}</h1>
+            </Flex>
+            <Flex direction="column" className={s.content}>
+                <h2 className={s.title}>{title}</h2>
                 <p className={s.subtitle}>{subtitle}</p>
-            </div>
+            </Flex>
             <div className={s.video}>
                 <VideoBlock {...rest} title="" subtitle="" endBlur={100} startBlur={0} />
             </div>
-        </div>
+        </Flex>
     );
 };

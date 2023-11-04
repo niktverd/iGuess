@@ -1,6 +1,6 @@
+@import '../../../../styles/mixins.scss';
+
 .container {
-    display: flex;
-    flex-direction: column;
     border-radius: 15px;
     padding: 60px;
     margin: 10px;
@@ -13,8 +13,8 @@
 }
 
 .button-container {
-    display: flex;
-    flex-direction: row;
+    @include displayFlex();
+
     align-items: center;
     justify-content: center;
     /* transition: all 2.5s ease-in-out; */

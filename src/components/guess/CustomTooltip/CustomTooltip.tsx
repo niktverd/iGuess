@@ -4,7 +4,7 @@ import numeral from 'numeral';
 
 import {Plan, Product, Project} from '../../../business/types';
 
-import s from './CustomTooltip.module.css';
+import s from './CustomTooltip.module.scss';
 
 export type CustomTooltipProps = {};
 

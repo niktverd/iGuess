@@ -1,23 +1,23 @@
 .container {
     width: 100%;
-    height: 100vh;
+    height: 50vh;
 
     position: relative;
     overflow: hidden;
-    display: flex;
     align-items: center;
+    justify-content: center;
     border-radius: 32px;
 }
 
 .video-container {
     position: absolute;
     width: 100%;
-    height: 100vh;
+    min-height: 50vh;
     top: 0;
     left: 0;
     z-index: 1;
-    display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .video {
@@ -32,8 +32,6 @@
     position: relative;
     height: 100%;
     width: 100%;
-    display: flex;
-    flex-direction: column;
     align-items: center;
     padding: 24px;
 }

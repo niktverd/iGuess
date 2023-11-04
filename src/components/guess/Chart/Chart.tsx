@@ -8,11 +8,12 @@ import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAx
 import {Project} from '../../../business/types';
 import {flattenObject} from '../../../business/utils';
 import {OnProjectChangeArgs} from '../../../types/common';
+import {Flex} from '../../Flex/Flex';
 import {ParameterControls} from '../../ParameterControls/ParameterControls';
 import {randomHex} from '../../utils/common';
 import {CustomTooltip} from '../CustomTooltip/CustomTooltip';
 
-import s from './Chart.module.css';
+import s from './Chart.module.scss';
 
 type ReportType = {[key: string]: number | ReportType};
 
@@ -86,10 +87,10 @@ export const Chart = ({
 
     return (
         <div className={s['chars-layout']}>
-            <div className={s.header}>
-                <div className={s['icon-container']}>
+            <Flex className={s.header}>
+                <Flex className={s['icon-container']}>
                     <ChartMixed width={36} height={36} />
-                </div>
+                </Flex>
                 <div className={s['input-container']}>
                     <input
                         type="text"
@@ -113,7 +114,7 @@ export const Chart = ({
                         {editable ? <Check /> : <Pencil />}
                     </button>
                 )}
-            </div>
+            </Flex>
             <div className={s['input-container']}>
                 {editable ? (
                     <textarea

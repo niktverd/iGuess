@@ -5,8 +5,10 @@ import {uniq} from 'lodash';
 
 import {Product, Project} from '../../../business/types';
 import {Plan} from '../../../business/types/plans';
+import {Flex} from '../../Flex/Flex';
 
-import s from './CardSelector.module.css';
+import s from './CardSelector.module.scss';
+
 type CardSelectorProps = {
     project: Project;
     value: Array<string>;
@@ -78,13 +80,13 @@ export const CardSelector = ({
     }, [source, sourceData, value]);
 
     return (
-        <div className={`${s.container} ${containerClassName}`}>
+        <Flex direction="column" className={`${s.container} ${containerClassName}`}>
             <label className={s.label}>
                 <div className={s['label-text']}>{label}</div>
                 <div>{type}</div>
             </label>
             {editable && (
-                <div className={s['search-container']}>
+                <Flex className={s['search-container']}>
                     <input
                         type={type}
                         value={query}
@@ -97,12 +99,12 @@ export const CardSelector = ({
                     <div>
                         <Magnifier />
                     </div>
-                </div>
+                </Flex>
             )}
             {editable && showList && (
                 <div className={s['search-list-container']}>
                     <div className={s['search-list']}>
-                        <div className={s['search-list-header-container']}>
+                        <Flex className={s['search-list-header-container']}>
                             <div>
                                 {list.length ? `Found ${list.length} items` : 'No items were found'}
                             </div>
@@ -112,7 +114,7 @@ export const CardSelector = ({
                             >
                                 <CircleXmark />
                             </button>
-                        </div>
+                        </Flex>
                         <div>
                             {list.map((item) => {
                                 return (
@@ -145,7 +147,7 @@ export const CardSelector = ({
                         };
 
                         return (
-                            <div key={selectedId} className={s['selected-list-item']}>
+                            <Flex key={selectedId} className={s['selected-list-item']}>
                                 <div>{foundItem.name}</div>
                                 {editable && (
                                     <button
@@ -155,11 +157,11 @@ export const CardSelector = ({
                                         <TrashBin />
                                     </button>
                                 )}
-                            </div>
+                            </Flex>
                         );
                     })}
                 </div>
             ) : null}
-        </div>
+        </Flex>
     );
 };

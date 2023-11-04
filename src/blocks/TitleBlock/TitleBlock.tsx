@@ -1,9 +1,10 @@
 import React from 'react';
 
 import {Button} from '../../components/Button/Button';
+import {Flex} from '../../components/Flex/Flex';
 import {VideoBlock} from '../VideoBlock/VideoBlock';
 
-import s from './TitleBlock.module.css';
+import s from './TitleBlock.module.scss';
 
 type TitleBlockProps = {
     title: string;
@@ -30,11 +31,11 @@ export const TitleBlock = ({
     ...rest
 }: TitleBlockProps) => {
     return (
-        <div className={s.container}>
-            <div className={s.content}>
+        <Flex className={s.container}>
+            <Flex direction="column" className={s.content}>
                 <h1 className={s.title}>{title}</h1>
                 <p className={s.subtitle}>{subtitle}</p>
-                <div className={s.actions}>
+                <Flex>
                     {mainButton ? (
                         <Button url={mainButton.url} view="primary" text={mainButton.text} />
                     ) : null}
@@ -45,11 +46,11 @@ export const TitleBlock = ({
                             text={secondaryButton.text}
                         />
                     ) : null}
-                </div>
-            </div>
-            <div className={s.video}>
+                </Flex>
+            </Flex>
+            <Flex className={s.video}>
                 <VideoBlock {...rest} title="" subtitle="" endBlur={100} startBlur={0} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 };

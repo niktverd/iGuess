@@ -6,9 +6,10 @@ import _ from 'lodash';
 import {Project} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
+import {Flex} from '../../Flex/Flex';
 import {CardField} from '../CardField/CardField';
 
-import styles from './SalariesCard.module.css';
+import styles from './SalariesCard.module.scss';
 
 type SalariesCardProps = {
     onChange: (event: OnProjectChangeArgs) => void;
@@ -23,10 +24,10 @@ export const SalariesCard = (props: SalariesCardProps) => {
 
     return (
         <CardBase editable={editable}>
-            <div className={styles['header-container']}>
-                <div className={styles['icon-container']}>
+            <Flex className={styles['header-container']}>
+                <Flex className={styles['icon-container']}>
                     <FileDollar />
-                </div>
+                </Flex>
                 <div className={styles['input-container']}>
                     <input
                         type="text"
@@ -44,7 +45,7 @@ export const SalariesCard = (props: SalariesCardProps) => {
                         {editable ? <Check /> : <Pencil />}
                     </button>
                 )}
-            </div>
+            </Flex>
             <CardField
                 label="Executors"
                 value={_.get(project, 'projectData.executorsSalary') || 1000}

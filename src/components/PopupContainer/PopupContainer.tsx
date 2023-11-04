@@ -1,6 +1,8 @@
 import React from 'react';
 
-import s from './PopupContainer.module.css';
+import {Flex} from '../Flex/Flex';
+
+import s from './PopupContainer.module.scss';
 
 type PopupContainerProps = {
     title: string;
@@ -11,7 +13,7 @@ type PopupContainerProps = {
 
 export const PopupContainer = ({title, subtitle, text, onClick}: PopupContainerProps) => {
     return (
-        <div className={s.background}>
+        <Flex className={s.background}>
             <div className={s.popup}>
                 <h2 className={s.title}>{title}</h2>
                 <div className={s.subtitle}>{subtitle}</div>
@@ -19,6 +21,6 @@ export const PopupContainer = ({title, subtitle, text, onClick}: PopupContainerP
                     {text}
                 </button>
             </div>
-        </div>
+        </Flex>
     );
 };

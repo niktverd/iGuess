@@ -3,12 +3,13 @@ import React, {useCallback} from 'react';
 import {uuid} from 'uuidv4';
 
 import {Plan, Project} from '../../../business/types';
+import {Flex} from '../../../components/Flex/Flex';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
 import {PlanCard} from '../../../components/guess/PlanCard/PlanCard';
 import {initialPlan} from '../../../contexts/SourceDataContext';
 import {OnProjectChangeArgs} from '../../../types/common';
 
-import styles from './GuessPlanList.module.css';
+import styles from './GuessPlanList.module.scss';
 
 type GuessPlanListProps = {
     project: Project;
@@ -27,8 +28,8 @@ export const GuessPlanList = ({plans, onChange, previewOnly, project}: GuessPlan
     }, [plans]);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.list}>
+        <Flex direction="column" className={styles.container}>
+            <Flex className={styles.list}>
                 {plans.map((plan, index) => {
                     const namePrefix = `sourceData.plans[${index}]`;
                     return (
@@ -43,7 +44,7 @@ export const GuessPlanList = ({plans, onChange, previewOnly, project}: GuessPlan
                     );
                 })}
                 {previewOnly ? null : <AddCard onClick={addPlan} placeholder="Add new plan" />}
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 };

@@ -1,6 +1,6 @@
 import React, {PropsWithChildren} from 'react';
 
-import styles from './CardBase.module.css';
+import styles from './CardBase.module.scss';
 
 type BaseCardProps = PropsWithChildren<{
     editable?: boolean;

@@ -1,6 +1,8 @@
 import React from 'react';
 
-import s from './CardField.module.css';
+import {Flex} from '../../Flex/Flex';
+
+import s from './CardField.module.scss';
 
 type CardFieldProps = {
     value: string | number;
@@ -30,7 +32,7 @@ export const CardField = ({
     max,
 }: CardFieldProps) => {
     return (
-        <div className={`${s.container} ${inputContainerClassName} ${editable ? s.edit : ''}`}>
+        <Flex className={`${s.container} ${inputContainerClassName} ${editable ? s.edit : ''}`}>
             <label className={s.label}>
                 <div className={s['label-text']}>
                     {label}
@@ -48,6 +50,6 @@ export const CardField = ({
                 onChange={onChange}
                 disabled={!editable}
             />
-        </div>
+        </Flex>
     );
 };

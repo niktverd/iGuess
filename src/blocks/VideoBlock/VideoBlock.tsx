@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 
-import s from './VideoBlock.module.css';
+import {Flex} from '../../components/Flex/Flex';
+
+import s from './VideoBlock.module.scss';
 
 type VideoBlockProps = {
     title: string;
@@ -16,8 +18,8 @@ export const VideoBlock = ({title, subtitle, startBlur = 10, endBlur = 90}: Vide
         filter: trigger ? 'blur(16px)' : undefined,
     };
     return (
-        <div className={s.container}>
-            <div className={s['video-container']}>
+        <Flex className={s.container}>
+            <Flex className={s['video-container']}>
                 <video
                     className={s.video}
                     src="./first-screen.mp4"
@@ -30,11 +32,14 @@ export const VideoBlock = ({title, subtitle, startBlur = 10, endBlur = 90}: Vide
                         setProgress((e.target.currentTime / e.target.duration) * 100)
                     }
                 />
-            </div>
-            <div className={`s.content ${trigger ? s['big-content'] : s['small-content']}`}>
+            </Flex>
+            <Flex
+                direction="column"
+                className={`s.content ${trigger ? s['big-content'] : s['small-content']}`}
+            >
                 <h1 className={trigger ? s['big-title'] : s['small-title']}>{title}</h1>
                 <p className={trigger ? s['big-subtitle'] : s['small-subtitle']}>{subtitle}</p>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 };

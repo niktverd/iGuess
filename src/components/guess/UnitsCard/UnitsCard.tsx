@@ -6,9 +6,10 @@ import _ from 'lodash';
 import {Project} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
+import {Flex} from '../../Flex/Flex';
 import {CardField} from '../CardField/CardField';
 
-import styles from './UnitsCard.module.css';
+import styles from './UnitsCard.module.scss';
 
 type UnitsCardProps = {
     onChange: (event: OnProjectChangeArgs) => void;
@@ -22,10 +23,10 @@ export const UnitsCard = (props: UnitsCardProps) => {
 
     return (
         <CardBase editable={editable}>
-            <div className={styles['header-container']}>
-                <div className={styles['icon-container']}>
+            <Flex className={styles['header-container']}>
+                <Flex className={styles['icon-container']}>
                     <Gear />
-                </div>
+                </Flex>
                 <div className={styles['input-container']}>
                     <input
                         type="text"
@@ -44,7 +45,7 @@ export const UnitsCard = (props: UnitsCardProps) => {
                         {editable ? <Check /> : <Pencil />}
                     </button>
                 )}
-            </div>
+            </Flex>
             <CardField
                 label="Period"
                 value={_.get(project, 'projectData.periodUnits') || ''}

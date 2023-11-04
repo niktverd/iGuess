@@ -2,7 +2,7 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import s from './Button.module.css';
+import s from './Button.module.scss';
 
 type ButtonProps = {
     text: string;

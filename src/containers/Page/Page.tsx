@@ -4,7 +4,9 @@ import type {NextPage} from 'next';
 import {signOut, useSession} from 'next-auth/react';
 import Link from 'next/link';
 
-import styles from './Page.module.css';
+import {Flex} from '../../components/Flex/Flex';
+
+import styles from './Page.module.scss';
 
 type PageProps = {
     hideNavigation?: boolean;
@@ -27,7 +29,7 @@ export const Page: NextPage<PageProps> = ({
     return (
         <div className={styles.container}>
             {!hideNavigation && (
-                <div className={styles.navigation}>
+                <Flex className={styles.navigation}>
                     <ul className={styles['nav-list']}>
                         <li className={getItemClass(styles['nav-item'], selectedKey === 'home')}>
                             <Link href="/">Home</Link>
@@ -56,7 +58,7 @@ export const Page: NextPage<PageProps> = ({
                             )}
                         </li>
                     </ul>
-                </div>
+                </Flex>
             )}
             <div className={styles.content}>{children}</div>
         </div>

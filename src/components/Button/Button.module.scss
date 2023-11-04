@@ -1,8 +1,9 @@
+@import '../../../styles/mixins.scss';
+
 .container {
     width: auto;
 
-    display: flex;
-    flex-direction: row;
+    @include displayFlex();
     background: none;
     color: #fff;
     cursor: pointer;

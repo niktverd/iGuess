@@ -1,3 +1,5 @@
+@import '../../../styles/mixins.scss';
+
 .container {
     min-height: 100vh;
     width: 100vw;
@@ -13,7 +15,6 @@
 }
 
 .navigation {
-    display: flex;
     height: 64px;
     width: 100%;
     background-color: rgb(44 42 56 / 80%);
@@ -25,16 +26,15 @@
 }
 
 .nav-list {
-    display: flex;
-    flex-direction: row;
+    @include displayFlex();
+
     height: 100%;
     align-items: center;
     justify-content: center;
 }
 
 .nav-item {
-    display: flex;
-    flex-direction: row;
+    @include displayFlex();
     margin-right: 10px;
     align-items: center;
     justify-content: center;

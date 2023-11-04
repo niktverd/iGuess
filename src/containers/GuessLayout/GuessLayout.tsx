@@ -4,6 +4,7 @@ import {CirclePlusFill} from '@gravity-ui/icons';
 
 import {GetReportResponse, getReport} from '../../business/report';
 import {Project} from '../../business/types';
+import {Flex} from '../../components/Flex/Flex';
 import {NavButton} from '../../components/NavButton/NavButton';
 import {Chart} from '../../components/guess/Chart/Chart';
 import {OnProjectChangeArgs} from '../../types/common';
@@ -12,7 +13,7 @@ import {GuessGeneralForm} from '../guess/GuessGeneralForm/GuessGeneralForm';
 import {GuessPlanList} from '../guess/GuessPlanList/GuessPlanList';
 import {GuessProductList} from '../guess/GuessProductList/GuessProductList';
 
-import styles from './GuessLayout.module.css';
+import styles from './GuessLayout.module.scss';
 
 type GuessLayoutProps = {
     project: Project;
@@ -70,7 +71,7 @@ export const GuessLayout = ({
     };
 
     return (
-        <div className={styles.container}>
+        <Flex className={styles.container}>
             <div className={styles['main-navigation']}>
                 <NavButton
                     text="Overview"
@@ -154,6 +155,6 @@ export const GuessLayout = ({
                     />
                 ) : null}
             </div>
-        </div>
+        </Flex>
     );
 };

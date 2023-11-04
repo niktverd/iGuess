@@ -4,13 +4,14 @@ import _ from 'lodash';
 import {useRouter} from 'next/router';
 
 import {Project} from '../../../business/types';
+import {Flex} from '../../../components/Flex/Flex';
 import {PopupContainer} from '../../../components/PopupContainer/PopupContainer';
 import {AddCard} from '../../../components/guess/AddCard/AddCard';
 import {ProjectCard} from '../../../components/guess/ProjectCard/ProjectCard';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {isEvent} from '../../../utils/typeguards';
 
-import styles from './ProjectList.module.css';
+import styles from './ProjectList.module.scss';
 
 type ProjectListProps = {
     previewOnly?: boolean;
@@ -92,7 +93,7 @@ export const ProjectList = (_props: ProjectListProps) => {
     );
 
     return (
-        <div className={styles.container}>
+        <Flex direction="column" className={styles.container}>
             {projectId ? (
                 <PopupContainer
                     text="Open project"
@@ -104,7 +105,7 @@ export const ProjectList = (_props: ProjectListProps) => {
             <div>
                 <h1>Projects</h1>
             </div>
-            <div className={styles.list}>
+            <Flex className={styles.list}>
                 {projects.map((prjct, index) => {
                     const namePrefix = `[${index}].projectData`;
                     return (
@@ -118,7 +119,7 @@ export const ProjectList = (_props: ProjectListProps) => {
                     );
                 })}
                 <AddCard placeholder="Create new project" onClick={addProject} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 };

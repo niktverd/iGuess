@@ -1,6 +1,6 @@
 import React from 'react';
 
-import s from './NavButton.module.css';
+import s from './NavButton.module.scss';
 
 type NavButtonProps = {
     text: string;

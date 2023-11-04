@@ -3,7 +3,7 @@ import React, {Fragment} from 'react';
 import {PayPalButtons, PayPalScriptProvider} from '@paypal/react-paypal-js';
 import type {NextPage} from 'next';
 
-import s from './Payments.module.css';
+import s from './Payments.module.scss';
 
 type PaymentsProps = {} & React.PropsWithChildren;
 const paypalClienId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;

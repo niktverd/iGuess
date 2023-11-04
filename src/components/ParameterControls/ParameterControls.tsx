@@ -4,8 +4,9 @@ import _ from 'lodash';
 
 import {Project} from '../../business/types';
 import {OnProjectChangeArgs} from '../../types/common';
+import {Flex} from '../Flex/Flex';
 
-import styles from './ParameterControls.module.css';
+import styles from './ParameterControls.module.scss';
 
 type ParameterControlsProps = {
     paramKey: string;
@@ -46,7 +47,7 @@ export const ParameterControls = ({
                     paramKey}
             </button>
             {temp ? (
-                <div className={styles.axis}>
+                <Flex className={styles.axis}>
                     {/* <button className={styles['axis-selector']} onClick={onSelectAxis(paramKey, 1)}> */}
                     <button className={styles['axis-selector']} onClick={() => {}}>
                         +
@@ -59,7 +60,7 @@ export const ParameterControls = ({
                     >
                         -
                     </button>
-                </div>
+                </Flex>
             ) : null}
         </div>
     );

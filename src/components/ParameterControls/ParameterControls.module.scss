@@ -1,3 +1,5 @@
+@import '../../../styles/mixins.scss';
+
 .container {
     display: inline-flex;
     padding: 10px;
@@ -11,14 +13,11 @@
 }
 
 .axis {
-    display: flex;
-    flex-direction: row;
     justify-content: space-between;
 }
 
 .button {
-    display: flex;
-    flex-direction: row;
+    @include displayFlex();
     align-items: center;
     width: 100%;
     background: none;

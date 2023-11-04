@@ -1,0 +1,81 @@
+@import '../../../styles/mixins.scss';
+
+.container {
+    width: 100%;
+    min-height: 50vh;
+
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    border-radius: 32px;
+    margin: 144px 0;
+}
+
+.video {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-left: -10px;
+}
+
+.content {
+    z-index: 2;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px;
+    margin-right: -10px;
+}
+
+.title {
+    font-size: 72px;
+    @include fontSizeMedia(1440px, 30px);
+}
+
+.subtitle {
+    font-size: 36px;
+    color: rgb(255 255 255 / 0.5);
+}
+
+@media (max-width: 1440px) {
+    .container {
+        margin: 128px 0;
+    }
+
+    .content {
+        margin-right: -50px;
+    }
+
+    .video {
+        margin-left: -50px;
+    }
+}
+
+@media (max-width: 900px) {
+    .container {
+        margin: 96px 0;
+    }
+    .content {
+        margin-right: -150px;
+    }
+
+    .video {
+        margin-left: -150px;
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        margin: 1px 0;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .video {
+        width: 100%;
+    }
+}

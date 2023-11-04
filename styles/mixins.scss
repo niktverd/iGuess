@@ -1,0 +1,10 @@
+@mixin fontSizeMedia($mediaScreen, $fontSize) {
+    @media (max-width: $mediaScreen) {
+        font-size: $fontSize;
+    }
+}
+
+@mixin displayFlex($direction: row) {
+    display: flex;
+    flex-direction: $direction;
+}

@@ -6,10 +6,11 @@ import _ from 'lodash';
 import {Plan, Project} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
+import {Flex} from '../../Flex/Flex';
 import {CardField} from '../CardField/CardField';
 import {CardSelector} from '../CardSelector/CardSelector';
 
-import styles from './PlanCard.module.css';
+import styles from './PlanCard.module.scss';
 
 type PlanCardProps = Plan & {
     onChange: (event: OnProjectChangeArgs) => void;
@@ -53,10 +54,10 @@ export const PlanCard = (props: PlanCardProps) => {
 
     return (
         <CardBase editable={editable}>
-            <div className={styles['header-container']}>
-                <div className={styles['icon-container']}>
+            <Flex className={styles['header-container']}>
+                <Flex className={styles['icon-container']}>
                     <Shapes3 />
-                </div>
+                </Flex>
                 <div className={styles['input-container']}>
                     <input
                         type="text"
@@ -80,7 +81,7 @@ export const PlanCard = (props: PlanCardProps) => {
                         {editable ? <Check /> : <Pencil />}
                     </button>
                 )}
-            </div>
+            </Flex>
             <div>
                 <input
                     type="text"

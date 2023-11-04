@@ -4,7 +4,7 @@ import type {NextPage} from 'next';
 
 import {Page} from '../../src/containers/Page/Page';
 
-// import styles from 'styles/Home.module.css';
+// import styles from 'styles/Home.module.scss';
 
 const Tasks: NextPage = () => {
     return (

@@ -9,9 +9,10 @@ import {useRouter} from 'next/router';
 import {ProjectData} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
+import {Flex} from '../../Flex/Flex';
 import {CardField} from '../CardField/CardField';
 
-import styles from './ProjectCard.module.css';
+import styles from './ProjectCard.module.scss';
 
 type ProjectCardProps = ProjectData & {
     onChange: (event: OnProjectChangeArgs) => void;
@@ -40,7 +41,7 @@ export const ProjectCard = (props: ProjectCardProps) => {
 
     return (
         <CardBase editable={editable}>
-            <div className={styles['header-container']}>
+            <Flex className={styles['header-container']}>
                 <div className={styles['icon-container']}>
                     <FolderTree />
                 </div>
@@ -61,7 +62,7 @@ export const ProjectCard = (props: ProjectCardProps) => {
                 >
                     {editable ? <Check /> : <Pencil />}
                 </button>
-            </div>
+            </Flex>
             <div>
                 <input
                     type="text"
@@ -90,7 +91,7 @@ export const ProjectCard = (props: ProjectCardProps) => {
                     </div>
                 ) : null}
             </div>
-            <div className={styles['actions-container']}>
+            <Flex className={styles['actions-container']}>
                 <button
                     className={styles['button-container']}
                     onClick={() => updateProject(id)}
@@ -104,7 +105,7 @@ export const ProjectCard = (props: ProjectCardProps) => {
                 >
                     <ArrowUpRightFromSquare />
                 </button>
-            </div>
+            </Flex>
         </CardBase>
     );
 };
