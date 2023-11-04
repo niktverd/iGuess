@@ -2,13 +2,14 @@ import {deepEqual} from 'assert';
 
 import React, {useEffect, useState} from 'react';
 
-import {ArrowUpRightFromSquare, Check, FloppyDisk, FolderTree, Pencil} from '@gravity-ui/icons';
+import {ArrowUpRightFromSquare, FloppyDisk, FolderTree} from '@gravity-ui/icons';
 import {pick} from 'lodash';
 import {useRouter} from 'next/router';
 
 import {ProjectData} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
+import {CardHeaderContainer} from '../../CardHeaderContainer/CardHeaderContainer';
 import {Flex} from '../../Flex/Flex';
 import {CardField} from '../CardField/CardField';
 
@@ -41,28 +42,14 @@ export const ProjectCard = (props: ProjectCardProps) => {
 
     return (
         <CardBase editable={editable}>
-            <Flex className={styles['header-container']}>
-                <div className={styles['icon-container']}>
-                    <FolderTree />
-                </div>
-                <div className={styles['input-container']}>
-                    <input
-                        type="text"
-                        value={name}
-                        className={styles.input}
-                        onChange={onChange}
-                        disabled={!editable}
-                        name={`${namePrefix}.name`}
-                    />
-                </div>
-
-                <button
-                    className={styles['button-container']}
-                    onClick={() => setEditable(!editable)}
-                >
-                    {editable ? <Check /> : <Pencil />}
-                </button>
-            </Flex>
+            <CardHeaderContainer
+                icon={<FolderTree />}
+                name={name}
+                editable={editable}
+                setEditable={setEditable}
+                onChange={onChange}
+                namePrefix={`${namePrefix}.name`}
+            />
             <div>
                 <input
                     type="text"

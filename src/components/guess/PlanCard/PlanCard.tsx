@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 
-import {Check, Pencil, Shapes3} from '@gravity-ui/icons';
+import {Shapes3} from '@gravity-ui/icons';
 import _ from 'lodash';
 
 import {Plan, Project} from '../../../business/types';
 import {OnProjectChangeArgs} from '../../../types/common';
 import {CardBase} from '../../CardBase/CardBase';
-import {Flex} from '../../Flex/Flex';
+import {CardHeaderContainer} from '../../CardHeaderContainer/CardHeaderContainer';
 import {CardField} from '../CardField/CardField';
 import {CardSelector} from '../CardSelector/CardSelector';
 
@@ -54,34 +54,16 @@ export const PlanCard = (props: PlanCardProps) => {
 
     return (
         <CardBase editable={editable}>
-            <Flex className={styles['header-container']}>
-                <Flex className={styles['icon-container']}>
-                    <Shapes3 />
-                </Flex>
-                <div className={styles['input-container']}>
-                    <input
-                        type="text"
-                        value={name}
-                        className={styles.input}
-                        onChange={onChange}
-                        disabled={!editable}
-                        name={`${namePrefix}.name`}
-                    />
-                </div>
-                {previewOnly ? null : (
-                    <button
-                        className={styles['button-container']}
-                        onClick={() => {
-                            if (editable) {
-                                onFinishEdit?.();
-                            }
-                            setEditable(!editable);
-                        }}
-                    >
-                        {editable ? <Check /> : <Pencil />}
-                    </button>
-                )}
-            </Flex>
+            <CardHeaderContainer
+                icon={<Shapes3 />}
+                name={name}
+                onChange={onChange}
+                namePrefix={`${namePrefix}.name`}
+                editable={editable}
+                setEditable={setEditable}
+                previewOnly={previewOnly}
+                onFinishEdit={onFinishEdit}
+            />
             <div>
                 <input
                     type="text"
